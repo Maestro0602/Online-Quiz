@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "cross-env ROLLUP_SKIP_NATIVE=true vue-tsc && cross-env ROLLUP_SKIP_NATIVE=true vite build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -17,6 +17,7 @@
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
+    "@rollup/wasm-node": "^4.65.1",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^22.8.1",
     "@vitejs/plugin-vue": "^5.1.4",

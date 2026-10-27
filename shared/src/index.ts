@@ -96,6 +96,7 @@ export interface TopContributor {
 
 export interface GameSummary {
   session_id: string;
+  room_code: string;
   quiz_title: string;
   teams: Team[];
   top_contributors: TopContributor[];

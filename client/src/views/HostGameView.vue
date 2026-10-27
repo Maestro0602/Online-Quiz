@@ -245,13 +245,12 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { useGameStore } from '../stores/game';
 import confetti from 'canvas-confetti';
 
 const route = useRoute();
-const router = useRouter();
 const authStore = useAuthStore();
 const gameStore = useGameStore();
 
