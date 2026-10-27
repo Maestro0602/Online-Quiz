@@ -62,27 +62,10 @@
         </button>
       </form>
 
-      <!-- Quick Demo Student Pickers -->
-      <div class="quick-pickers">
-        <span class="quick-title">Quick Student Pick:</span>
-        <div class="picker-chips">
-          <button
-            v-for="student in studentDemos"
-            :key="student.id"
-            type="button"
-            class="chip-btn"
-            :class="{ active: authStore.user?.id === student.id }"
-            @click="selectDemoStudent(student)"
-          >
-            {{ student.name }}
-          </button>
-        </div>
-      </div>
-
-      <!-- Instructor Quick Switch -->
+      <!-- Host Action -->
       <div class="host-shortcut">
-        <router-link to="/instructor" class="host-link">
-          Are you an instructor? Launch a game session →
+        <router-link to="/instructor" class="btn-kahoot btn-white btn-host">
+          Host
         </router-link>
       </div>
     </div>
@@ -90,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { User } from '@quizchaos/shared';
@@ -102,15 +85,6 @@ const roomCode = ref('');
 const guestNickname = ref('');
 const joining = ref(false);
 const errorMessage = ref<string | null>(null);
-
-const studentDemos = computed(() =>
-  authStore.demoUsers.filter(u => u.role === 'student')
-);
-
-function selectDemoStudent(student: User) {
-  authStore.quickSwitchUser(student);
-  guestNickname.value = student.name;
-}
 
 async function handleJoin() {
   const pin = roomCode.value.trim().replace(/\s+/g, '');
@@ -314,69 +288,15 @@ async function handleJoin() {
   text-decoration: underline;
 }
 
-.quick-pickers {
-  background: #f8f8f8;
-  border-radius: 12px;
-  padding: 14px;
-  margin-bottom: 20px;
-}
-
-.quick-title {
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: #777;
-  display: block;
-  margin-bottom: 8px;
-}
-
-.picker-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-}
-
-.chip-btn {
-  font-family: inherit;
-  font-size: 0.85rem;
-  font-weight: 700;
-  padding: 6px 12px;
-  border-radius: 20px;
-  border: 1px solid #ddd;
-  background: white;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.chip-btn:hover {
-  background: #ffa602;
-  color: #222;
-  border-color: #ffa602;
-}
-
-.chip-btn.active {
-  background: #26890c;
-  color: white;
-  border-color: #26890c;
-}
-
 .host-shortcut {
   border-top: 1px solid #eee;
   padding-top: 16px;
 }
 
-.host-link {
-  color: #46178f;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.95rem;
-  transition: color 0.2s;
-}
-
-.host-link:hover {
-  color: #ffa602;
-  text-decoration: underline;
+.btn-host {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
 }
 
 .error-banner {
