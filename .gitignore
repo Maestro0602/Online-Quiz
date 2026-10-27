@@ -6,3 +6,4 @@ dist
 .vscode
 client/dist
 server/dist
+

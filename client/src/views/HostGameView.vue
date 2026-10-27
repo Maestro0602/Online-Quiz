@@ -18,7 +18,7 @@
           @click="confirmEndGame"
           class="btn-kahoot btn-red btn-sm"
         >
-          End Game ✕
+          End Game
         </button>
       </div>
     </header>
@@ -30,7 +30,7 @@
           <p class="join-prompt">Join on your phone or browser at this room PIN:</p>
           <div class="giant-pin">{{ roomCode }}</div>
           <div class="player-count-badge">
-            👥 {{ totalPlayersCount }} {{ totalPlayersCount === 1 ? 'Player' : 'Players' }} Connected
+            {{ totalPlayersCount }} {{ totalPlayersCount === 1 ? 'Player' : 'Players' }} Connected
           </div>
         </div>
 
@@ -43,7 +43,7 @@
             :style="{ borderColor: team.color }"
           >
             <div class="team-box-header" :style="{ backgroundColor: team.color }">
-              <span class="t-badge">{{ team.badge }}</span>
+              <span class="t-badge">[{{ team.badge }}]</span>
               <span class="t-name">{{ team.name }}</span>
               <span class="t-count">({{ team.members.length }})</span>
             </div>
@@ -57,7 +57,7 @@
                 :key="member.id"
                 class="member-chip animate-pop"
               >
-                <span>{{ member.avatar || '🦊' }}</span>
+                <span>[{{ member.avatar || member.user_name.substring(0, 2).toUpperCase() }}]</span>
                 <span>{{ member.user_name }}</span>
               </div>
             </div>
@@ -70,7 +70,7 @@
             :disabled="totalPlayersCount === 0"
             class="btn-kahoot btn-primary btn-start-game animate-pulse-slow"
           >
-            <span>Start Game Now ⚡</span>
+            <span>Start Game Now</span>
           </button>
           <p v-if="totalPlayersCount === 0" class="sub-hint">
             Waiting for at least 1 player to join...
@@ -131,7 +131,7 @@
             @click="nextQuestion"
             class="btn-kahoot btn-yellow btn-next"
           >
-            Final Podium 🏆
+            Final Podium
           </button>
           <button
             v-else
@@ -156,7 +156,7 @@
             <span class="stat-shape">{{ getShapeSymbol(idx) }}</span>
             <span class="stat-votes">{{ stat }} {{ stat === 1 ? 'vote' : 'votes' }}</span>
             <span v-if="idx === currentQuestion?.correct_option_index" class="correct-badge">
-              ✓ Correct
+              Correct
             </span>
           </div>
         </div>
@@ -171,7 +171,7 @@
           >
             <div class="rank-badge" :class="'rank-' + (rank + 1)">#{{ rank + 1 }}</div>
             <div class="team-info">
-              <span class="team-badge-icon">{{ team.badge }}</span>
+              <span class="team-badge-icon">[{{ team.badge }}]</span>
               <strong class="team-title" :style="{ color: team.color }">{{ team.name }}</strong>
               <span class="team-sub">({{ team.members.length }} members)</span>
             </div>
@@ -185,8 +185,7 @@
     <section v-else-if="gameStore.isEnded" class="ended-stage animate-pop">
       <div class="podium-card card-kahoot">
         <div class="podium-header">
-          <span class="celebration-emoji">🏆</span>
-          <h1>Battle Completed!</h1>
+          <h1>Battle Completed</h1>
           <p>Congratulations to all teams!</p>
         </div>
 
@@ -195,37 +194,36 @@
           <!-- 2nd Place -->
           <div v-if="gameStore.rankedTeams[1]" class="podium-step step-2 animate-pop">
             <div class="podium-team-header">
-              <span class="team-icon">{{ gameStore.rankedTeams[1].badge }}</span>
+              <span class="team-icon">[{{ gameStore.rankedTeams[1].badge }}]</span>
               <h4>{{ gameStore.rankedTeams[1].name }}</h4>
               <div class="podium-score">{{ gameStore.rankedTeams[1].total_score.toLocaleString() }} pts</div>
             </div>
             <div class="podium-block block-silver">
-              <span class="rank-label">🥈 2nd</span>
+              <span class="rank-label">2nd Place</span>
             </div>
           </div>
 
           <!-- 1st Place Champion -->
           <div v-if="gameStore.rankedTeams[0]" class="podium-step step-1 animate-pop">
-            <div class="crown-icon">👑</div>
             <div class="podium-team-header">
-              <span class="team-icon">{{ gameStore.rankedTeams[0].badge }}</span>
+              <span class="team-icon">[{{ gameStore.rankedTeams[0].badge }}]</span>
               <h3>{{ gameStore.rankedTeams[0].name }}</h3>
               <div class="podium-score champion">{{ gameStore.rankedTeams[0].total_score.toLocaleString() }} pts</div>
             </div>
             <div class="podium-block block-gold">
-              <span class="rank-label">🥇 1st</span>
+              <span class="rank-label">1st Place</span>
             </div>
           </div>
 
           <!-- 3rd Place -->
           <div v-if="gameStore.rankedTeams[2]" class="podium-step step-3 animate-pop">
             <div class="podium-team-header">
-              <span class="team-icon">{{ gameStore.rankedTeams[2].badge }}</span>
+              <span class="team-icon">[{{ gameStore.rankedTeams[2].badge }}]</span>
               <h4>{{ gameStore.rankedTeams[2].name }}</h4>
               <div class="podium-score">{{ gameStore.rankedTeams[2].total_score.toLocaleString() }} pts</div>
             </div>
             <div class="podium-block block-bronze">
-              <span class="rank-label">🥉 3rd</span>
+              <span class="rank-label">3rd Place</span>
             </div>
           </div>
         </div>

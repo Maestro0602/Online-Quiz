@@ -58,5 +58,5 @@ setupSocketHandlers(io);
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
-  console.log(`⚡ QuizChaos Server running on http://localhost:${PORT}`);
+  console.log(`qiuizez server running on http://localhost:${PORT}`);
 });

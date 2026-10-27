@@ -3,7 +3,7 @@
     <!-- Student & Team Header Bar -->
     <header class="student-header">
       <div class="team-banner" v-if="gameStore.myTeam">
-        <span class="team-badge">{{ gameStore.myTeam.badge }}</span>
+        <span class="team-badge">[{{ gameStore.myTeam.badge }}]</span>
         <div class="team-meta">
           <span class="team-label">YOUR TEAM</span>
           <strong class="team-name" :style="{ color: gameStore.myTeam.color }">
@@ -28,8 +28,7 @@
     <section v-if="gameStore.isInLobby" class="student-lobby-stage animate-pop">
       <div class="lobby-card card-kahoot">
         <div class="welcome-header">
-          <span class="avatar-giant">{{ gameStore.myMember?.avatar || '🦊' }}</span>
-          <h2>You're in, {{ gameStore.myMember?.user_name }}!</h2>
+          <h2>Welcome, {{ gameStore.myMember?.user_name }}</h2>
           <p class="subtitle">You have been automatically assigned to:</p>
         </div>
 
@@ -38,9 +37,9 @@
           class="team-showcase"
           :style="{ borderColor: gameStore.myTeam.color, background: getTeamLightBg(gameStore.myTeam.color) }"
         >
-          <span class="team-giant-badge">{{ gameStore.myTeam.badge }}</span>
+          <span class="team-giant-badge">[{{ gameStore.myTeam.badge }}]</span>
           <h1 :style="{ color: gameStore.myTeam.color }">{{ gameStore.myTeam.name }}</h1>
-          <p>Collaborate with your teammates to climb the podium!</p>
+          <p>Collaborate with your teammates to climb the podium</p>
         </div>
 
         <div class="teammates-box" v-if="gameStore.myTeam">
@@ -51,13 +50,13 @@
               :key="m.id"
               class="teammate-tag"
             >
-              {{ m.avatar || '🦊' }} {{ m.user_name }}
+              [{{ m.avatar || m.user_name.substring(0, 2).toUpperCase() }}] {{ m.user_name }}
             </span>
           </div>
         </div>
 
         <div class="waiting-prompt animate-pulse-slow">
-          ⚡ Waiting for instructor to start the quiz...
+          Waiting for instructor to start the quiz...
         </div>
       </div>
     </section>
@@ -70,7 +69,7 @@
           Q{{ (gameStore.session?.current_question_index || 0) + 1 }} / {{ gameStore.session?.total_questions }}
         </span>
         <div class="timer-badge" :class="{ 'timer-low': gameStore.timeRemaining <= 5 }">
-          ⏱️ {{ gameStore.timeRemaining }}s
+          Time: {{ gameStore.timeRemaining }}s
         </div>
       </div>
 
@@ -81,8 +80,8 @@
 
       <!-- If student has answered, show waiting screen -->
       <div v-if="hasAnswered" class="locked-in-box card-kahoot animate-pop">
-        <div class="locked-icon">🔒</div>
-        <h2>Answer Locked In!</h2>
+        <div class="locked-tag">SUBMITTED</div>
+        <h2>Answer Locked In</h2>
         <p>Waiting for teammates and timer to reveal the result...</p>
         <div class="selected-summary" :class="getShapeClass(gameStore.selectedAnswerIndex!)">
           <span class="shape-symbol">{{ getShapeSymbol(gameStore.selectedAnswerIndex!) }}</span>
@@ -133,23 +132,20 @@
         :class="gameStore.answerResult?.is_correct ? 'result-correct' : 'result-incorrect'"
       >
         <div class="result-banner">
-          <span class="result-icon">
-            {{ gameStore.answerResult?.is_correct ? '🎉' : '❌' }}
-          </span>
           <h2>
-            {{ gameStore.answerResult?.is_correct ? 'CORRECT!' : 'INCORRECT' }}
+            {{ gameStore.answerResult?.is_correct ? 'CORRECT' : 'INCORRECT' }}
           </h2>
           <div v-if="gameStore.answerResult?.is_correct" class="points-badge">
-            +{{ gameStore.answerResult?.points_awarded }} Points for your team!
+            +{{ gameStore.answerResult?.points_awarded }} Points for your team
           </div>
           <div v-else class="sub-msg">
-            Keep pushing with your team for the next question!
+            Keep pushing with your team for the next question
           </div>
         </div>
 
         <div class="team-contribution-box">
           <div class="contrib-row">
-            <span>{{ gameStore.myTeam?.badge }} {{ gameStore.myTeam?.name }} Total:</span>
+            <span>[{{ gameStore.myTeam?.badge }}] {{ gameStore.myTeam?.name }} Total:</span>
             <strong>{{ gameStore.myTeam?.total_score.toLocaleString() }} pts</strong>
           </div>
           <div class="contrib-row">
@@ -167,9 +163,8 @@
     <!-- STAGE 4: ENDED -->
     <section v-else-if="gameStore.isEnded" class="student-ended-stage animate-pop">
       <div class="game-over-card card-kahoot">
-        <span class="trophy-giant">🏆</span>
-        <h2>Quiz Completed!</h2>
-        <p>Great teamwork in this battle!</p>
+        <h2>Quiz Completed</h2>
+        <p>Great teamwork in this battle</p>
 
         <div class="final-rank-box" v-if="teamRank">
           <span class="rank-title">Your Team Finished:</span>
@@ -527,9 +522,16 @@ function getTeamLightBg(color: string) {
   padding: 40px 20px;
 }
 
-.locked-icon {
-  font-size: 3.5rem;
+.locked-tag {
+  display: inline-block;
+  background: #f0f0f0;
+  color: #46178f;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 4px 12px;
+  border-radius: 12px;
   margin-bottom: 10px;
+  letter-spacing: 0.5px;
 }
 
 .locked-in-box h2 {

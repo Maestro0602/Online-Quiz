@@ -7,15 +7,15 @@
           <span class="summary-badge">Official Match Report</span>
           <h1>{{ summaryData.quiz_title }}</h1>
           <div class="stats-row">
-            <span class="stat-tag">🎯 Room PIN: {{ summaryData.room_code }}</span>
-            <span class="stat-tag">👥 {{ summaryData.total_participants }} Total Participants</span>
-            <span class="stat-tag">🏆 {{ summaryData.teams.length }} Competing Teams</span>
+            <span class="stat-tag">Room PIN: {{ summaryData.room_code }}</span>
+            <span class="stat-tag">{{ summaryData.total_participants }} Total Participants</span>
+            <span class="stat-tag">{{ summaryData.teams.length }} Competing Teams</span>
           </div>
         </div>
 
         <div class="header-actions">
           <button @click="celebrateConfetti" class="btn-kahoot btn-yellow btn-sm">
-            🎉 Confetti
+            Celebrate
           </button>
           <router-link to="/" class="btn-kahoot btn-white btn-sm">
             Play Again
@@ -32,7 +32,7 @@
 
       <!-- Final Team Podium Standings -->
       <div class="podium-section card-kahoot animate-pop">
-        <h2>🏆 Final Team Standings</h2>
+        <h2>Final Team Standings</h2>
         <div class="team-rank-cards">
           <div
             v-for="(team, idx) in summaryData.teams"
@@ -42,7 +42,7 @@
           >
             <div class="team-rank-header" :style="{ backgroundColor: team.color }">
               <span class="rank-pos">#{{ idx + 1 }}</span>
-              <span class="rank-badge-icon">{{ team.badge }}</span>
+              <span class="rank-badge-icon">[{{ team.badge }}]</span>
               <span class="rank-team-name">{{ team.name }}</span>
               <span class="rank-points">{{ team.total_score.toLocaleString() }} pts</span>
             </div>
@@ -60,9 +60,9 @@
               >
                 <div class="member-left">
                   <span class="mvp-star" v-if="mIdx === 0 && member.individual_score > 0" title="Team MVP">
-                    ⭐ MVP
+                    MVP
                   </span>
-                  <span class="m-avatar">{{ member.avatar || '🦊' }}</span>
+                  <span class="m-avatar">[{{ member.avatar || member.user_name.substring(0, 2).toUpperCase() }}]</span>
                   <span class="m-name">{{ member.user_name }}</span>
                 </div>
                 <div class="member-score">
@@ -76,7 +76,7 @@
 
       <!-- Top Individual Contributors (Story 7) -->
       <div class="mvp-section card-kahoot animate-pop">
-        <h2>⭐ Top Individual Contributors (MVPs)</h2>
+        <h2>Top Individual Contributors (MVPs)</h2>
         <p class="section-sub">Highest scoring students across all teams:</p>
 
         <div class="mvp-list" v-if="summaryData.top_contributors.length > 0">
@@ -86,7 +86,7 @@
             class="mvp-card"
           >
             <div class="mvp-rank-pill" :class="'mvp-' + (index + 1)">
-              {{ index === 0 ? '🥇 1st' : index === 1 ? '🥈 2nd' : index === 2 ? '🥉 3rd' : `#${index + 1}` }}
+              {{ index === 0 ? '1st' : index === 1 ? '2nd' : index === 2 ? '3rd' : `#${index + 1}` }}
             </div>
             <div class="mvp-info">
               <strong class="mvp-name">{{ contrib.user_name }}</strong>
@@ -390,3 +390,4 @@ function celebrateConfetti() {
   margin: 60px auto;
 }
 </style>
+

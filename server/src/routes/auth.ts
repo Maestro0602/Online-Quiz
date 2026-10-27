@@ -60,8 +60,7 @@ router.post('/register', (req: Request, res: Response) => {
     return res.status(409).json({ error: 'User with this email already exists' });
   }
 
-  const avatars = role === 'instructor' ? ['👩‍🏫', '👨‍🏫', '🧑‍🔬', '🧙‍♂️'] : ['🦊', '🐼', '🦁', '🦄', '🚀', '⚡'];
-  const defaultAvatar = avatars[Math.floor(Math.random() * avatars.length)];
+  const defaultAvatar = name.substring(0, 2).toUpperCase();
 
   const newUser: User = {
     id: `u-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
@@ -79,3 +78,4 @@ router.post('/register', (req: Request, res: Response) => {
 });
 
 export default router;
+

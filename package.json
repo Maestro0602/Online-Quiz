@@ -2,7 +2,7 @@
   "name": "quizchaos",
   "version": "1.0.0",
   "private": true,
-  "description": "Collaborative Team Quiz Platform inspired by Kahoot",
+  "description": "qiuizez - Collaborative Team Quiz Platform",
   "workspaces": [
     "shared",
     "server",

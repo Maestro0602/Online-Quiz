@@ -7,12 +7,12 @@ export interface DataStore {
 }
 
 export const TEAM_PRESETS = [
-  { name: 'Red Rockets', color: '#e21b3c', badge: '🚀' },
-  { name: 'Blue Blasters', color: '#1368ce', badge: '⚡' },
-  { name: 'Golden Geeks', color: '#d88b02', badge: '⭐' },
-  { name: 'Green Giants', color: '#26890c', badge: '🦖' },
-  { name: 'Purple Phantoms', color: '#8e44ad', badge: '🔮' },
-  { name: 'Cosmic Comets', color: '#e67e22', badge: '☄️' }
+  { name: 'Red Rockets', color: '#e21b3c', badge: 'R' },
+  { name: 'Blue Blasters', color: '#1368ce', badge: 'B' },
+  { name: 'Golden Geeks', color: '#d88b02', badge: 'G' },
+  { name: 'Green Giants', color: '#26890c', badge: 'V' },
+  { name: 'Purple Phantoms', color: '#8e44ad', badge: 'P' },
+  { name: 'Cosmic Comets', color: '#e67e22', badge: 'C' }
 ];
 
 export const store: DataStore = {
@@ -29,7 +29,7 @@ const defaultUsers: User[] = [
     email: 'ada@university.edu',
     role: 'instructor',
     password: 'password123',
-    avatar: '👩‍🏫'
+    avatar: 'A'
   },
   {
     id: 'u-inst-2',
@@ -37,7 +37,7 @@ const defaultUsers: User[] = [
     email: 'alan@university.edu',
     role: 'instructor',
     password: 'password123',
-    avatar: '👨‍🏫'
+    avatar: 'T'
   },
   {
     id: 'u-stud-1',
@@ -45,7 +45,7 @@ const defaultUsers: User[] = [
     email: 'alex@student.edu',
     role: 'student',
     password: 'password123',
-    avatar: '🦊'
+    avatar: 'AR'
   },
   {
     id: 'u-stud-2',
@@ -53,7 +53,7 @@ const defaultUsers: User[] = [
     email: 'bella@student.edu',
     role: 'student',
     password: 'password123',
-    avatar: '🐼'
+    avatar: 'BC'
   },
   {
     id: 'u-stud-3',
@@ -61,7 +61,7 @@ const defaultUsers: User[] = [
     email: 'carlos@student.edu',
     role: 'student',
     password: 'password123',
-    avatar: '🦁'
+    avatar: 'CG'
   },
   {
     id: 'u-stud-4',
@@ -69,7 +69,7 @@ const defaultUsers: User[] = [
     email: 'diana@student.edu',
     role: 'student',
     password: 'password123',
-    avatar: '🦄'
+    avatar: 'DP'
   }
 ];
 
@@ -81,7 +81,7 @@ const defaultQuizzes: Quiz[] = [
     id: 'quiz-cs-101',
     instructor_id: 'u-inst-1',
     instructor_name: 'Prof. Ada Lovelace',
-    title: '⚡ Computer Science & Web Dev Showdown',
+    title: 'Computer Science & Web Dev Showdown',
     description: 'Test your knowledge on TypeScript, Vue 3, algorithms, and browser wizardry!',
     is_published: true,
     created_at: new Date().toISOString(),
@@ -163,8 +163,8 @@ const defaultQuizzes: Quiz[] = [
     id: 'quiz-trivia-fun',
     instructor_id: 'u-inst-1',
     instructor_name: 'Prof. Ada Lovelace',
-    title: '🧠 Ultimate Pop Culture & Science Trivia',
-    description: 'Fast-paced team brain challenge with tricky science and fun culture questions!',
+    title: 'Science and Tech Trivia',
+    description: 'Fast-paced team brain challenge with tricky science and tech questions!',
     is_published: true,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
@@ -216,3 +216,4 @@ const defaultQuizzes: Quiz[] = [
 ];
 
 defaultQuizzes.forEach(q => store.quizzes.set(q.id, q));
+

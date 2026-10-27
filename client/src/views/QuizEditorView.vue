@@ -4,7 +4,7 @@
       <div class="editor-header animate-pop">
         <div class="header-left">
           <router-link to="/instructor" class="btn-back">← Back to Dashboard</router-link>
-          <h1>{{ isEditing ? 'Edit Quiz' : 'Create New Kahoot Quiz' }}</h1>
+          <h1>{{ isEditing ? 'Edit Quiz' : 'Create New Quiz' }}</h1>
         </div>
         <div class="header-actions">
           <button
@@ -13,14 +13,14 @@
             class="btn-kahoot btn-primary btn-save"
           >
             <span v-if="saving">Saving Quiz...</span>
-            <span v-else>💾 Save Quiz</span>
+            <span v-else>Save Quiz</span>
           </button>
         </div>
       </div>
 
       <!-- Error / Validation Alert -->
       <div v-if="validationError" class="error-banner animate-pop">
-        ⚠️ {{ validationError }}
+        Notice: {{ validationError }}
       </div>
 
       <!-- Quiz Details Card -->
@@ -31,7 +31,7 @@
             <input
               v-model="quizForm.title"
               type="text"
-              placeholder="e.g. ⚡ Modern Web Development Challenge"
+              placeholder="e.g. Modern Web Development Challenge"
               class="input-kahoot input-title"
               required
             />
@@ -41,7 +41,7 @@
             <label class="publish-checkbox">
               <input type="checkbox" v-model="quizForm.is_published" />
               <span class="publish-label">
-                {{ quizForm.is_published ? '🟢 Published (Available to Host)' : '⚪ Draft (Hidden)' }}
+                {{ quizForm.is_published ? 'Published (Available to Host)' : 'Draft (Hidden)' }}
               </span>
             </label>
           </div>
@@ -76,7 +76,7 @@
             <div class="q-badge">Question {{ qIndex + 1 }}</div>
             <div class="q-settings">
               <div class="setting-item">
-                <label>⏱️ Time Limit:</label>
+                <label>Time Limit:</label>
                 <select v-model.number="q.time_limit_seconds" class="select-kahoot">
                   <option :value="10">10s</option>
                   <option :value="15">15s</option>
@@ -86,7 +86,7 @@
               </div>
 
               <div class="setting-item">
-                <label>⭐ Points:</label>
+                <label>Points:</label>
                 <select v-model.number="q.base_points" class="select-kahoot">
                   <option :value="500">500 pts</option>
                   <option :value="1000">1,000 pts</option>
@@ -100,7 +100,7 @@
                 class="btn-delete-q"
                 title="Delete Question"
               >
-                🗑️
+                Delete
               </button>
             </div>
           </div>
@@ -523,17 +523,21 @@ async function saveQuiz() {
 }
 
 .btn-delete-q {
-  background: none;
-  border: none;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #c62828;
   cursor: pointer;
-  font-size: 1.2rem;
   padding: 4px 8px;
   border-radius: 4px;
-  transition: background 0.15s;
+  transition: all 0.15s;
 }
 
 .btn-delete-q:hover {
   background: #ffe3e6;
+  border-color: #ef9a9a;
 }
 
 .prompt-input {
@@ -639,3 +643,4 @@ async function saveQuiz() {
   margin-bottom: 20px;
 }
 </style>
+

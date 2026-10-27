@@ -3,15 +3,14 @@
     <div class="login-card animate-pop">
       <div class="header-section">
         <div class="kahoot-logo-big">
-          <span class="icon">⚡</span>
-          <h1>Quiz<span>Chaos!</span></h1>
+          <h1>qiuizez</h1>
         </div>
-        <p class="tagline">Sign in to host live battles or join the chaos!</p>
+        <p class="tagline">Sign in to host live battles or join the game</p>
       </div>
 
       <!-- Quick Demo Account Pickers -->
       <div class="demo-switch-box">
-        <div class="demo-title">⚡ Quick 1-Click Demo Login</div>
+        <div class="demo-title">Quick 1-Click Demo Login</div>
         <div class="demo-group">
           <span class="demo-label">Instructors:</span>
           <div class="demo-buttons">
@@ -21,7 +20,7 @@
               @click="quickLogin(u)"
               class="btn-demo-pill instructor"
             >
-              {{ u.avatar }} {{ u.name }}
+              {{ u.name }}
             </button>
           </div>
         </div>
@@ -35,7 +34,7 @@
               @click="quickLogin(u)"
               class="btn-demo-pill student"
             >
-              {{ u.avatar }} {{ u.name }}
+              {{ u.name }}
             </button>
           </div>
         </div>
@@ -59,7 +58,7 @@
 
       <!-- Error Alert -->
       <div v-if="authStore.error" class="error-banner">
-        ⚠️ {{ authStore.error }}
+        Notice: {{ authStore.error }}
       </div>
 
       <!-- Login Form -->
@@ -92,7 +91,7 @@
           class="btn-kahoot btn-primary btn-block"
         >
           <span v-if="authStore.loading">Signing in...</span>
-          <span v-else>Let's Play! 🚀</span>
+          <span v-else>Let's Play</span>
         </button>
       </form>
 
@@ -136,12 +135,10 @@
           <div class="role-selector">
             <label class="role-option" :class="{ selected: role === 'student' }">
               <input type="radio" v-model="role" value="student" />
-              <span class="role-emoji">🎓</span>
               <span class="role-text">Student</span>
             </label>
             <label class="role-option" :class="{ selected: role === 'instructor' }">
               <input type="radio" v-model="role" value="instructor" />
-              <span class="role-emoji">👩‍🏫</span>
               <span class="role-text">Instructor</span>
             </label>
           </div>
@@ -153,7 +150,7 @@
           class="btn-kahoot btn-yellow btn-block"
         >
           <span v-if="authStore.loading">Creating Account...</span>
-          <span v-else>Join the Chaos! 🎉</span>
+          <span v-else>Join the Game</span>
         </button>
       </form>
     </div>
@@ -435,3 +432,4 @@ async function handleRegister() {
   margin-top: 8px;
 }
 </style>
+

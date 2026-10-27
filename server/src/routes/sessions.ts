@@ -116,7 +116,7 @@ router.post('/:roomCode/join', (req: Request, res: Response) => {
     team_id: targetTeam.id,
     individual_score: 0,
     is_online: true,
-    avatar: avatar || '🦊'
+    avatar: avatar || user_name.substring(0, 2).toUpperCase()
   };
 
   targetTeam.members.push(newMember);
@@ -233,3 +233,4 @@ router.get('/:roomCode/summary', (req: Request, res: Response) => {
 });
 
 export default router;
+

@@ -2,19 +2,13 @@
   <div class="home-page">
     <div class="home-card card-kahoot animate-pop">
       <div class="brand-hero">
-        <div class="hero-shapes">
-          <span class="shape-dot red">▲</span>
-          <span class="shape-dot blue">◆</span>
-          <span class="shape-dot yellow">●</span>
-          <span class="shape-dot green">■</span>
-        </div>
-        <h1 class="hero-title">Quiz<span>Chaos!</span></h1>
+        <h1 class="hero-title">qiuizez</h1>
         <p class="hero-tagline">Enter room PIN to join your team battle</p>
       </div>
 
       <!-- Error Alert -->
       <div v-if="errorMessage" class="error-banner animate-pop">
-        ⚠️ {{ errorMessage }}
+        Notice: {{ errorMessage }}
       </div>
 
       <!-- PIN Input Form -->
@@ -25,14 +19,14 @@
           <input
             v-model="guestNickname"
             type="text"
-            placeholder="e.g. SpeedRacer"
+            placeholder="e.g. PlayerOne"
             required
             maxlength="20"
             class="input-kahoot-large input-nick"
           />
         </div>
         <div v-else class="authenticated-student-pill">
-          <span class="auth-avatar">{{ authStore.user?.avatar || '🦊' }}</span>
+          <span class="auth-avatar">{{ authStore.user?.avatar || authStore.user?.name.substring(0, 2).toUpperCase() }}</span>
           <div class="auth-details">
             <span class="auth-label">Ready to play as</span>
             <strong>{{ authStore.user?.name }}</strong>
@@ -64,7 +58,7 @@
           class="btn-kahoot btn-yellow btn-enter-game"
         >
           <span v-if="joining">Entering Room...</span>
-          <span v-else>Enter Room 🚀</span>
+          <span v-else>Enter Room</span>
         </button>
       </form>
 
@@ -80,7 +74,7 @@
             :class="{ active: authStore.user?.id === student.id }"
             @click="selectDemoStudent(student)"
           >
-            {{ student.avatar }} {{ student.name }}
+            {{ student.name }}
           </button>
         </div>
       </div>
@@ -88,7 +82,7 @@
       <!-- Instructor Quick Switch -->
       <div class="host-shortcut">
         <router-link to="/instructor" class="host-link">
-          👩‍🏫 Are you an instructor? Launch a game session →
+          Are you an instructor? Launch a game session →
         </router-link>
       </div>
     </div>
@@ -131,14 +125,13 @@ async function handleJoin() {
       errorMessage.value = 'Please enter your nickname or sign in.';
       return;
     }
-    const studentAvatars = ['🦊', '🐼', '🦁', '🦄', '🚀', '⚡', '🦉', '🐯'];
-    const randomAvatar = studentAvatars[Math.floor(Math.random() * studentAvatars.length)];
+    const initials = guestNickname.value.trim().substring(0, 2).toUpperCase();
     const guestUser: User = {
       id: `stud-${Date.now()}`,
       name: guestNickname.value.trim(),
       email: `${guestNickname.value.toLowerCase().replace(/\s+/g, '')}@student.local`,
       role: 'student',
-      avatar: randomAvatar
+      avatar: initials
     };
     authStore.quickSwitchUser(guestUser);
   }
@@ -397,3 +390,4 @@ async function handleJoin() {
   font-size: 0.9rem;
 }
 </style>
+

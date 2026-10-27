@@ -4,9 +4,7 @@
     <header class="kahoot-navbar">
       <div class="nav-container">
         <router-link to="/" class="brand-logo">
-          <span class="logo-icon">⚡</span>
-          <span class="logo-text">Quiz<span>Chaos!</span></span>
-          <span class="logo-badge">Kahoot Mode</span>
+          <span class="logo-text">qiuizez</span>
         </router-link>
 
         <nav class="nav-links">
@@ -25,7 +23,7 @@
 
           <template v-if="authStore.isAuthenticated">
             <div class="user-pill">
-              <span class="user-avatar">{{ authStore.user?.avatar || '👤' }}</span>
+              <span class="user-avatar">{{ authStore.user?.avatar || authStore.user?.name.substring(0, 2).toUpperCase() }}</span>
               <div class="user-info">
                 <span class="user-name">{{ authStore.user?.name }}</span>
                 <span class="user-role-badge" :class="authStore.user?.role">
@@ -33,7 +31,7 @@
                 </span>
               </div>
               <button @click="handleLogout" class="btn-logout" title="Sign out">
-                ✕
+                Logout
               </button>
             </div>
           </template>
@@ -53,7 +51,7 @@
 
     <!-- Footer -->
     <footer class="kahoot-footer">
-      <p>QuizChaos • Collaborative Team Quiz Platform • Kahoot Theme</p>
+      <p>qiuizez • Collaborative Team Quiz Platform</p>
     </footer>
   </div>
 </template>
@@ -244,3 +242,4 @@ function handleLogout() {
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 </style>
+

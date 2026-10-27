@@ -5,19 +5,18 @@
       <div class="dashboard-header animate-pop">
         <div class="header-titles">
           <div class="badge-role">Instructor Control Center</div>
-          <h1>My Kahoot Quizzes</h1>
-          <p>Create quizzes, launch collaborative live team battles, and track champions!</p>
+          <h1>My Quizzes</h1>
+          <p>Create quizzes, launch collaborative live team battles, and track champions</p>
         </div>
         <div class="header-actions">
           <router-link to="/instructor/quiz/new" class="btn-kahoot btn-primary">
-            <span>+</span> Create New Quiz
+            + Create New Quiz
           </router-link>
         </div>
       </div>
 
       <!-- Unauthorized Alert if not logged in as instructor -->
       <div v-if="!authStore.isInstructor" class="alert-box">
-        <div class="alert-icon">⚠️</div>
         <div>
           <h3>Instructor Access Required</h3>
           <p>You are currently logged in as <strong>{{ authStore.user?.role || 'Guest' }}</strong>. Please switch to an instructor account to manage quizzes.</p>
@@ -34,9 +33,8 @@
       </div>
 
       <div v-else-if="quizStore.quizzes.length === 0" class="empty-state card-kahoot">
-        <span class="empty-icon">📝</span>
         <h2>No quizzes created yet</h2>
-        <p>Start by creating your first team-based challenge or use our pre-seeded templates!</p>
+        <p>Start by creating your first team-based challenge or use our pre-seeded templates.</p>
         <router-link to="/instructor/quiz/new" class="btn-kahoot btn-primary" style="margin-top: 16px;">
           Create Your First Quiz
         </router-link>
@@ -53,7 +51,7 @@
               class="status-pill"
               :class="quiz.is_published ? 'published' : 'draft'"
             >
-              {{ quiz.is_published ? '● Published' : '○ Draft' }}
+              {{ quiz.is_published ? 'Published' : 'Draft' }}
             </span>
             <span class="q-count">
               {{ quiz.questions.length }} {{ quiz.questions.length === 1 ? 'Question' : 'Questions' }}
@@ -64,8 +62,8 @@
           <p class="quiz-desc">{{ quiz.description || 'No description provided.' }}</p>
 
           <div class="quiz-meta">
-            <span class="meta-item">⏱️ {{ quiz.questions.reduce((a, b) => a + (b.time_limit_seconds || 20), 0) }}s Total</span>
-            <span class="meta-item">⭐ {{ quiz.questions.reduce((a, b) => a + (b.base_points || 1000), 0) }} Pts</span>
+            <span class="meta-item">Duration: {{ quiz.questions.reduce((a, b) => a + (b.time_limit_seconds || 20), 0) }}s Total</span>
+            <span class="meta-item">Points: {{ quiz.questions.reduce((a, b) => a + (b.base_points || 1000), 0) }} Pts</span>
           </div>
 
           <!-- Action Buttons -->
@@ -75,30 +73,30 @@
               class="btn-kahoot btn-primary btn-launch"
               title="Launch Live Session"
             >
-              <span>🚀 Launch Game</span>
+              <span>Launch Game</span>
             </button>
 
             <div class="icon-actions">
               <router-link
                 :to="`/instructor/quiz/${quiz.id}/edit`"
-                class="btn-icon"
+                class="btn-text-action"
                 title="Edit Quiz"
               >
-                ✏️
+                Edit
               </router-link>
               <button
                 @click="handleTogglePublish(quiz.id)"
-                class="btn-icon"
+                class="btn-text-action"
                 :title="quiz.is_published ? 'Unpublish' : 'Publish'"
               >
-                {{ quiz.is_published ? '👁️' : '🔒' }}
+                {{ quiz.is_published ? 'Unpublish' : 'Publish' }}
               </button>
               <button
                 @click="handleDelete(quiz.id)"
-                class="btn-icon delete"
+                class="btn-text-action delete"
                 title="Delete Quiz"
               >
-                🗑️
+                Delete
               </button>
             </div>
           </div>
@@ -109,8 +107,8 @@
       <div v-if="showLaunchModal && selectedQuiz" class="modal-overlay" @click.self="showLaunchModal = false">
         <div class="modal-content animate-pop">
           <div class="modal-header">
-            <h2>🚀 Launch Live Quiz Session</h2>
-            <button @click="showLaunchModal = false" class="btn-close">✕</button>
+            <h2>Launch Live Quiz Session</h2>
+            <button @click="showLaunchModal = false" class="btn-close">Close</button>
           </div>
 
           <div class="modal-body">
@@ -144,14 +142,14 @@
                   class="preview-pill"
                   :style="{ borderColor: team.color, color: team.color }"
                 >
-                  <span>{{ team.badge }}</span>
+                  <span>[{{ team.badge }}]</span>
                   <strong>{{ team.name }}</strong>
                 </div>
               </div>
             </div>
 
             <div v-if="launchError" class="error-banner">
-              ⚠️ {{ launchError }}
+              Notice: {{ launchError }}
             </div>
           </div>
 
@@ -165,7 +163,7 @@
               class="btn-kahoot btn-primary"
             >
               <span v-if="launching">Generating Room PIN...</span>
-              <span v-else>Start Live Lobby ⚡</span>
+              <span v-else>Start Live Lobby</span>
             </button>
           </div>
         </div>
@@ -192,10 +190,10 @@ const launching = ref(false);
 const launchError = ref<string | null>(null);
 
 const TEAM_NAMES = [
-  { name: 'Red Rockets', color: '#e21b3c', badge: '🚀' },
-  { name: 'Blue Blasters', color: '#1368ce', badge: '⚡' },
-  { name: 'Golden Geeks', color: '#ffa602', badge: '⭐' },
-  { name: 'Green Giants', color: '#26890c', badge: '🦖' }
+  { name: 'Red Rockets', color: '#e21b3c', badge: 'R' },
+  { name: 'Blue Blasters', color: '#1368ce', badge: 'B' },
+  { name: 'Golden Geeks', color: '#ffa602', badge: 'G' },
+  { name: 'Green Giants', color: '#26890c', badge: 'V' }
 ];
 
 const previewTeams = computed(() => TEAM_NAMES.slice(0, teamCount.value));
@@ -425,24 +423,28 @@ async function confirmLaunchSession() {
   gap: 6px;
 }
 
-.btn-icon {
+.btn-text-action {
   background: #f0f0f0;
-  border: none;
-  font-size: 1.1rem;
-  padding: 8px 10px;
+  border: 1px solid #ddd;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
-  color: inherit;
-  transition: background 0.15s;
+  color: #333;
+  transition: all 0.15s;
 }
 
-.btn-icon:hover {
+.btn-text-action:hover {
   background: #e0e0e0;
 }
 
-.btn-icon.delete:hover {
+.btn-text-action.delete:hover {
   background: #ffebee;
+  color: #c62828;
+  border-color: #ef9a9a;
 }
 
 /* Modal */
@@ -589,3 +591,4 @@ async function confirmLaunchSession() {
   font-weight: 600;
 }
 </style>
+
