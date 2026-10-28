@@ -1,0 +1,91 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  role      String
+  password  String   @default("password123")
+  avatar    String   @default("U")
+  createdAt DateTime @default(now())
+
+  quizzes     Quiz[]
+  teamMembers TeamMember[]
+}
+
+model Quiz {
+  id             String        @id @default(cuid())
+  instructorId   String
+  instructorName String        @default("Instructor")
+  title          String
+  description    String        @default("")
+  isPublished    Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  instructor     User          @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+  questions      Question[]
+  sessions       GameSession[]
+}
+
+model Question {
+  id                 String   @id @default(cuid())
+  quizId             String
+  prompt             String
+  options            String[]
+  correctOptionIndex Int
+  basePoints         Int      @default(1000)
+  timeLimitSeconds   Int      @default(20)
+
+  quiz               Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+}
+
+model GameSession {
+  id                   String   @id @default(cuid())
+  quizId               String
+  quizTitle            String
+  roomCode             String   @unique
+  status               String   @default("lobby")
+  teamCount            Int      @default(2)
+  currentQuestionIndex Int      @default(-1)
+  totalQuestions       Int      @default(0)
+  hostUserId           String
+  isLocked             Boolean  @default(false)
+  createdAt            DateTime @default(now())
+
+  quiz                 Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  teams                Team[]
+}
+
+model Team {
+  id         String       @id @default(cuid())
+  sessionId  String
+  name       String
+  color      String
+  badge      String
+  totalScore Int          @default(0)
+
+  session    GameSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  members    TeamMember[]
+}
+
+model TeamMember {
+  id              String   @id @default(cuid())
+  userId          String
+  userName        String
+  teamId          String
+  individualScore Int      @default(0)
+  isOnline        Boolean  @default(true)
+  avatar          String   @default("U")
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team            Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+

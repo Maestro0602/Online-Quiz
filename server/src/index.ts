@@ -9,6 +9,7 @@ import authRoutes from './routes/auth.js';
 import quizRoutes from './routes/quizzes.js';
 import sessionRoutes from './routes/sessions.js';
 import { setupSocketHandlers } from './socket/handler.js';
+import { initDatabase } from './db/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,6 +58,8 @@ const io = new Server(server, {
 setupSocketHandlers(io);
 
 const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => {
-  console.log(`qiuizez server running on http://localhost:${PORT}`);
+initDatabase().finally(() => {
+  server.listen(PORT, () => {
+    console.log(`qiuizez server running on http://localhost:${PORT}`);
+  });
 });
