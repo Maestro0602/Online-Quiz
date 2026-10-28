@@ -37,9 +37,19 @@
           </template>
           <template v-else>
             <router-link to="/login" class="btn-kahoot btn-yellow btn-sm">
-              Sign In / Demo
+              Sign In
             </router-link>
           </template>
+
+          <!-- Theme Switcher -->
+          <div class="theme-picker">
+            <select v-model="currentTheme" @change="onThemeChange" class="theme-select" aria-label="Select Theme">
+              <option value="ocean">Ocean (Default)</option>
+              <option value="sage">Sage Green</option>
+              <option value="monochrome">Black & White</option>
+              <option value="classic">Classic Purple</option>
+            </select>
+          </div>
         </nav>
       </div>
     </header>
@@ -57,14 +67,27 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from './stores/auth';
 
 const authStore = useAuthStore();
 const router = useRouter();
 
+const currentTheme = ref(localStorage.getItem('app_theme') || 'ocean');
+
+function applyTheme(theme: string) {
+  currentTheme.value = theme;
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('app_theme', theme);
+}
+
+function onThemeChange() {
+  applyTheme(currentTheme.value);
+}
+
 onMounted(() => {
+  applyTheme(currentTheme.value);
   authStore.fetchDemoUsers();
 });
 
@@ -79,18 +102,20 @@ function handleLogout() {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: radial-gradient(circle at 50% 20%, #4c1d95 0%, #311068 50%, #1f0845 100%);
+  background: var(--theme-bg-gradient);
   color: #ffffff;
+  transition: background 0.3s ease;
 }
 
 .kahoot-navbar {
-  background-color: rgba(30, 8, 69, 0.85);
+  background-color: var(--theme-navbar-bg);
   backdrop-filter: blur(10px);
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
   padding: 12px 24px;
   position: sticky;
   top: 0;
   z-index: 100;
+  transition: background-color 0.3s ease;
 }
 
 .nav-container {
@@ -226,6 +251,35 @@ function handleLogout() {
 .btn-logout:hover {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.2);
+}
+
+.theme-picker {
+  display: flex;
+  align-items: center;
+}
+
+.theme-select {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.theme-select:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.theme-select option {
+  background: #222222;
+  color: #ffffff;
 }
 
 .main-content {
