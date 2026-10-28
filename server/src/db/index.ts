@@ -98,3 +98,4 @@ export async function initDatabase() {
     return false;
   }
 }
+
