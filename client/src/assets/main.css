@@ -1,118 +1,54 @@
 :root,
 [data-theme="ocean"] {
-  --theme-bg-gradient: radial-gradient(circle at 50% 20%, #086288 0%, #064763 50%, #032a3b 100%);
   --theme-bg-base: #086288;
-  --theme-navbar-bg: rgba(6, 71, 99, 0.9);
-  --theme-accent: #fee6ba;
-  --theme-accent-dark: #e6c88f;
-  --theme-secondary: #4882ab;
-  --theme-highlight: #93d0f8;
-  --theme-card-bg: #ffffff;
-  --theme-text: #222222;
-  --theme-subtext: #555555;
-  --kahoot-purple: #086288;
-  --kahoot-dark-purple: #064763;
-  --kahoot-deep-purple: #032a3b;
-  --kahoot-light-purple: #4882ab;
-  --kahoot-red: #e21b3c;
-  --kahoot-red-dark: #b8122d;
-  --kahoot-blue: #1368ce;
-  --kahoot-blue-dark: #0d4a94;
-  --kahoot-yellow: #ffa602;
-  --kahoot-yellow-dark: #cc8400;
-  --kahoot-green: #26890c;
-  --kahoot-green-dark: #1b6308;
-  --kahoot-white: #ffffff;
-  --kahoot-gray-light: #f2f2f2;
-  --kahoot-gray: #6e6e6e;
-  --kahoot-dark: #333333;
+  --theme-navbar-bg: #086288;
+  --theme-card-bg: #fee6ba;
+  --theme-card-text: #086288;
+  --theme-card-border: #4882ab;
+  --theme-logo: #fee6ba;
+  --theme-accent: #93d0f8;
+  --theme-button-primary: #086288;
+  --theme-button-primary-hover: #4882ab;
+  --theme-button-text: #fee6ba;
 }
 
 [data-theme="sage"] {
-  --theme-bg-gradient: radial-gradient(circle at 50% 20%, #5b6c54 0%, #44513e 50%, #2a3326 100%);
   --theme-bg-base: #5b6c54;
-  --theme-navbar-bg: rgba(68, 81, 62, 0.9);
-  --theme-accent: #d1e8cf;
-  --theme-accent-dark: #acc5a6;
-  --theme-secondary: #859b7d;
-  --theme-highlight: #acc5a6;
-  --theme-card-bg: #ffffff;
-  --theme-text: #222222;
-  --theme-subtext: #555555;
-  --kahoot-purple: #5b6c54;
-  --kahoot-dark-purple: #44513e;
-  --kahoot-deep-purple: #2a3326;
-  --kahoot-light-purple: #859b7d;
-  --kahoot-red: #c0392b;
-  --kahoot-red-dark: #962d22;
-  --kahoot-blue: #2980b9;
-  --kahoot-blue-dark: #1f618d;
-  --kahoot-yellow: #d4ac0d;
-  --kahoot-yellow-dark: #b7950b;
-  --kahoot-green: #27ae60;
-  --kahoot-green-dark: #1e8449;
-  --kahoot-white: #ffffff;
-  --kahoot-gray-light: #f2f2f2;
-  --kahoot-gray: #6e6e6e;
-  --kahoot-dark: #333333;
+  --theme-navbar-bg: #5b6c54;
+  --theme-card-bg: #d1e8cf;
+  --theme-card-text: #5b6c54;
+  --theme-card-border: #859b7d;
+  --theme-logo: #acc5a6;
+  --theme-accent: #acc5a6;
+  --theme-button-primary: #5b6c54;
+  --theme-button-primary-hover: #859b7d;
+  --theme-button-text: #d1e8cf;
 }
 
 [data-theme="monochrome"] {
-  --theme-bg-gradient: radial-gradient(circle at 50% 20%, #2b2b2b 0%, #171717 50%, #0a0a0a 100%);
-  --theme-bg-base: #171717;
-  --theme-navbar-bg: rgba(20, 20, 20, 0.95);
-  --theme-accent: #ffffff;
-  --theme-accent-dark: #cccccc;
-  --theme-secondary: #404040;
-  --theme-highlight: #e5e5e5;
+  --theme-bg-base: #000000;
+  --theme-navbar-bg: #000000;
   --theme-card-bg: #ffffff;
-  --theme-text: #171717;
-  --theme-subtext: #525252;
-  --kahoot-purple: #2b2b2b;
-  --kahoot-dark-purple: #171717;
-  --kahoot-deep-purple: #0a0a0a;
-  --kahoot-light-purple: #525252;
-  --kahoot-red: #333333;
-  --kahoot-red-dark: #111111;
-  --kahoot-blue: #555555;
-  --kahoot-blue-dark: #222222;
-  --kahoot-yellow: #777777;
-  --kahoot-yellow-dark: #444444;
-  --kahoot-green: #222222;
-  --kahoot-green-dark: #000000;
-  --kahoot-white: #ffffff;
-  --kahoot-gray-light: #f2f2f2;
-  --kahoot-gray: #6e6e6e;
-  --kahoot-dark: #333333;
+  --theme-card-text: #000000;
+  --theme-card-border: #000000;
+  --theme-logo: #ffffff;
+  --theme-accent: #ffffff;
+  --theme-button-primary: #000000;
+  --theme-button-primary-hover: #1a1a1a;
+  --theme-button-text: #ffffff;
 }
 
 [data-theme="classic"] {
-  --theme-bg-gradient: radial-gradient(circle at 50% 20%, #4c1d95 0%, #311068 50%, #1f0845 100%);
   --theme-bg-base: #46178f;
-  --theme-navbar-bg: rgba(30, 8, 69, 0.85);
-  --theme-accent: #ffa602;
-  --theme-accent-dark: #cc8400;
-  --theme-secondary: #864cbf;
-  --theme-highlight: #a855f7;
+  --theme-navbar-bg: #320f6b;
   --theme-card-bg: #ffffff;
-  --theme-text: #222222;
-  --theme-subtext: #555555;
-  --kahoot-purple: #46178f;
-  --kahoot-dark-purple: #320f6b;
-  --kahoot-deep-purple: #250754;
-  --kahoot-light-purple: #864cbf;
-  --kahoot-red: #e21b3c;
-  --kahoot-red-dark: #b8122d;
-  --kahoot-blue: #1368ce;
-  --kahoot-blue-dark: #0d4a94;
-  --kahoot-yellow: #ffa602;
-  --kahoot-yellow-dark: #cc8400;
-  --kahoot-green: #26890c;
-  --kahoot-green-dark: #1b6308;
-  --kahoot-white: #ffffff;
-  --kahoot-gray-light: #f2f2f2;
-  --kahoot-gray: #6e6e6e;
-  --kahoot-dark: #333333;
+  --theme-card-text: #222222;
+  --theme-card-border: #46178f;
+  --theme-logo: #ffffff;
+  --theme-accent: #ffa602;
+  --theme-button-primary: #ffa602;
+  --theme-button-primary-hover: #e69500;
+  --theme-button-text: #ffffff;
 }
 
 * {
@@ -140,7 +76,6 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
   font-family: inherit;
   font-weight: 700;
   font-size: 1.1rem;
@@ -148,20 +83,22 @@ body {
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease;
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.15s ease;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
   text-decoration: none;
-  color: white;
+  background-color: var(--theme-button-primary);
+  color: var(--theme-button-text);
 }
 
 .btn-kahoot:hover:not(:disabled) {
+  background-color: var(--theme-button-primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
 }
 
 .btn-kahoot:active:not(:disabled) {
   transform: translateY(2px);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
 }
 
 .btn-kahoot:disabled {
@@ -172,11 +109,16 @@ body {
 }
 
 .btn-primary {
-  background-color: var(--kahoot-green);
-  box-shadow: 0 4px 0 var(--kahoot-green-dark);
+  background-color: var(--theme-button-primary);
+  color: var(--theme-button-text);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
 }
 .btn-primary:hover:not(:disabled) {
-  box-shadow: 0 6px 0 var(--kahoot-green-dark);
+  background-color: var(--theme-button-primary-hover);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+}
+.btn-primary:active:not(:disabled) {
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
 }
 
 .btn-red {
@@ -226,9 +168,11 @@ body {
 
 /* Card Styles */
 .card-kahoot {
-  background: white;
+  background-color: var(--theme-card-bg);
+  color: var(--theme-card-text);
+  border: 1px solid var(--theme-card-border);
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   padding: 24px;
 }
 

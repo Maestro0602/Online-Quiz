@@ -25,6 +25,7 @@ Commands: ask first
 Don't run git, tests, builds, linters, or the dev server. Don't browse or explore the project. Don't create plan/task/walkthrough artifacts. Exception: I explicitly ask for it in that message.
 If I ask for one command, do only that one. Don't chain extras (e.g. I ask for tests, you also run lint/build) unless asked separately.
 Exact-term searches (old name/value for renames, a named symbol for tracing) are allowed without asking. Browsing unrelated files is not.
+Never add any AI, Copilot, or bot attribution trailers, tags, or signatures (e.g. `Co-authored-by:`, `Generated with`, or assistant markers) to git commits or project files.
 
 Renames & hardcoded → dynamic changes
 When a change replaces hardcoded values (e.g. `'dog'`/`'cat'`) with IDs/lookups, or renames/restructures a field, type, or value:

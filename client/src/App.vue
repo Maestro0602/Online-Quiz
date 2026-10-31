@@ -36,19 +36,34 @@
             </div>
           </template>
           <template v-else>
-            <router-link to="/login" class="btn-kahoot btn-yellow btn-sm">
+            <router-link to="/login" class="btn-kahoot btn-primary btn-sm">
               Sign In
             </router-link>
           </template>
 
           <!-- Theme Switcher -->
-          <div class="theme-picker">
-            <select v-model="currentTheme" @change="onThemeChange" class="theme-select" aria-label="Select Theme">
-              <option value="ocean">Ocean (Default)</option>
-              <option value="sage">Sage Green</option>
-              <option value="monochrome">Black & White</option>
-              <option value="classic">Classic Purple</option>
-            </select>
+          <div class="theme-dropdown">
+            <button
+              type="button"
+              class="theme-toggle-btn"
+              @click="isDropdownOpen = !isDropdownOpen"
+              aria-label="Select Theme"
+            >
+              <span>{{ currentThemeLabel }}</span>
+              <span class="dropdown-arrow" :class="{ open: isDropdownOpen }">▼</span>
+            </button>
+            <div v-if="isDropdownOpen" class="theme-menu">
+              <button
+                v-for="t in themes"
+                :key="t.value"
+                type="button"
+                class="theme-menu-item"
+                :class="{ active: currentTheme === t.value }"
+                @click="selectTheme(t.value)"
+              >
+                {{ t.label }}
+              </button>
+            </div>
           </div>
         </nav>
       </div>
@@ -67,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from './stores/auth';
 
@@ -75,6 +90,19 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 const currentTheme = ref(localStorage.getItem('app_theme') || 'ocean');
+const isDropdownOpen = ref(false);
+
+const themes = [
+  { value: 'ocean', label: 'Ocean (Default)' },
+  { value: 'sage', label: 'Sage Green' },
+  { value: 'monochrome', label: 'Black & White' },
+  { value: 'classic', label: 'Classic Purple' }
+];
+
+const currentThemeLabel = computed(() => {
+  const found = themes.find(t => t.value === currentTheme.value);
+  return found ? found.label : 'Select Theme';
+});
 
 function applyTheme(theme: string) {
   currentTheme.value = theme;
@@ -82,13 +110,26 @@ function applyTheme(theme: string) {
   localStorage.setItem('app_theme', theme);
 }
 
-function onThemeChange() {
-  applyTheme(currentTheme.value);
+function selectTheme(theme: string) {
+  applyTheme(theme);
+  isDropdownOpen.value = false;
+}
+
+function onDocumentClick(e: MouseEvent) {
+  const target = e.target as HTMLElement;
+  if (!target.closest('.theme-dropdown')) {
+    isDropdownOpen.value = false;
+  }
 }
 
 onMounted(() => {
   applyTheme(currentTheme.value);
   authStore.fetchDemoUsers();
+  document.addEventListener('click', onDocumentClick);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', onDocumentClick);
 });
 
 function handleLogout() {
@@ -131,21 +172,15 @@ function handleLogout() {
 .brand-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
   text-decoration: none;
-  color: white;
+  color: var(--theme-logo);
   font-size: 1.6rem;
   font-weight: 800;
   letter-spacing: -0.5px;
 }
 
-.logo-icon {
-  font-size: 1.8rem;
-  filter: drop-shadow(0 2px 4px rgba(255, 166, 2, 0.6));
-}
-
-.logo-text span {
-  color: #ffa602;
+.logo-text {
+  color: var(--theme-logo);
 }
 
 .logo-badge {
@@ -187,9 +222,9 @@ function handleLogout() {
 }
 
 .btn-nav-action {
-  background-color: var(--kahoot-green);
-  color: white;
-  box-shadow: 0 3px 0 var(--kahoot-green-dark);
+  background-color: var(--theme-button-primary);
+  color: var(--theme-button-text);
+  border: 1px solid var(--theme-card-border);
 }
 
 .btn-sm {
@@ -229,11 +264,11 @@ function handleLogout() {
 }
 
 .user-role-badge.instructor {
-  color: #ffa602;
+  color: var(--theme-logo);
 }
 
 .user-role-badge.student {
-  color: #2fe476;
+  color: var(--theme-accent);
 }
 
 .btn-logout {
@@ -253,33 +288,77 @@ function handleLogout() {
   background: rgba(255, 255, 255, 0.2);
 }
 
-.theme-picker {
-  display: flex;
-  align-items: center;
+.theme-dropdown {
+  position: relative;
 }
 
-.theme-select {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 6px 10px;
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+  color: var(--theme-logo);
+  border: 1.5px solid var(--theme-card-border);
+  padding: 6px 14px;
   border-radius: 8px;
   font-family: inherit;
   font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
   outline: none;
-  transition: all 0.2s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-.theme-select:hover {
-  background: rgba(255, 255, 255, 0.25);
-  border-color: rgba(255, 255, 255, 0.5);
+.theme-toggle-btn:hover {
+  border-color: var(--theme-logo);
 }
 
-.theme-select option {
-  background: #222222;
-  color: #ffffff;
+.dropdown-arrow {
+  font-size: 0.6rem;
+  transition: transform 0.2s ease;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.theme-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 160px;
+  background-color: var(--theme-navbar-bg);
+  border: 1.5px solid var(--theme-card-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 200;
+}
+
+.theme-menu-item {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--theme-logo);
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.theme-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.theme-menu-item.active {
+  background-color: var(--theme-card-border);
+  color: var(--theme-card-bg);
+  font-weight: 700;
 }
 
 .main-content {

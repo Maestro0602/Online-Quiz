@@ -55,7 +55,7 @@
         <button
           type="submit"
           :disabled="joining || !roomCode"
-          class="btn-kahoot btn-yellow btn-enter-game"
+          class="btn-kahoot btn-primary btn-enter-game"
         >
           <span v-if="joining">Entering Room...</span>
           <span v-else>Enter Room</span>
@@ -64,7 +64,7 @@
 
       <!-- Host Action -->
       <div class="host-shortcut">
-        <router-link to="/instructor" class="btn-kahoot btn-white btn-host">
+        <router-link to="/instructor" class="btn-kahoot btn-host">
           Host
         </router-link>
       </div>
@@ -185,17 +185,14 @@ async function handleJoin() {
 .hero-title {
   font-size: 2.6rem;
   font-weight: 800;
-  color: #46178f;
+  color: var(--theme-card-text);
   margin: 0;
   letter-spacing: -0.5px;
 }
 
-.hero-title span {
-  color: #ffa602;
-}
-
 .hero-tagline {
-  color: #666;
+  color: var(--theme-card-text);
+  opacity: 0.8;
   font-weight: 600;
   font-size: 0.95rem;
   margin-top: 6px;
@@ -212,7 +209,7 @@ async function handleJoin() {
   display: block;
   font-weight: 700;
   font-size: 0.85rem;
-  color: #555;
+  color: var(--theme-card-text);
   text-align: left;
   margin-bottom: 4px;
 }
@@ -224,9 +221,11 @@ async function handleJoin() {
   font-size: 1.3rem;
   font-weight: 800;
   text-align: center;
-  border: 3px solid #ddd;
+  border: 1.5px solid var(--theme-card-border);
   border-radius: 10px;
   outline: none;
+  background: transparent;
+  color: var(--theme-card-text);
   transition: border-color 0.2s;
 }
 
@@ -236,7 +235,7 @@ async function handleJoin() {
 }
 
 .input-pin:focus, .input-nick:focus {
-  border-color: #46178f;
+  border-color: var(--theme-card-text);
 }
 
 .btn-enter-game {
@@ -250,8 +249,8 @@ async function handleJoin() {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #f4ecff;
-  border: 2px solid #864cbf;
+  background: transparent;
+  border: 1.5px solid var(--theme-card-border);
   border-radius: 10px;
   padding: 10px 14px;
   text-align: left;
@@ -269,19 +268,20 @@ async function handleJoin() {
 
 .auth-label {
   font-size: 0.75rem;
-  color: #777;
+  color: var(--theme-card-text);
+  opacity: 0.7;
   font-weight: 700;
 }
 
 .auth-details strong {
-  color: #46178f;
+  color: var(--theme-card-text);
   font-size: 1.05rem;
 }
 
 .btn-change {
   background: none;
   border: none;
-  color: #864cbf;
+  color: var(--theme-card-text);
   font-weight: 800;
   cursor: pointer;
   font-size: 0.85rem;
@@ -289,7 +289,7 @@ async function handleJoin() {
 }
 
 .host-shortcut {
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--theme-card-border);
   padding-top: 16px;
 }
 
@@ -297,6 +297,20 @@ async function handleJoin() {
   width: 100%;
   padding: 12px;
   font-size: 1.1rem;
+  background-color: var(--theme-card-bg);
+  color: var(--theme-card-text);
+  border: 1.5px solid var(--theme-card-border);
+  box-shadow: 0 4px 0 var(--theme-card-border);
+}
+
+.btn-host:hover {
+  background-color: var(--theme-card-border);
+  color: var(--theme-card-bg);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+}
+
+.btn-host:active {
+  box-shadow: 0 2px 0 var(--theme-card-border);
 }
 
 .error-banner {

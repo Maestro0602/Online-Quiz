@@ -147,7 +147,7 @@
         <button
           type="submit"
           :disabled="authStore.loading"
-          class="btn-kahoot btn-yellow btn-block"
+          class="btn-kahoot btn-primary btn-block"
         >
           <span v-if="authStore.loading">Creating Account...</span>
           <span v-else>Join the Game</span>
@@ -221,13 +221,14 @@ async function handleRegister() {
 }
 
 .login-card {
-  background: #ffffff;
-  color: #333333;
+  background: var(--theme-card-bg);
+  color: var(--theme-card-text);
+  border: 1px solid var(--theme-card-border);
   width: 100%;
   max-width: 460px;
   border-radius: 16px;
   padding: 32px 28px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  box-shadow: none;
 }
 
 .header-section {
@@ -249,16 +250,13 @@ async function handleRegister() {
 .kahoot-logo-big h1 {
   font-size: 2.4rem;
   font-weight: 800;
-  color: #46178f;
+  color: var(--theme-card-text);
   margin: 0;
 }
 
-.kahoot-logo-big h1 span {
-  color: #ffa602;
-}
-
 .tagline {
-  color: #666;
+  color: var(--theme-card-text);
+  opacity: 0.8;
   font-size: 0.95rem;
   margin-top: 6px;
   font-weight: 500;
@@ -378,21 +376,23 @@ async function handleRegister() {
 .form-group label {
   font-weight: 700;
   font-size: 0.9rem;
-  color: #444;
+  color: var(--theme-card-text);
 }
 
 .input-kahoot {
   font-family: inherit;
   font-size: 1rem;
   padding: 12px 14px;
-  border: 2px solid #ddd;
+  border: 1.5px solid var(--theme-card-border);
   border-radius: 8px;
   outline: none;
+  background: transparent;
+  color: var(--theme-card-text);
   transition: border-color 0.2s;
 }
 
 .input-kahoot:focus {
-  border-color: #46178f;
+  border-color: var(--theme-card-text);
 }
 
 .role-selector {

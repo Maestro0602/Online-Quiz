@@ -15,4 +15,7 @@ credentials.json
 .vscode
 client/dist
 server/dist
+FEATURES_REVIEW.md
+FEATURE.md
+
 
