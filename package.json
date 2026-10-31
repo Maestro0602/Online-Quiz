@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "dev": "concurrently -n \"SERVER,CLIENT\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm --workspace=server run dev\" \"npm --workspace=client run dev\"",
-    "build": "npm --workspace=client run build && npm --workspace=server run build",
+    "build": "npm --workspace=shared run build && npm --workspace=client run build && npm --workspace=server run build",
     "start": "npm --workspace=server run start",
     "dev:server": "npm --workspace=server run dev",
     "dev:client": "npm --workspace=client run dev"

@@ -261,7 +261,7 @@ onMounted(async () => {
         questions: JSON.parse(JSON.stringify(quiz.questions))
       };
       // Ensure all questions have 4 slots
-      quizForm.value.questions.forEach(q => {
+      quizForm.value.questions.forEach((q: Question) => {
         while (q.options.length < 4) {
           q.options.push('');
         }
@@ -315,7 +315,7 @@ async function saveQuiz() {
       return;
     }
 
-    const validOptions = q.options.filter(opt => opt && opt.trim() !== '');
+    const validOptions = q.options.filter((opt: string) => opt && opt.trim() !== '');
     if (validOptions.length < 2) {
       validationError.value = `Question ${i + 1} must have at least 2 filled answer options.`;
       return;
@@ -336,9 +336,9 @@ async function saveQuiz() {
       is_published: quizForm.value.is_published,
       instructor_id: authStore.user?.id || 'u-inst-1',
       instructor_name: authStore.user?.name || 'Instructor',
-      questions: quizForm.value.questions.map(q => ({
+      questions: quizForm.value.questions.map((q: Question) => ({
         ...q,
-        options: q.options.filter(opt => opt && opt.trim() !== '')
+        options: q.options.filter((opt: string) => opt && opt.trim() !== '')
       }))
     };
 

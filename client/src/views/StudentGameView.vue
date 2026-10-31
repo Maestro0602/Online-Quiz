@@ -204,7 +204,7 @@ const hasAnswered = computed(() => gameStore.selectedAnswerIndex !== null);
 
 const teamRank = computed(() => {
   if (!gameStore.myTeam || !gameStore.rankedTeams) return null;
-  const idx = gameStore.rankedTeams.findIndex(t => t.id === gameStore.myTeam?.id);
+  const idx = gameStore.rankedTeams.findIndex((t: any) => t.id === gameStore.myTeam?.id);
   return idx !== -1 ? idx + 1 : null;
 });
 
