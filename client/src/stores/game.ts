@@ -224,6 +224,10 @@ export const useGameStore = defineStore('game', () => {
     socket.value?.emit('session:next_question', { room_code: roomCode });
   }
 
+  function hostRandomizeTeams(roomCode: string) {
+    socket.value?.emit('session:randomize_teams', { room_code: roomCode });
+  }
+
   function hostEndGame(roomCode: string) {
     socket.value?.emit('session:end', { room_code: roomCode });
   }
@@ -258,6 +262,7 @@ export const useGameStore = defineStore('game', () => {
     initSocket,
     submitAnswer,
     hostStartGame,
+    hostRandomizeTeams,
     hostShowResult,
     hostNextQuestion,
     hostEndGame,

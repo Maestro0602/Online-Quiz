@@ -19,6 +19,38 @@ export function setupSocketHandlers(io: Server) {
       }
     });
 
+    // Host randomizes teams in the lobby with balanced wheel distribution
+    socket.on('session:randomize_teams', (data: { room_code: string }) => {
+      const { room_code } = data;
+      const session = store.sessions.get(room_code);
+      if (!session || session.status !== 'lobby' || session.teams.length === 0) return;
+
+      // Collect all members from all teams
+      const allMembers: TeamMember[] = [];
+      for (const team of session.teams) {
+        allMembers.push(...team.members);
+        team.members = [];
+      }
+
+      // Fisher-Yates shuffle
+      for (let i = allMembers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [allMembers[i], allMembers[j]] = [allMembers[j], allMembers[i]];
+      }
+
+      // Reassign evenly across teams
+      allMembers.forEach((member, index) => {
+        const targetTeam = session.teams[index % session.teams.length];
+        member.team_id = targetTeam.id;
+        targetTeam.members.push(member);
+      });
+
+      io.to(room_code).emit('session:updated', session);
+      io.to(room_code).emit('teams:randomized', {
+        teams: session.teams
+      });
+    });
+
     // Host starts the game
     socket.on('session:start', (data: { room_code: string }) => {
       const { room_code } = data;

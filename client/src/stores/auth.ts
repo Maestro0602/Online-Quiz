@@ -24,8 +24,8 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const isAuthenticated = computed(() => !!user.value);
-  const isInstructor = computed(() => user.value?.role === 'instructor');
-  const isStudent = computed(() => user.value?.role === 'student');
+  const isInstructor = computed(() => user.value?.role === 'instructor' || user.value?.role === 'teacher');
+  const isStudent = computed(() => user.value?.role === 'student' || user.value?.role === 'user');
 
   async function fetchDemoUsers() {
     try {

@@ -34,6 +34,29 @@
           </div>
         </div>
 
+        <!-- All Connected Students Banner -->
+        <div class="all-students-roster-box">
+          <div class="roster-header">
+            <span class="roster-title">All Connected Students & Players ({{ totalPlayersCount }})</span>
+            <span class="roster-sub">Ready to be divided into balanced teams</span>
+          </div>
+          <div class="roster-chips">
+            <div v-if="allConnectedStudents.length === 0" class="waiting-text">
+              Waiting for players to join with PIN {{ roomCode }}...
+            </div>
+            <div
+              v-for="st in allConnectedStudents"
+              :key="st.id"
+              class="student-roster-chip animate-pop"
+              :style="{ borderLeftColor: st.teamColor }"
+            >
+              <span class="st-avatar">{{ st.avatar || st.user_name.substring(0, 2).toUpperCase() }}</span>
+              <span class="st-name">{{ st.user_name }}</span>
+              <span class="st-team" :style="{ color: st.teamColor }">• {{ st.teamName }}</span>
+            </div>
+          </div>
+        </div>
+
         <!-- Balanced Teams Grid -->
         <div class="teams-lobby-grid">
           <div
@@ -65,19 +88,77 @@
         </div>
 
         <div class="start-action">
-          <button
-            @click="startGame"
-            :disabled="totalPlayersCount === 0"
-            class="btn-kahoot btn-primary btn-start-game animate-pulse-slow"
-          >
-            <span>Start Game Now</span>
-          </button>
+          <div class="lobby-action-row">
+            <button
+              @click="triggerRandomizeWheel"
+              :disabled="totalPlayersCount === 0 || isSpinningWheel"
+              class="btn-kahoot btn-randomize"
+            >
+              <span>Randomize Teams (Spin Wheel)</span>
+            </button>
+
+            <button
+              @click="handleStartGameClick"
+              :disabled="totalPlayersCount === 0 || isStartingCountdown"
+              class="btn-kahoot btn-primary btn-start-game animate-pulse-slow"
+            >
+              <span v-if="isStartingCountdown">Starting in {{ countdownTimer }}s...</span>
+              <span v-else>Start Game Now</span>
+            </button>
+          </div>
           <p v-if="totalPlayersCount === 0" class="sub-hint">
             Waiting for at least 1 player to join...
           </p>
         </div>
       </div>
     </section>
+
+    <!-- Randomize Wheel Modal -->
+    <div v-if="showWheelModal" class="wheel-modal-overlay">
+      <div class="wheel-modal-card card-kahoot animate-pop">
+        <h2>Team Balancer Wheel</h2>
+        <p class="wheel-sub">{{ wheelResultText }}</p>
+        <div class="wheel-spinner-wrapper">
+          <div class="wheel-pointer">▼</div>
+          <div
+            class="wheel-disc"
+            :style="{ transform: `rotate(${wheelRotation}deg)` }"
+          >
+            <div
+              v-for="(team, idx) in gameStore.session?.teams"
+              :key="team.id"
+              class="wheel-slice"
+              :style="{
+                backgroundColor: team.color,
+                transform: `rotate(${(360 / (gameStore.session?.teams.length || 2)) * idx}deg)`
+              }"
+            >
+              <span class="slice-label">{{ team.name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Teams Assembled Countdown Overlay -->
+    <div v-if="isStartingCountdown" class="teams-assembled-overlay">
+      <div class="assembled-card card-kahoot animate-pop">
+        <h2 class="assembled-title">Teams Assembled!</h2>
+        <div class="countdown-giant">{{ countdownTimer }}</div>
+        <p class="assembled-subtitle">Game starting... Get ready with your team!</p>
+        <div class="assembled-teams-preview">
+          <div
+            v-for="team in gameStore.session?.teams"
+            :key="team.id"
+            class="assembled-team-pill"
+            :style="{ borderColor: team.color }"
+          >
+            <span class="team-dot" :style="{ backgroundColor: team.color }"></span>
+            <strong>{{ team.name }}</strong> ({{ team.members.length }} players)
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- STAGE 2: QUESTION ACTIVE -->
     <section v-else-if="gameStore.isQuestionActive" class="question-stage">
@@ -242,10 +323,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, watch } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
-import { useGameStore } from '../stores/game';
+import { useGameStore, soundFX } from '../stores/game';
 import confetti from 'canvas-confetti';
 
 const route = useRoute();
@@ -261,10 +342,73 @@ const totalPlayersCount = computed(() => {
   return gameStore.session.teams.reduce((acc, t) => acc + t.members.length, 0);
 });
 
+const allConnectedStudents = computed(() => {
+  if (!gameStore.session?.teams) return [];
+  const list: any[] = [];
+  gameStore.session.teams.forEach(t => {
+    t.members.forEach(m => {
+      list.push({ ...m, teamColor: t.color, teamName: t.name });
+    });
+  });
+  return list;
+});
+
 const isLastQuestion = computed(() => {
   if (!gameStore.session) return false;
   return gameStore.session.current_question_index >= (gameStore.session.total_questions - 1);
 });
+
+// Wheel & Starting countdown state
+const isSpinningWheel = ref(false);
+const showWheelModal = ref(false);
+const wheelRotation = ref(0);
+const wheelResultText = ref('');
+const isStartingCountdown = ref(false);
+const countdownTimer = ref(3);
+
+function triggerRandomizeWheel() {
+  if (totalPlayersCount.value === 0 || isSpinningWheel.value) return;
+  showWheelModal.value = true;
+  isSpinningWheel.value = true;
+  wheelResultText.value = 'Spinning the Wheel to Balance Teams...';
+
+  const extraSpins = 1440 + Math.floor(Math.random() * 720);
+  wheelRotation.value += extraSpins;
+
+  let tickCount = 0;
+  const tickInterval = setInterval(() => {
+    soundFX.playTick();
+    tickCount++;
+    if (tickCount >= 10) clearInterval(tickInterval);
+  }, 200);
+
+  setTimeout(() => {
+    gameStore.hostRandomizeTeams(roomCode.value);
+    wheelResultText.value = 'Teams Successfully Random & Balanced!';
+    isSpinningWheel.value = false;
+    soundFX.playCorrect();
+    setTimeout(() => {
+      showWheelModal.value = false;
+    }, 1500);
+  }, 2500);
+}
+
+function handleStartGameClick() {
+  if (totalPlayersCount.value === 0) return;
+  isStartingCountdown.value = true;
+  countdownTimer.value = 3;
+  soundFX.playTick();
+  const timer = setInterval(() => {
+    countdownTimer.value--;
+    if (countdownTimer.value > 0) {
+      soundFX.playTick();
+    } else {
+      clearInterval(timer);
+      isStartingCountdown.value = false;
+      gameStore.hostStartGame(roomCode.value);
+    }
+  }, 1000);
+}
 
 onMounted(async () => {
   // Fetch initial session state
@@ -297,10 +441,6 @@ function fireConfetti() {
       origin: { y: 0.6 }
     });
   } catch {}
-}
-
-function startGame() {
-  gameStore.hostStartGame(roomCode.value);
 }
 
 function revealAnswer() {
@@ -780,5 +920,220 @@ onUnmounted(() => {
 .btn-summary {
   font-size: 1.15rem;
   padding: 14px 28px;
+}
+
+/* ALL STUDENTS ROSTER */
+.all-students-roster-box {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1.5px solid var(--theme-card-border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.roster-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.roster-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--theme-card-text);
+}
+
+.roster-sub {
+  font-size: 0.85rem;
+  color: var(--theme-card-text);
+  opacity: 0.7;
+}
+
+.roster-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.student-roster-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--theme-card-bg);
+  color: var(--theme-card-text);
+  border: 1px solid var(--theme-card-border);
+  border-left-width: 5px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.st-avatar {
+  background: var(--theme-card-border);
+  color: var(--theme-card-bg);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.st-team {
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+/* LOBBY ACTION ROW */
+.lobby-action-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.btn-randomize {
+  background: var(--theme-card-bg);
+  color: var(--theme-card-text);
+  border: 1.5px solid var(--theme-card-border);
+  box-shadow: 0 4px 0 var(--theme-card-border);
+  padding: 16px 28px;
+  font-size: 1.15rem;
+}
+
+.btn-randomize:hover:not(:disabled) {
+  background: var(--theme-card-border);
+  color: var(--theme-card-bg);
+}
+
+/* WHEEL MODAL */
+.wheel-modal-overlay,
+.teams-assembled-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.wheel-modal-card {
+  max-width: 460px;
+  width: 100%;
+  text-align: center;
+}
+
+.wheel-sub {
+  margin: 8px 0 20px;
+  font-weight: 700;
+  color: var(--theme-card-text);
+}
+
+.wheel-spinner-wrapper {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  margin: 0 auto;
+}
+
+.wheel-pointer {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.8rem;
+  color: var(--theme-card-text);
+  z-index: 10;
+}
+
+.wheel-disc {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 4px solid var(--theme-card-border);
+  position: relative;
+  overflow: hidden;
+  transition: transform 2.5s cubic-bezier(0.15, 0.9, 0.2, 1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.wheel-slice {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  transform-origin: 0% 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+}
+
+.slice-label {
+  color: white;
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  transform: rotate(45deg);
+}
+
+/* TEAMS ASSEMBLED OVERLAY */
+.assembled-card {
+  max-width: 550px;
+  width: 100%;
+  text-align: center;
+  padding: 36px 24px;
+}
+
+.assembled-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--theme-card-text);
+}
+
+.countdown-giant {
+  font-size: 4.5rem;
+  font-weight: 900;
+  color: var(--theme-card-text);
+  margin: 12px 0;
+}
+
+.assembled-subtitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  opacity: 0.85;
+}
+
+.assembled-teams-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.assembled-team-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border: 2px solid;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.05);
+  font-size: 1.05rem;
+}
+
+.team-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
 }
 </style>

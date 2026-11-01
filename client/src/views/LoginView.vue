@@ -113,7 +113,7 @@
           <input
             v-model="email"
             type="email"
-            placeholder="e.g. sarah@school.edu"
+            placeholder="e.g. sarah@gmail.com"
             required
             class="input-kahoot"
           />
@@ -133,9 +133,17 @@
         <div class="form-group">
           <label>Role</label>
           <div class="role-selector">
+            <label class="role-option" :class="{ selected: role === 'user' }">
+              <input type="radio" v-model="role" value="user" />
+              <span class="role-text">User (Player)</span>
+            </label>
             <label class="role-option" :class="{ selected: role === 'student' }">
               <input type="radio" v-model="role" value="student" />
               <span class="role-text">Student</span>
+            </label>
+            <label class="role-option" :class="{ selected: role === 'teacher' }">
+              <input type="radio" v-model="role" value="teacher" />
+              <span class="role-text">Teacher</span>
             </label>
             <label class="role-option" :class="{ selected: role === 'instructor' }">
               <input type="radio" v-model="role" value="instructor" />

@@ -263,11 +263,13 @@ function handleLogout() {
   letter-spacing: 0.5px;
 }
 
-.user-role-badge.instructor {
+.user-role-badge.instructor,
+.user-role-badge.teacher {
   color: var(--theme-logo);
 }
 
-.user-role-badge.student {
+.user-role-badge.student,
+.user-role-badge.user {
   color: var(--theme-accent);
 }
 

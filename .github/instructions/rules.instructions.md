@@ -61,6 +61,7 @@ Reading & editing
 Output
 Edit-workflow replies: no preamble, no restating my request, no apologies (just fix mistakes), no explanation/alternatives/next steps beyond what's asked.
 After an approved change: make it, then a 1-2 sentence summary in plain sentences, no headers/bullets/tables.
+Record changes made in each session point-by-point in FEATURE.md so features and updates are never forgotten.
 One retry max on a failed approach, then stop and say what failed.
 Large task (more than ~3 files or ~100 changed lines): one part at a time, wait before continuing.
 Answers to questions follow Answer style below.
