@@ -1,237 +1,245 @@
+import {
+  WebSocketGateway,
+  WebSocketServer,
+  SubscribeMessage,
+  MessageBody,
+  ConnectedSocket
+} from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { store } from '../data/store.js';
-import { GameSession, TeamMember } from '@quizchaos/shared';
+import { TeamMember } from '@quizchaos/shared';
 
 // Track student answers per question in memory: `${roomCode}:${questionId}` -> Map<userId, answer>
 const answerRecords = new Map<string, Map<string, { selectedIndex: number; points: number; isCorrect: boolean }>>();
 
-export function setupSocketHandlers(io: Server) {
-  io.on('connection', (socket: Socket) => {
-    // Student or Host joins session room
-    socket.on('session:join', (data: { room_code: string; user_id: string; role?: string }) => {
-      const { room_code } = data;
-      socket.join(room_code);
+@WebSocketGateway({
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+})
+export class GameGateway {
+  @WebSocketServer()
+  server!: Server;
 
-      const session = store.sessions.get(room_code);
-      if (session) {
-        // Broadcast current session state to room
-        io.to(room_code).emit('session:updated', session);
-      }
+  @SubscribeMessage('session:join')
+  handleJoinSession(
+    @MessageBody() data: { room_code: string; user_id: string; role?: string },
+    @ConnectedSocket() socket: Socket
+  ) {
+    const { room_code } = data;
+    socket.join(room_code);
+
+    const session = store.sessions.get(room_code);
+    if (session) {
+      this.server.to(room_code).emit('session:updated', session);
+    }
+  }
+
+  @SubscribeMessage('session:randomize_teams')
+  handleRandomizeTeams(@MessageBody() data: { room_code: string }) {
+    const { room_code } = data;
+    const session = store.sessions.get(room_code);
+    if (!session || session.status !== 'lobby' || session.teams.length === 0) return;
+
+    const allMembers: TeamMember[] = [];
+    for (const team of session.teams) {
+      allMembers.push(...team.members);
+      team.members = [];
+    }
+
+    for (let i = allMembers.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [allMembers[i], allMembers[j]] = [allMembers[j], allMembers[i]];
+    }
+
+    allMembers.forEach((member, index) => {
+      const targetTeam = session.teams[index % session.teams.length];
+      member.team_id = targetTeam.id;
+      targetTeam.members.push(member);
     });
 
-    // Host randomizes teams in the lobby with balanced wheel distribution
-    socket.on('session:randomize_teams', (data: { room_code: string }) => {
-      const { room_code } = data;
-      const session = store.sessions.get(room_code);
-      if (!session || session.status !== 'lobby' || session.teams.length === 0) return;
-
-      // Collect all members from all teams
-      const allMembers: TeamMember[] = [];
-      for (const team of session.teams) {
-        allMembers.push(...team.members);
-        team.members = [];
-      }
-
-      // Fisher-Yates shuffle
-      for (let i = allMembers.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [allMembers[i], allMembers[j]] = [allMembers[j], allMembers[i]];
-      }
-
-      // Reassign evenly across teams
-      allMembers.forEach((member, index) => {
-        const targetTeam = session.teams[index % session.teams.length];
-        member.team_id = targetTeam.id;
-        targetTeam.members.push(member);
-      });
-
-      io.to(room_code).emit('session:updated', session);
-      io.to(room_code).emit('teams:randomized', {
-        teams: session.teams
-      });
+    this.server.to(room_code).emit('session:updated', session);
+    this.server.to(room_code).emit('teams:randomized', {
+      teams: session.teams
     });
+  }
 
-    // Host starts the game
-    socket.on('session:start', (data: { room_code: string }) => {
-      const { room_code } = data;
-      const session = store.sessions.get(room_code);
-      if (!session) return;
+  @SubscribeMessage('session:start')
+  handleStartSession(@MessageBody() data: { room_code: string }) {
+    const { room_code } = data;
+    const session = store.sessions.get(room_code);
+    if (!session) return;
 
-      const quiz = store.quizzes.get(session.quiz_id);
-      if (!quiz || quiz.questions.length === 0) return;
+    const quiz = store.quizzes.get(session.quiz_id);
+    if (!quiz || quiz.questions.length === 0) return;
 
-      session.status = 'question_active';
-      session.current_question_index = 0;
-      session.current_question = quiz.questions[0];
-      session.time_remaining = quiz.questions[0].time_limit_seconds || 20;
+    session.status = 'question_active';
+    session.current_question_index = 0;
+    session.current_question = quiz.questions[0];
+    session.time_remaining = quiz.questions[0].time_limit_seconds || 20;
 
-      // Broadcast update
-      io.to(room_code).emit('session:updated', session);
-      io.to(room_code).emit('question:started', {
-        question_index: 0,
-        total_questions: quiz.questions.length,
-        time_limit: session.time_remaining
-      });
+    this.server.to(room_code).emit('session:updated', session);
+    this.server.to(room_code).emit('question:started', {
+      question_index: 0,
+      total_questions: quiz.questions.length,
+      time_limit: session.time_remaining
     });
+  }
 
-    // Student submits answer (Story 4 & 5)
-    socket.on('player:submit_answer', (data: {
+  @SubscribeMessage('player:submit_answer')
+  handleSubmitAnswer(
+    @MessageBody()
+    data: {
       room_code: string;
       user_id: string;
       question_id: string;
       selected_option_index: number;
       time_remaining: number;
-    }) => {
-      const { room_code, user_id, question_id, selected_option_index, time_remaining } = data;
-      const session = store.sessions.get(room_code);
-      if (!session || session.status !== 'question_active') return;
+    },
+    @ConnectedSocket() socket: Socket
+  ) {
+    const { room_code, user_id, question_id, selected_option_index, time_remaining } = data;
+    const session = store.sessions.get(room_code);
+    if (!session || session.status !== 'question_active') return;
 
-      const quiz = store.quizzes.get(session.quiz_id);
-      if (!quiz) return;
+    const quiz = store.quizzes.get(session.quiz_id);
+    if (!quiz) return;
 
-      const currentQuestion = quiz.questions[session.current_question_index];
-      if (!currentQuestion || currentQuestion.id !== question_id) return;
+    const currentQuestion = quiz.questions[session.current_question_index];
+    if (!currentQuestion || currentQuestion.id !== question_id) return;
 
-      const answerKey = `${room_code}:${question_id}`;
-      if (!answerRecords.has(answerKey)) {
-        answerRecords.set(answerKey, new Map());
-      }
-      const qAnswers = answerRecords.get(answerKey)!;
+    const answerKey = `${room_code}:${question_id}`;
+    if (!answerRecords.has(answerKey)) {
+      answerRecords.set(answerKey, new Map());
+    }
+    const qAnswers = answerRecords.get(answerKey)!;
 
-      // Prevent duplicate submissions for same question
-      if (qAnswers.has(user_id)) {
-        return;
-      }
+    if (qAnswers.has(user_id)) {
+      return;
+    }
 
-      const isCorrect = selected_option_index === currentQuestion.correct_option_index;
-      let pointsAwarded = 0;
+    const isCorrect = selected_option_index === currentQuestion.correct_option_index;
+    let pointsAwarded = 0;
 
-      if (isCorrect) {
-        // Kahoot-style speed bonus points calculation:
-        // Base points + speed fraction (between 50% and 100% of base points)
-        const totalTime = currentQuestion.time_limit_seconds || 20;
-        const speedRatio = Math.max(0, Math.min(1, time_remaining / totalTime));
-        pointsAwarded = Math.round(currentQuestion.base_points * (0.5 + 0.5 * speedRatio));
-      }
+    if (isCorrect) {
+      const totalTime = currentQuestion.time_limit_seconds || 20;
+      const speedRatio = Math.max(0, Math.min(1, time_remaining / totalTime));
+      pointsAwarded = Math.round(currentQuestion.base_points * (0.5 + 0.5 * speedRatio));
+    }
 
-      qAnswers.set(user_id, {
-        selectedIndex: selected_option_index,
-        points: pointsAwarded,
-        isCorrect
-      });
-
-      // Find user's team and update scores (Story 5: Individual contributes directly to cumulative team score)
-      let studentMember: TeamMember | undefined;
-      let studentTeam = session.teams.find(t => {
-        studentMember = t.members.find(m => m.user_id === user_id);
-        return !!studentMember;
-      });
-
-      if (studentMember && studentTeam) {
-        studentMember.individual_score += pointsAwarded;
-        studentTeam.total_score += pointsAwarded;
-      }
-
-      // Send private result back to this specific player socket
-      socket.emit('player:answer_result', {
-        is_correct: isCorrect,
-        correct_option_index: currentQuestion.correct_option_index,
-        points_awarded: pointsAwarded,
-        new_individual_score: studentMember?.individual_score || 0,
-        new_team_score: studentTeam?.total_score || 0,
-        team_name: studentTeam?.name || '',
-        team_id: studentTeam?.id || ''
-      });
-
-      // Broadcast score and team leaderboard update in real-time to all clients!
-      io.to(room_code).emit('score:updated', {
-        team_id: studentTeam?.id,
-        team_score: studentTeam?.total_score,
-        member_id: studentMember?.id,
-        member_score: studentMember?.individual_score,
-        points_awarded: pointsAwarded,
-        is_correct: isCorrect
-      });
-
-      io.to(room_code).emit('leaderboard:refreshed', session.teams);
-      io.to(room_code).emit('session:updated', session);
+    qAnswers.set(user_id, {
+      selectedIndex: selected_option_index,
+      points: pointsAwarded,
+      isCorrect
     });
 
-    // Host shows question answer & stats
-    socket.on('session:show_result', (data: { room_code: string }) => {
-      const { room_code } = data;
-      const session = store.sessions.get(room_code);
-      if (!session) return;
-
-      const quiz = store.quizzes.get(session.quiz_id);
-      if (!quiz) return;
-
-      const currentQuestion = quiz.questions[session.current_question_index];
-      if (!currentQuestion) return;
-
-      session.status = 'question_result';
-
-      // Calculate answer distribution breakdown
-      const answerKey = `${room_code}:${currentQuestion.id}`;
-      const qAnswers = answerRecords.get(answerKey) || new Map();
-      const stats = [0, 0, 0, 0];
-      qAnswers.forEach(ans => {
-        if (ans.selectedIndex >= 0 && ans.selectedIndex < 4) {
-          stats[ans.selectedIndex]++;
-        }
-      });
-
-      io.to(room_code).emit('session:updated', session);
-      io.to(room_code).emit('question:ended', {
-        correct_option_index: currentQuestion.correct_option_index,
-        answer_stats: stats,
-        leaderboard: session.teams
-      });
+    let studentMember: TeamMember | undefined;
+    const studentTeam = session.teams.find(t => {
+      studentMember = t.members.find(m => m.user_id === user_id);
+      return !!studentMember;
     });
 
-    // Host advances to next question or end
-    socket.on('session:next_question', (data: { room_code: string }) => {
-      const { room_code } = data;
-      const session = store.sessions.get(room_code);
-      if (!session) return;
+    if (studentMember && studentTeam) {
+      studentMember.individual_score += pointsAwarded;
+      studentTeam.total_score += pointsAwarded;
+    }
 
-      const quiz = store.quizzes.get(session.quiz_id);
-      if (!quiz) return;
+    socket.emit('player:answer_result', {
+      is_correct: isCorrect,
+      correct_option_index: currentQuestion.correct_option_index,
+      points_awarded: pointsAwarded,
+      new_individual_score: studentMember?.individual_score || 0,
+      new_team_score: studentTeam?.total_score || 0,
+      team_name: studentTeam?.name || '',
+      team_id: studentTeam?.id || ''
+    });
 
-      const nextIndex = session.current_question_index + 1;
-      if (nextIndex < quiz.questions.length) {
-        session.current_question_index = nextIndex;
-        session.current_question = quiz.questions[nextIndex];
-        session.time_remaining = quiz.questions[nextIndex].time_limit_seconds || 20;
-        session.status = 'question_active';
+    this.server.to(room_code).emit('score:updated', {
+      team_id: studentTeam?.id,
+      team_score: studentTeam?.total_score,
+      member_id: studentMember?.id,
+      member_score: studentMember?.individual_score,
+      points_awarded: pointsAwarded,
+      is_correct: isCorrect
+    });
 
-        io.to(room_code).emit('session:updated', session);
-        io.to(room_code).emit('question:started', {
-          question_index: nextIndex,
-          total_questions: quiz.questions.length,
-          time_limit: session.time_remaining
-        });
-      } else {
-        session.status = 'ended';
-        io.to(room_code).emit('session:updated', session);
-        io.to(room_code).emit('session:ended', {
-          final_leaderboard: session.teams
-        });
+    this.server.to(room_code).emit('leaderboard:refreshed', session.teams);
+    this.server.to(room_code).emit('session:updated', session);
+  }
+
+  @SubscribeMessage('session:show_result')
+  handleShowResult(@MessageBody() data: { room_code: string }) {
+    const { room_code } = data;
+    const session = store.sessions.get(room_code);
+    if (!session) return;
+
+    const quiz = store.quizzes.get(session.quiz_id);
+    if (!quiz) return;
+
+    const currentQuestion = quiz.questions[session.current_question_index];
+    if (!currentQuestion) return;
+
+    session.status = 'question_result';
+
+    const answerKey = `${room_code}:${currentQuestion.id}`;
+    const qAnswers = answerRecords.get(answerKey) || new Map();
+    const stats = [0, 0, 0, 0];
+    qAnswers.forEach(ans => {
+      if (ans.selectedIndex >= 0 && ans.selectedIndex < 4) {
+        stats[ans.selectedIndex]++;
       }
     });
 
-    // Host manually ends session (Story 6)
-    socket.on('session:end', (data: { room_code: string }) => {
-      const { room_code } = data;
-      const session = store.sessions.get(room_code);
-      if (!session) return;
+    this.server.to(room_code).emit('session:updated', session);
+    this.server.to(room_code).emit('question:ended', {
+      correct_option_index: currentQuestion.correct_option_index,
+      answer_stats: stats,
+      leaderboard: session.teams
+    });
+  }
 
+  @SubscribeMessage('session:next_question')
+  handleNextQuestion(@MessageBody() data: { room_code: string }) {
+    const { room_code } = data;
+    const session = store.sessions.get(room_code);
+    if (!session) return;
+
+    const quiz = store.quizzes.get(session.quiz_id);
+    if (!quiz) return;
+
+    const nextIndex = session.current_question_index + 1;
+    if (nextIndex < quiz.questions.length) {
+      session.current_question_index = nextIndex;
+      session.current_question = quiz.questions[nextIndex];
+      session.time_remaining = quiz.questions[nextIndex].time_limit_seconds || 20;
+      session.status = 'question_active';
+
+      this.server.to(room_code).emit('session:updated', session);
+      this.server.to(room_code).emit('question:started', {
+        question_index: nextIndex,
+        total_questions: quiz.questions.length,
+        time_limit: session.time_remaining
+      });
+    } else {
       session.status = 'ended';
-      io.to(room_code).emit('session:updated', session);
-      io.to(room_code).emit('session:ended', {
+      this.server.to(room_code).emit('session:updated', session);
+      this.server.to(room_code).emit('session:ended', {
         final_leaderboard: session.teams
       });
-    });
-  });
-}
+    }
+  }
 
+  @SubscribeMessage('session:end')
+  handleEndSession(@MessageBody() data: { room_code: string }) {
+    const { room_code } = data;
+    const session = store.sessions.get(room_code);
+    if (!session) return;
+
+    session.status = 'ended';
+    this.server.to(room_code).emit('session:updated', session);
+    this.server.to(room_code).emit('session:ended', {
+      final_leaderboard: session.teams
+    });
+  }
+}
