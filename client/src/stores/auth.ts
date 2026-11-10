@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { User, UserRole } from '@quizchaos/shared';
+import { authMockService } from '../services/mockApi';
 
 const STORAGE_KEY = 'quizchaos_user';
 
@@ -29,13 +30,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchDemoUsers() {
     try {
-      const res = await fetch('/api/auth/demo-users');
-      if (res.ok) {
-        const data = await res.json();
-        demoUsers.value = data.users;
-      }
+      demoUsers.value = await authMockService.getDemoUsers();
     } catch (err) {
-      console.warn('Failed to load demo users', err);
+      console.warn('Failed to load demo users from mock API', err);
     }
   }
 
@@ -43,21 +40,13 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true;
     error.value = null;
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
+      const data = await authMockService.login(email, password);
       user.value = data.user;
       token.value = data.token;
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: data.user, token: data.token }));
       return true;
-    } catch (err: any) {
-      error.value = err.message || 'An error occurred during login';
+    } catch (err: unknown) {
+      error.value = err instanceof Error ? err.message : 'An error occurred during login';
       return false;
     } finally {
       loading.value = false;
@@ -68,21 +57,13 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true;
     error.value = null;
     try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, role, password, avatar })
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || 'Registration failed');
-      }
+      const data = await authMockService.register(name, email, role, password, avatar);
       user.value = data.user;
       token.value = data.token;
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: data.user, token: data.token }));
       return true;
-    } catch (err: any) {
-      error.value = err.message || 'An error occurred during registration';
+    } catch (err: unknown) {
+      error.value = err instanceof Error ? err.message : 'An error occurred during registration';
       return false;
     } finally {
       loading.value = false;
@@ -117,4 +98,3 @@ export const useAuthStore = defineStore('auth', () => {
     fetchDemoUsers
   };
 });
-

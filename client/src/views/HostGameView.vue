@@ -440,19 +440,7 @@ function handleStartGameClick() {
 }
 
 onMounted(async () => {
-  // Fetch initial session state
-  try {
-    const res = await fetch(`/api/sessions/${roomCode.value}`);
-    if (res.ok) {
-      const data = await res.json();
-      gameStore.session = data.session;
-    }
-  } catch (err) {
-    console.error('Error fetching session', err);
-  }
-
-  // Initialize socket
-  gameStore.initSocket(roomCode.value, authStore.user?.id || 'host-user', 'instructor');
+  await gameStore.initSocket(roomCode.value, authStore.user?.id || 'host-user', 'instructor');
 });
 
 // Watch for game ended to fire confetti

@@ -219,31 +219,8 @@ onMounted(async () => {
     try { gameStore.myMember = JSON.parse(savedMember); } catch {}
   }
 
-  // Fetch initial session state
-  try {
-    const res = await fetch(`/api/sessions/${roomCode.value}`);
-    if (res.ok) {
-      const data = await res.json();
-      gameStore.session = data.session;
-      // Re-link team
-      if (authStore.user?.id) {
-        for (const t of data.session.teams) {
-          const m = t.members.find((mem: any) => mem.user_id === authStore.user?.id);
-          if (m) {
-            gameStore.myTeam = t;
-            gameStore.myMember = m;
-            break;
-          }
-        }
-      }
-    }
-  } catch (err) {
-    console.error('Failed to load session info', err);
-  }
-
-  // Connect socket
-  const userId = authStore.user?.id || gameStore.myMember?.user_id || 'guest-user';
-  gameStore.initSocket(roomCode.value, userId, 'student');
+  const userId = authStore.user?.id || gameStore.myMember?.user_id || 'stud-1';
+  await gameStore.initSocket(roomCode.value, userId, 'student');
 });
 
 function selectOption(index: number) {

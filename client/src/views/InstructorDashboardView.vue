@@ -26,20 +26,65 @@
         </div>
       </div>
 
-      <!-- Quizzes Grid -->
-      <div v-if="quizStore.loading" class="loading-state">
+      <!-- M1 Prototype State Switcher Bar (Demonstrates Loading, Empty & Error States) -->
+      <div class="m1-state-toolbar card-kahoot">
+        <div class="toolbar-label">
+          <strong>M1 UI State Inspector:</strong>
+          <span>Test Pinia + Mock API states on demand</span>
+        </div>
+        <div class="toolbar-btns">
+          <button type="button" @click="quizStore.simulateLoadingState()" class="btn-state-pill">
+            Loading State
+          </button>
+          <button type="button" @click="quizStore.simulateEmptyState()" class="btn-state-pill">
+            Empty State
+          </button>
+          <button type="button" @click="quizStore.simulateErrorState()" class="btn-state-pill btn-state-err">
+            Error State
+          </button>
+          <button type="button" @click="quizStore.resetToSeedData(authStore.user?.id)" class="btn-state-pill btn-state-ok">
+            Reset Mock JSON
+          </button>
+        </div>
+      </div>
+
+      <!-- 1. LOADING STATE -->
+      <div v-if="quizStore.loading" class="loading-state card-kahoot">
         <div class="spinner"></div>
-        <p>Loading your quizzes...</p>
+        <h3>Loading Quizzes from Mock API...</h3>
+        <p>Fetching instructor catalog from local JSON service layer (`mockApi.ts`).</p>
       </div>
 
-      <div v-else-if="quizStore.quizzes.length === 0" class="empty-state card-kahoot">
+      <!-- 2. ERROR STATE -->
+      <div v-else-if="quizStore.error" class="error-state card-kahoot animate-pop">
+        <div class="error-badge">API ERROR</div>
+        <h2>Unable to Load Quizzes</h2>
+        <p>{{ quizStore.error }}</p>
+        <button
+          type="button"
+          @click="quizStore.fetchQuizzes(authStore.user?.id)"
+          class="btn-kahoot btn-primary"
+          style="margin-top: 16px;"
+        >
+          Retry Mock API Request
+        </button>
+      </div>
+
+      <!-- 3. EMPTY STATE -->
+      <div v-else-if="quizStore.quizzes.length === 0" class="empty-state card-kahoot animate-pop">
         <h2>No quizzes created yet</h2>
-        <p>Start by creating your first team-based challenge or use our pre-seeded templates.</p>
-        <router-link to="/instructor/quiz/new" class="btn-kahoot btn-primary" style="margin-top: 16px;">
-          Create Your First Quiz
-        </router-link>
+        <p>Start by creating your first team-based challenge or restore the pre-seeded mock JSON templates.</p>
+        <div style="display: flex; gap: 12px; justify-content: center; margin-top: 16px; flex-wrap: wrap;">
+          <router-link to="/instructor/quiz/new" class="btn-kahoot btn-primary">
+            + Create Your First Quiz
+          </router-link>
+          <button type="button" @click="quizStore.resetToSeedData(authStore.user?.id)" class="btn-kahoot btn-yellow">
+            Restore Seed Quizzes
+          </button>
+        </div>
       </div>
 
+      <!-- 4. DATA LOADED STATE (Quizzes Grid) -->
       <div v-else class="quiz-grid">
         <div
           v-for="quiz in quizStore.quizzes"
@@ -177,6 +222,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { useQuizStore } from '../stores/quiz';
+import { sessionMockService } from '../services/mockApi';
 import { Quiz } from '@quizchaos/shared';
 
 const authStore = useAuthStore();
@@ -185,7 +231,7 @@ const router = useRouter();
 
 const showLaunchModal = ref(false);
 const selectedQuiz = ref<Quiz | null>(null);
-const teamCount = ref(2);
+const teamCount = ref(4);
 const launching = ref(false);
 const launchError = ref<string | null>(null);
 
@@ -204,7 +250,7 @@ onMounted(() => {
 
 function openLaunchModal(quiz: Quiz) {
   selectedQuiz.value = quiz;
-  teamCount.value = 2;
+  teamCount.value = 4;
   launchError.value = null;
   showLaunchModal.value = true;
 }
@@ -225,25 +271,15 @@ async function confirmLaunchSession() {
   launchError.value = null;
 
   try {
-    const res = await fetch('/api/sessions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        quiz_id: selectedQuiz.value.id,
-        team_count: teamCount.value,
-        host_user_id: authStore.user?.id || 'host-user'
-      })
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.error || 'Failed to launch session');
-    }
+    const session = await sessionMockService.createSession(
+      selectedQuiz.value.id,
+      teamCount.value
+    );
 
     showLaunchModal.value = false;
-    router.push(`/instructor/session/${data.session.room_code}`);
-  } catch (err: any) {
-    launchError.value = err.message || 'Error creating game session';
+    router.push(`/instructor/session/${session.room_code}`);
+  } catch (err: unknown) {
+    launchError.value = err instanceof Error ? err.message : 'Error creating game session';
   } finally {
     launching.value = false;
   }
@@ -267,7 +303,80 @@ async function confirmLaunchSession() {
   align-items: center;
   flex-wrap: wrap;
   gap: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
+}
+
+.m1-state-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 14px 20px;
+  margin-bottom: 24px;
+}
+
+.toolbar-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.9rem;
+}
+
+.toolbar-label span {
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+.toolbar-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.btn-state-pill {
+  background: #ffffff;
+  color: var(--theme-card-text);
+  border: 1.5px solid var(--theme-card-border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-state-pill:hover {
+  background: var(--theme-card-border);
+  color: #ffffff;
+}
+
+.btn-state-err {
+  border-color: #e21b3c;
+  color: #e21b3c;
+}
+
+.btn-state-ok {
+  border-color: #26890c;
+  color: #26890c;
+}
+
+.error-state {
+  text-align: center;
+  padding: 48px 24px;
+  border: 2px solid #e21b3c !important;
+}
+
+.error-badge {
+  display: inline-block;
+  background: #e21b3c;
+  color: white;
+  font-weight: 800;
+  font-size: 0.75rem;
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
 }
 
 .badge-role {

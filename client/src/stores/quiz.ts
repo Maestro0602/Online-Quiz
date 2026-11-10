@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { Quiz } from '@quizchaos/shared';
+import { quizMockService, resetMockDbToSeed, triggerSimulatedApiError } from '../services/mockApi';
 
 export const useQuizStore = defineStore('quiz', () => {
   const quizzes = ref<Quiz[]>([]);
@@ -12,13 +13,9 @@ export const useQuizStore = defineStore('quiz', () => {
     loading.value = true;
     error.value = null;
     try {
-      const url = instructorId ? `/api/quizzes?instructor_id=${instructorId}` : '/api/quizzes';
-      const res = await fetch(url);
-      if (!res.ok) throw new Error('Failed to load quizzes');
-      const data = await res.json();
-      quizzes.value = data.quizzes;
-    } catch (err: any) {
-      error.value = err.message || 'Error fetching quizzes';
+      quizzes.value = await quizMockService.getQuizzes(instructorId);
+    } catch (err: unknown) {
+      error.value = err instanceof Error ? err.message : 'Error fetching quizzes from mock API';
     } finally {
       loading.value = false;
     }
@@ -28,13 +25,11 @@ export const useQuizStore = defineStore('quiz', () => {
     loading.value = true;
     error.value = null;
     try {
-      const res = await fetch(`/api/quizzes/${id}`);
-      if (!res.ok) throw new Error('Quiz not found');
-      const data = await res.json();
-      currentQuiz.value = data.quiz;
-      return data.quiz;
-    } catch (err: any) {
-      error.value = err.message || 'Error fetching quiz';
+      const quiz = await quizMockService.getQuizById(id);
+      currentQuiz.value = quiz;
+      return quiz;
+    } catch (err: unknown) {
+      error.value = err instanceof Error ? err.message : 'Error fetching quiz';
       return null;
     } finally {
       loading.value = false;
@@ -45,17 +40,11 @@ export const useQuizStore = defineStore('quiz', () => {
     loading.value = true;
     error.value = null;
     try {
-      const res = await fetch('/api/quizzes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(quizData)
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to create quiz');
-      quizzes.value.unshift(data.quiz);
-      return data.quiz;
-    } catch (err: any) {
-      error.value = err.message || 'Error creating quiz';
+      const created = await quizMockService.createQuiz(quizData);
+      quizzes.value.unshift(created);
+      return created;
+    } catch (err: unknown) {
+      error.value = err instanceof Error ? err.message : 'Error creating quiz';
       return null;
     } finally {
       loading.value = false;
@@ -66,19 +55,13 @@ export const useQuizStore = defineStore('quiz', () => {
     loading.value = true;
     error.value = null;
     try {
-      const res = await fetch(`/api/quizzes/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(quizData)
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to update quiz');
+      const updated = await quizMockService.updateQuiz(id, quizData);
       const idx = quizzes.value.findIndex(q => q.id === id);
-      if (idx !== -1) quizzes.value[idx] = data.quiz;
-      currentQuiz.value = data.quiz;
-      return data.quiz;
-    } catch (err: any) {
-      error.value = err.message || 'Error updating quiz';
+      if (idx !== -1) quizzes.value[idx] = updated;
+      currentQuiz.value = updated;
+      return updated;
+    } catch (err: unknown) {
+      error.value = err instanceof Error ? err.message : 'Error updating quiz';
       return null;
     } finally {
       loading.value = false;
@@ -86,29 +69,55 @@ export const useQuizStore = defineStore('quiz', () => {
   }
 
   async function deleteQuiz(id: string) {
+    loading.value = true;
+    error.value = null;
     try {
-      const res = await fetch(`/api/quizzes/${id}`, { method: 'DELETE' });
-      if (!res.ok) throw new Error('Failed to delete quiz');
+      await quizMockService.deleteQuiz(id);
       quizzes.value = quizzes.value.filter(q => q.id !== id);
       return true;
-    } catch (err: any) {
-      error.value = err.message || 'Error deleting quiz';
+    } catch (err: unknown) {
+      error.value = err instanceof Error ? err.message : 'Error deleting quiz';
       return false;
+    } finally {
+      loading.value = false;
     }
   }
 
   async function togglePublish(id: string) {
     try {
-      const res = await fetch(`/api/quizzes/${id}/publish`, { method: 'POST' });
-      if (!res.ok) throw new Error('Failed to toggle publish status');
-      const data = await res.json();
+      const updated = await quizMockService.togglePublish(id);
       const idx = quizzes.value.findIndex(q => q.id === id);
-      if (idx !== -1) quizzes.value[idx] = data.quiz;
-      return data.quiz;
-    } catch (err: any) {
-      error.value = err.message || 'Error publishing quiz';
+      if (idx !== -1) quizzes.value[idx] = updated;
+      return updated;
+    } catch (err: unknown) {
+      error.value = err instanceof Error ? err.message : 'Error publishing quiz';
       return null;
     }
+  }
+
+  // M1 Prototype State Demonstration Helpers (Loading / Empty / Error / Reset)
+  function simulateLoadingState() {
+    error.value = null;
+    loading.value = true;
+    setTimeout(() => {
+      loading.value = false;
+    }, 2500);
+  }
+
+  function simulateEmptyState() {
+    loading.value = false;
+    error.value = null;
+    quizzes.value = [];
+  }
+
+  async function simulateErrorState() {
+    triggerSimulatedApiError('Mock API Error 503: Failed to fetch quiz catalog from local JSON service.');
+    await fetchQuizzes();
+  }
+
+  async function resetToSeedData(instructorId?: string) {
+    resetMockDbToSeed();
+    await fetchQuizzes(instructorId);
   }
 
   return {
@@ -121,7 +130,10 @@ export const useQuizStore = defineStore('quiz', () => {
     createQuiz,
     updateQuiz,
     deleteQuiz,
-    togglePublish
+    togglePublish,
+    simulateLoadingState,
+    simulateEmptyState,
+    simulateErrorState,
+    resetToSeedData
   };
 });
-

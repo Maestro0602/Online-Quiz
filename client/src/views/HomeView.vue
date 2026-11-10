@@ -76,27 +76,28 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+import { sessionMockService } from '../services/mockApi';
 import { User } from '@quizchaos/shared';
 
 const router = useRouter();
 const authStore = useAuthStore();
 
-const roomCode = ref('');
+const roomCode = ref('739218');
 const guestNickname = ref('');
 const joining = ref(false);
 const errorMessage = ref<string | null>(null);
 
 async function handleJoin() {
   const pin = roomCode.value.trim().replace(/\s+/g, '');
-  if (!pin) {
-    errorMessage.value = 'Please enter a valid Game PIN.';
+  if (!pin || !/^\d{6}$/.test(pin)) {
+    errorMessage.value = 'Please enter a valid 6-digit numeric Game PIN (e.g. 739218).';
     return;
   }
 
   // Ensure student has a profile
   if (!authStore.isAuthenticated) {
-    if (!guestNickname.value.trim()) {
-      errorMessage.value = 'Please enter your nickname or sign in.';
+    if (!guestNickname.value.trim() || guestNickname.value.trim().length < 2) {
+      errorMessage.value = 'Please enter a nickname (at least 2 characters) or sign in.';
       return;
     }
     const initials = guestNickname.value.trim().substring(0, 2).toUpperCase();
@@ -114,28 +115,20 @@ async function handleJoin() {
   errorMessage.value = null;
 
   try {
-    const res = await fetch(`/api/sessions/${pin}/join`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        user_id: authStore.user!.id,
-        user_name: authStore.user!.name,
-        avatar: authStore.user!.avatar
-      })
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.error || 'Failed to join session');
-    }
+    const data = await sessionMockService.joinSession(
+      pin,
+      authStore.user!.id,
+      authStore.user!.name,
+      authStore.user!.avatar
+    );
 
     // Save joined session info
     sessionStorage.setItem(`session_${pin}_team`, JSON.stringify(data.team));
     sessionStorage.setItem(`session_${pin}_member`, JSON.stringify(data.member));
 
     router.push(`/play/${pin}`);
-  } catch (err: any) {
-    errorMessage.value = err.message || 'Could not join room. Check PIN and try again.';
+  } catch (err: unknown) {
+    errorMessage.value = err instanceof Error ? err.message : 'Could not join room. Check PIN and try again.';
   } finally {
     joining.value = false;
   }

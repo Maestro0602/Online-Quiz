@@ -1,0 +1,272 @@
+{
+  "users": [
+    {
+      "id": "inst-1",
+      "name": "Prof. Ada Lovelace",
+      "email": "ada@university.edu",
+      "role": "instructor",
+      "avatar": "A"
+    },
+    {
+      "id": "inst-2",
+      "name": "Dr. Alan Turing",
+      "email": "turing@university.edu",
+      "role": "teacher",
+      "avatar": "T"
+    },
+    {
+      "id": "stud-1",
+      "name": "Alex Rivera",
+      "email": "alex@student.edu",
+      "role": "student",
+      "avatar": "AR"
+    },
+    {
+      "id": "stud-2",
+      "name": "Bella Chen",
+      "email": "bella@student.edu",
+      "role": "student",
+      "avatar": "BC"
+    },
+    {
+      "id": "stud-3",
+      "name": "Carlos Gomez",
+      "email": "carlos@student.edu",
+      "role": "student",
+      "avatar": "CG"
+    },
+    {
+      "id": "stud-4",
+      "name": "Diana Prince",
+      "email": "diana@student.edu",
+      "role": "user",
+      "avatar": "DP"
+    }
+  ],
+  "quizzes": [
+    {
+      "id": "quiz-1",
+      "instructor_id": "inst-1",
+      "title": "Computer Science & Web Dev Showdown",
+      "description": "Test your knowledge on TypeScript, Vue 3, algorithms, and browser wizardry!",
+      "is_published": true,
+      "created_at": "2026-10-01T10:00:00.000Z",
+      "questions": [
+        {
+          "id": "q-101",
+          "quiz_id": "quiz-1",
+          "prompt": "Which TypeScript feature guarantees compile-time type safety without runtime overhead?",
+          "options": [
+            "Type Annotations & Interfaces",
+            "Classes & Prototypes",
+            "Async / Await Promises",
+            "JSON Schema Validators"
+          ],
+          "correct_option_index": 0,
+          "time_limit_seconds": 20,
+          "base_points": 1000,
+          "order_index": 0
+        },
+        {
+          "id": "q-102",
+          "quiz_id": "quiz-1",
+          "prompt": "In Vue 3 Composition API, which function creates a reactive reference for primitive values?",
+          "options": [
+            "reactive()",
+            "ref()",
+            "computed()",
+            "watchEffect()"
+          ],
+          "correct_option_index": 1,
+          "time_limit_seconds": 20,
+          "base_points": 1000,
+          "order_index": 1
+        },
+        {
+          "id": "q-103",
+          "quiz_id": "quiz-1",
+          "prompt": "What is the average time complexity of looking up a key in a Hash Table?",
+          "options": [
+            "O(n)",
+            "O(log n)",
+            "O(1)",
+            "O(n log n)"
+          ],
+          "correct_option_index": 2,
+          "time_limit_seconds": 15,
+          "base_points": 1000,
+          "order_index": 2
+        },
+        {
+          "id": "q-104",
+          "quiz_id": "quiz-1",
+          "prompt": "Which HTTP status code indicates that a new resource was successfully created?",
+          "options": [
+            "200 OK",
+            "201 Created",
+            "204 No Content",
+            "304 Not Modified"
+          ],
+          "correct_option_index": 1,
+          "time_limit_seconds": 15,
+          "base_points": 1000,
+          "order_index": 3
+        },
+        {
+          "id": "q-105",
+          "quiz_id": "quiz-1",
+          "prompt": "Which state management library is the official successor to Vuex for Vue 3?",
+          "options": [
+            "Redux Toolkit",
+            "Zustand",
+            "Pinia",
+            "MobX"
+          ],
+          "correct_option_index": 2,
+          "time_limit_seconds": 20,
+          "base_points": 1000,
+          "order_index": 4
+        }
+      ]
+    },
+    {
+      "id": "quiz-2",
+      "instructor_id": "inst-1",
+      "title": "Science and Tech Trivia",
+      "description": "Fast-paced team brain challenge with tricky science and tech questions!",
+      "is_published": true,
+      "created_at": "2026-10-05T14:30:00.000Z",
+      "questions": [
+        {
+          "id": "q-201",
+          "quiz_id": "quiz-2",
+          "prompt": "Which planet in our solar system has the most moons?",
+          "options": [
+            "Jupiter",
+            "Saturn",
+            "Neptune",
+            "Uranus"
+          ],
+          "correct_option_index": 1,
+          "time_limit_seconds": 20,
+          "base_points": 1000,
+          "order_index": 0
+        },
+        {
+          "id": "q-202",
+          "quiz_id": "quiz-2",
+          "prompt": "What does 'HTTP' stand for?",
+          "options": [
+            "HyperText Transfer Protocol",
+            "High Transmission Text Process",
+            "Hyperlink Terminal Transport Path",
+            "Hybrid Text Transfer Program"
+          ],
+          "correct_option_index": 0,
+          "time_limit_seconds": 15,
+          "base_points": 1000,
+          "order_index": 1
+        },
+        {
+          "id": "q-203",
+          "quiz_id": "quiz-2",
+          "prompt": "Which element has the chemical symbol 'Au'?",
+          "options": [
+            "Silver",
+            "Argon",
+            "Gold",
+            "Aluminum"
+          ],
+          "correct_option_index": 2,
+          "time_limit_seconds": 15,
+          "base_points": 1000,
+          "order_index": 2
+        }
+      ]
+    }
+  ],
+  "defaultSession": {
+    "id": "sess-demo-739218",
+    "quiz_id": "quiz-1",
+    "quiz_title": "Computer Science & Web Dev Showdown",
+    "room_code": "739218",
+    "status": "lobby",
+    "team_count": 4,
+    "current_question_index": 0,
+    "total_questions": 5,
+    "teams": [
+      {
+        "id": "team-1",
+        "session_id": "sess-demo-739218",
+        "name": "Red Rockets",
+        "color": "#e21b3c",
+        "badge": "R",
+        "total_score": 1450,
+        "members": [
+          {
+            "id": "mem-1",
+            "team_id": "team-1",
+            "user_id": "stud-1",
+            "user_name": "Alex Rivera",
+            "avatar": "AR",
+            "individual_score": 1450
+          }
+        ]
+      },
+      {
+        "id": "team-2",
+        "session_id": "sess-demo-739218",
+        "name": "Blue Blasters",
+        "color": "#1368ce",
+        "badge": "B",
+        "total_score": 1380,
+        "members": [
+          {
+            "id": "mem-2",
+            "team_id": "team-2",
+            "user_id": "stud-2",
+            "user_name": "Bella Chen",
+            "avatar": "BC",
+            "individual_score": 1380
+          }
+        ]
+      },
+      {
+        "id": "team-3",
+        "session_id": "sess-demo-739218",
+        "name": "Golden Geeks",
+        "color": "#ffa602",
+        "badge": "G",
+        "total_score": 1210,
+        "members": [
+          {
+            "id": "mem-3",
+            "team_id": "team-3",
+            "user_id": "stud-3",
+            "user_name": "Carlos Gomez",
+            "avatar": "CG",
+            "individual_score": 1210
+          }
+        ]
+      },
+      {
+        "id": "team-4",
+        "session_id": "sess-demo-739218",
+        "name": "Green Giants",
+        "color": "#26890c",
+        "badge": "V",
+        "total_score": 950,
+        "members": [
+          {
+            "id": "mem-4",
+            "team_id": "team-4",
+            "user_id": "stud-4",
+            "user_name": "Diana Prince",
+            "avatar": "DP",
+            "individual_score": 950
+          }
+        ]
+      }
+    ]
+  }
+}

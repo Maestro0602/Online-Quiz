@@ -117,6 +117,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+import { sessionMockService } from '../services/mockApi';
 import { GameSummary, TeamMember } from '@quizchaos/shared';
 import confetti from 'canvas-confetti';
 
@@ -128,13 +129,10 @@ const summaryData = ref<GameSummary | null>(null);
 onMounted(async () => {
   const roomCode = route.params.roomCode as string;
   try {
-    const res = await fetch(`/api/sessions/${roomCode}/summary`);
-    if (res.ok) {
-      summaryData.value = await res.json();
-      celebrateConfetti();
-    }
+    summaryData.value = await sessionMockService.getSummary(roomCode);
+    celebrateConfetti();
   } catch (err) {
-    console.error('Failed to load summary', err);
+    console.error('Failed to load summary from mock API', err);
   }
 });
 

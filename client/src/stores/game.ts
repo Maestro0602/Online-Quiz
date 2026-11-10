@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { io, Socket } from 'socket.io-client';
 import { GameSession, Team, TeamMember, PlayerAnswerResult } from '@quizchaos/shared';
+import { sessionMockService } from '../services/mockApi';
 
 // Web Audio API sound generator for Kahoot sound effects
 class SoundFX {
@@ -9,7 +9,7 @@ class SoundFX {
 
   private getContext() {
     if (!this.ctx && typeof window !== 'undefined') {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       if (AudioCtx) this.ctx = new AudioCtx();
     }
     if (this.ctx && this.ctx.state === 'suspended') {
@@ -40,7 +40,7 @@ class SoundFX {
       const ctx = this.getContext();
       if (!ctx) return;
       const now = ctx.currentTime;
-      const freqs = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+      const freqs = [523.25, 659.25, 783.99, 1046.5];
       freqs.forEach((f, idx) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
@@ -98,83 +98,94 @@ class SoundFX {
 
 export const soundFX = new SoundFX();
 
+interface BroadcastMessage {
+  type: 'session:updated' | 'question:started' | 'question:ended' | 'session:ended';
+  session: GameSession;
+  answerStats?: number[];
+}
+
 export const useGameStore = defineStore('game', () => {
-  const socket = ref<Socket | null>(null);
   const session = ref<GameSession | null>(null);
   const myTeam = ref<Team | null>(null);
   const myMember = ref<TeamMember | null>(null);
+  const loading = ref(false);
+  const error = ref<string | null>(null);
 
   const selectedAnswerIndex = ref<number | null>(null);
   const answerResult = ref<PlayerAnswerResult | null>(null);
   const answerStats = ref<number[]>([0, 0, 0, 0]);
   const timeRemaining = ref(20);
-  const timerInterval = ref<any>(null);
+  const timerInterval = ref<ReturnType<typeof setInterval> | null>(null);
+
+  // Cross-tab BroadcastChannel for M1 frontend-only multiplayer simulation
+  let channel: BroadcastChannel | null = null;
 
   const isInLobby = computed(() => session.value?.status === 'lobby');
   const isQuestionActive = computed(() => session.value?.status === 'question_active');
   const isQuestionResult = computed(() => session.value?.status === 'question_result');
   const isEnded = computed(() => session.value?.status === 'ended');
 
-  // Sorted teams by total_score descending
   const rankedTeams = computed(() => {
     if (!session.value?.teams) return [];
     return [...session.value.teams].sort((a, b) => b.total_score - a.total_score);
   });
 
-  function initSocket(roomCode: string, userId: string, role = 'student') {
-    if (!socket.value) {
-      socket.value = io({
-        transports: ['websocket', 'polling']
-      });
+  function syncMyTeamAndMember(updated: GameSession, userId?: string) {
+    session.value = JSON.parse(JSON.stringify(updated)) as GameSession;
+    const targetUserId = userId || myMember.value?.user_id;
+    if (targetUserId) {
+      for (const team of session.value.teams) {
+        const found = team.members.find(m => m.user_id === targetUserId);
+        if (found) {
+          myTeam.value = team;
+          myMember.value = found;
+          break;
+        }
+      }
+    }
+  }
 
-      socket.value.on('connect', () => {
-        socket.value?.emit('session:join', { room_code: roomCode, user_id: userId, role });
-      });
+  function broadcastUpdate(msg: BroadcastMessage) {
+    if (channel) {
+      channel.postMessage(msg);
+    }
+  }
 
-      socket.value.on('session:updated', (updated: GameSession) => {
-        session.value = updated;
-        // Re-sync my team and member if exists
-        if (myMember.value) {
-          for (const team of updated.teams) {
-            const found = team.members.find(m => m.user_id === myMember.value?.user_id);
-            if (found) {
-              myTeam.value = team;
-              myMember.value = found;
-              break;
+  async function initSocket(roomCode: string, userId: string, _role = 'student') {
+    loading.value = true;
+    error.value = null;
+    try {
+      const initial = await sessionMockService.getSession(roomCode);
+      syncMyTeamAndMember(initial, userId);
+
+      if (typeof BroadcastChannel !== 'undefined' && !channel) {
+        channel = new BroadcastChannel('qiuizez_m1_channel');
+        channel.onmessage = (event: MessageEvent<BroadcastMessage>) => {
+          const payload = event.data;
+          if (!payload || payload.session.room_code !== roomCode) return;
+
+          syncMyTeamAndMember(payload.session, userId);
+
+          if (payload.type === 'question:started') {
+            selectedAnswerIndex.value = null;
+            answerResult.value = null;
+            answerStats.value = [0, 0, 0, 0];
+            startTimer(payload.session.current_question?.time_limit_seconds || 20);
+          } else if (payload.type === 'question:ended') {
+            stopTimer();
+            if (payload.answerStats) {
+              answerStats.value = payload.answerStats;
             }
+          } else if (payload.type === 'session:ended') {
+            stopTimer();
+            soundFX.playFanfare();
           }
-        }
-      });
-
-      socket.value.on('question:started', (payload: any) => {
-        selectedAnswerIndex.value = null;
-        answerResult.value = null;
-        answerStats.value = [0, 0, 0, 0];
-        startTimer(payload.time_limit || 20);
-      });
-
-      socket.value.on('player:answer_result', (result: PlayerAnswerResult) => {
-        answerResult.value = result;
-        if (result.is_correct) {
-          soundFX.playCorrect();
-        } else {
-          soundFX.playWrong();
-        }
-      });
-
-      socket.value.on('question:ended', (payload: any) => {
-        stopTimer();
-        if (payload.answer_stats) {
-          answerStats.value = payload.answer_stats;
-        }
-      });
-
-      socket.value.on('session:ended', () => {
-        stopTimer();
-        soundFX.playFanfare();
-      });
-    } else {
-      socket.value.emit('session:join', { room_code: roomCode, user_id: userId, role });
+        };
+      }
+    } catch (err: unknown) {
+      error.value = err instanceof Error ? err.message : 'Failed to load mock session';
+    } finally {
+      loading.value = false;
     }
   }
 
@@ -200,43 +211,91 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
-  function submitAnswer(roomCode: string, userId: string, questionId: string, optionIndex: number) {
+  function submitAnswer(roomCode: string, userId: string, _questionId: string, optionIndex: number) {
     if (selectedAnswerIndex.value !== null) return;
     selectedAnswerIndex.value = optionIndex;
-    socket.value?.emit('player:submit_answer', {
-      room_code: roomCode,
-      user_id: userId,
-      question_id: questionId,
-      selected_option_index: optionIndex,
-      time_remaining: timeRemaining.value
-    });
+
+    const outcome = sessionMockService.submitAnswer(roomCode, userId, optionIndex, timeRemaining.value);
+    if (outcome) {
+      syncMyTeamAndMember(outcome.session, userId);
+      answerResult.value = outcome.result;
+      if (outcome.result.is_correct) {
+        soundFX.playCorrect();
+      } else {
+        soundFX.playWrong();
+      }
+      broadcastUpdate({ type: 'session:updated', session: outcome.session });
+    }
   }
 
   function hostStartGame(roomCode: string) {
-    socket.value?.emit('session:start', { room_code: roomCode });
+    const updated = sessionMockService.startQuestion(roomCode, 0);
+    if (updated) {
+      syncMyTeamAndMember(updated);
+      selectedAnswerIndex.value = null;
+      answerResult.value = null;
+      answerStats.value = [0, 0, 0, 0];
+      startTimer(updated.current_question?.time_limit_seconds || 20);
+      broadcastUpdate({ type: 'question:started', session: updated });
+    }
   }
 
   function hostShowResult(roomCode: string) {
-    socket.value?.emit('session:show_result', { room_code: roomCode });
+    stopTimer();
+    const outcome = sessionMockService.revealQuestionResult(roomCode);
+    if (outcome) {
+      syncMyTeamAndMember(outcome.session);
+      answerStats.value = outcome.answerStats;
+      broadcastUpdate({
+        type: 'question:ended',
+        session: outcome.session,
+        answerStats: outcome.answerStats
+      });
+    }
   }
 
   function hostNextQuestion(roomCode: string) {
-    socket.value?.emit('session:next_question', { room_code: roomCode });
+    const nextIdx = (session.value?.current_question_index ?? 0) + 1;
+    const updated = sessionMockService.startQuestion(roomCode, nextIdx);
+    if (updated) {
+      syncMyTeamAndMember(updated);
+      if (updated.status === 'ended') {
+        stopTimer();
+        soundFX.playFanfare();
+        broadcastUpdate({ type: 'session:ended', session: updated });
+      } else {
+        selectedAnswerIndex.value = null;
+        answerResult.value = null;
+        answerStats.value = [0, 0, 0, 0];
+        startTimer(updated.current_question?.time_limit_seconds || 20);
+        broadcastUpdate({ type: 'question:started', session: updated });
+      }
+    }
   }
 
   function hostRandomizeTeams(roomCode: string) {
-    socket.value?.emit('session:randomize_teams', { room_code: roomCode });
+    const updated = sessionMockService.randomizeTeams(roomCode);
+    if (updated) {
+      syncMyTeamAndMember(updated);
+      broadcastUpdate({ type: 'session:updated', session: updated });
+    }
   }
 
   function hostEndGame(roomCode: string) {
-    socket.value?.emit('session:end', { room_code: roomCode });
+    stopTimer();
+    const updated = sessionMockService.endSession(roomCode);
+    if (updated) {
+      syncMyTeamAndMember(updated);
+      soundFX.playFanfare();
+      broadcastUpdate({ type: 'session:ended', session: updated });
+    }
   }
 
   function leaveSession() {
     stopTimer();
-    if (socket.value) {
-      socket.value.disconnect();
-      socket.value = null;
+    if (channel) {
+      channel.close();
+      channel = null;
     }
     session.value = null;
     myTeam.value = null;
@@ -246,10 +305,11 @@ export const useGameStore = defineStore('game', () => {
   }
 
   return {
-    socket,
     session,
     myTeam,
     myMember,
+    loading,
+    error,
     selectedAnswerIndex,
     answerResult,
     answerStats,
@@ -262,11 +322,10 @@ export const useGameStore = defineStore('game', () => {
     initSocket,
     submitAnswer,
     hostStartGame,
-    hostRandomizeTeams,
     hostShowResult,
     hostNextQuestion,
+    hostRandomizeTeams,
     hostEndGame,
     leaveSession
   };
 });
-
