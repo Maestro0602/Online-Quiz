@@ -1,0 +1,260 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .header-title { font-family: 'Inter', system-ui, sans-serif; font-size: 28px; font-weight: 800; fill: #0f172a; }
+      .header-sub { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; fill: #64748b; }
+      .section-title { font-family: 'Inter', system-ui, sans-serif; font-size: 18px; font-weight: 700; fill: #1e293b; }
+      .card-bg { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.5; rx: 12; }
+      .swatch-label { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: #334155; }
+      .swatch-hex { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #64748b; }
+      .btn-text { font-family: 'Inter', system-ui, sans-serif; font-size: 14px; font-weight: 700; fill: #ffffff; text-anchor: middle; dominant-baseline: middle; }
+      .shape-text { font-family: 'Inter', system-ui, sans-serif; font-size: 15px; font-weight: 700; fill: #ffffff; text-anchor: middle; dominant-baseline: middle; }
+      .badge-text { font-family: 'Inter', system-ui, sans-serif; font-size: 12px; font-weight: 700; fill: #ffffff; text-anchor: middle; dominant-baseline: middle; }
+    </style>
+    <filter id="shadow3d" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="0" flood-color="rgba(0,0,0,0.25)" />
+    </filter>
+  </defs>
+
+  <rect width="1440" height="900" class="bg" />
+
+  <!-- HEADER -->
+  <g transform="translate(60, 40)">
+    <text x="0" y="24" class="header-title">qiuizez — Design System & Theme Templates</text>
+    <text x="0" y="50" class="header-sub">Figma-Ready UI Tokens, 4-Theme Palettes, 3D Tactile Buttons & Kahoot Shape Cards</text>
+  </g>
+
+  <!-- ROW 1: 4 THEMES -->
+  <g transform="translate(60, 110)">
+    <!-- THEME 1: Ocean Blue (Default) -->
+    <g transform="translate(0, 0)">
+      <rect width="310" height="240" class="card-bg" />
+      <text x="20" y="32" class="section-title">1. Ocean Blue (Default)</text>
+      <!-- Swatches -->
+      <g transform="translate(20, 50)">
+        <rect x="0" y="0" width="55" height="45" rx="6" fill="#086288" />
+        <rect x="70" y="0" width="55" height="45" rx="6" fill="#4882ab" />
+        <rect x="140" y="0" width="55" height="45" rx="6" fill="#93d0f8" />
+        <rect x="210" y="0" width="55" height="45" rx="6" fill="#fee6ba" stroke="#e2e8f0" />
+
+        <text x="0" y="62" class="swatch-label">Dark Teal</text>
+        <text x="0" y="75" class="swatch-hex">#086288</text>
+
+        <text x="70" y="62" class="swatch-label">Steel Blue</text>
+        <text x="70" y="75" class="swatch-hex">#4882ab</text>
+
+        <text x="140" y="62" class="swatch-label">Sky Blue</text>
+        <text x="140" y="75" class="swatch-hex">#93d0f8</text>
+
+        <text x="210" y="62" class="swatch-label">Cream</text>
+        <text x="210" y="75" class="swatch-hex">#fee6ba</text>
+      </g>
+      <!-- Mini Preview -->
+      <g transform="translate(20, 155)">
+        <rect width="270" height="65" rx="8" fill="#086288" />
+        <rect x="12" y="14" width="120" height="36" rx="6" fill="#4882ab" filter="url(#shadow3d)" />
+        <text x="72" y="32" class="btn-text">Primary Btn</text>
+        <circle cx="160" cy="32" r="14" fill="#93d0f8" />
+        <circle cx="200" cy="32" r="14" fill="#fee6ba" />
+      </g>
+    </g>
+
+    <!-- THEME 2: Sage Green -->
+    <g transform="translate(340, 0)">
+      <rect width="310" height="240" class="card-bg" />
+      <text x="20" y="32" class="section-title">2. Sage Green</text>
+      <g transform="translate(20, 50)">
+        <rect x="0" y="0" width="55" height="45" rx="6" fill="#5b6c54" />
+        <rect x="70" y="0" width="55" height="45" rx="6" fill="#859b7d" />
+        <rect x="140" y="0" width="55" height="45" rx="6" fill="#acc5a6" />
+        <rect x="210" y="0" width="55" height="45" rx="6" fill="#d1e8cf" stroke="#e2e8f0" />
+
+        <text x="0" y="62" class="swatch-label">Forest</text>
+        <text x="0" y="75" class="swatch-hex">#5b6c54</text>
+
+        <text x="70" y="62" class="swatch-label">Muted</text>
+        <text x="70" y="75" class="swatch-hex">#859b7d</text>
+
+        <text x="140" y="62" class="swatch-label">Soft</text>
+        <text x="140" y="75" class="swatch-hex">#acc5a6</text>
+
+        <text x="210" y="62" class="swatch-label">Mint</text>
+        <text x="210" y="75" class="swatch-hex">#d1e8cf</text>
+      </g>
+      <g transform="translate(20, 155)">
+        <rect width="270" height="65" rx="8" fill="#5b6c54" />
+        <rect x="12" y="14" width="120" height="36" rx="6" fill="#859b7d" filter="url(#shadow3d)" />
+        <text x="72" y="32" class="btn-text">Sage Btn</text>
+        <circle cx="160" cy="32" r="14" fill="#acc5a6" />
+        <circle cx="200" cy="32" r="14" fill="#d1e8cf" />
+      </g>
+    </g>
+
+    <!-- THEME 3: Monochrome (Black & White) -->
+    <g transform="translate(680, 0)">
+      <rect width="310" height="240" class="card-bg" />
+      <text x="20" y="32" class="section-title">3. Black &amp; White (Monochrome)</text>
+      <g transform="translate(20, 50)">
+        <rect x="0" y="0" width="55" height="45" rx="6" fill="#000000" />
+        <rect x="70" y="0" width="55" height="45" rx="6" fill="#1e293b" />
+        <rect x="140" y="0" width="55" height="45" rx="6" fill="#64748b" />
+        <rect x="210" y="0" width="55" height="45" rx="6" fill="#ffffff" stroke="#94a3b8" />
+
+        <text x="0" y="62" class="swatch-label">Obsidian</text>
+        <text x="0" y="75" class="swatch-hex">#000000</text>
+
+        <text x="70" y="62" class="swatch-label">Slate Dark</text>
+        <text x="70" y="75" class="swatch-hex">#1e293b</text>
+
+        <text x="140" y="62" class="swatch-label">Slate Mid</text>
+        <text x="140" y="75" class="swatch-hex">#64748b</text>
+
+        <text x="210" y="62" class="swatch-label">Pure White</text>
+        <text x="210" y="75" class="swatch-hex">#ffffff</text>
+      </g>
+      <g transform="translate(20, 155)">
+        <rect width="270" height="65" rx="8" fill="#000000" />
+        <rect x="12" y="14" width="120" height="36" rx="6" fill="#ffffff" stroke="#000000" stroke-width="2" filter="url(#shadow3d)" />
+        <text x="72" y="32" class="btn-text" fill="#000000">Mono Btn</text>
+        <circle cx="160" cy="32" r="14" fill="#ffffff" />
+        <circle cx="200" cy="32" r="14" fill="#64748b" />
+      </g>
+    </g>
+
+    <!-- THEME 4: Classic (Kahoot Purple) -->
+    <g transform="translate(1020, 0)">
+      <rect width="300" height="240" class="card-bg" />
+      <text x="20" y="32" class="section-title">4. Classic (Purple &amp; Orange)</text>
+      <g transform="translate(20, 50)">
+        <rect x="0" y="0" width="55" height="45" rx="6" fill="#46178f" />
+        <rect x="70" y="0" width="55" height="45" rx="6" fill="#1368ce" />
+        <rect x="140" y="0" width="55" height="45" rx="6" fill="#ffa602" />
+        <rect x="210" y="0" width="55" height="45" rx="6" fill="#ffffff" stroke="#e2e8f0" />
+
+        <text x="0" y="62" class="swatch-label">Kahoot Purp</text>
+        <text x="0" y="75" class="swatch-hex">#46178f</text>
+
+        <text x="70" y="62" class="swatch-label">Classic Blue</text>
+        <text x="70" y="75" class="swatch-hex">#1368ce</text>
+
+        <text x="140" y="62" class="swatch-label">Accent Gold</text>
+        <text x="140" y="75" class="swatch-hex">#ffa602</text>
+
+        <text x="210" y="62" class="swatch-label">Card White</text>
+        <text x="210" y="75" class="swatch-hex">#ffffff</text>
+      </g>
+      <g transform="translate(20, 155)">
+        <rect width="260" height="65" rx="8" fill="#46178f" />
+        <rect x="12" y="14" width="120" height="36" rx="6" fill="#ffa602" filter="url(#shadow3d)" />
+        <text x="72" y="32" class="btn-text">Classic Btn</text>
+        <circle cx="155" cy="32" r="14" fill="#1368ce" />
+        <circle cx="195" cy="32" r="14" fill="#ffa602" />
+      </g>
+    </g>
+  </g>
+
+  <!-- ROW 2: SHAPE BUTTON CARDS & 3D BUTTON STATES -->
+  <g transform="translate(60, 380)">
+    <!-- 4 KAHOOT SHAPE CARDS -->
+    <g transform="translate(0, 0)">
+      <rect width="780" height="230" class="card-bg" />
+      <text x="24" y="34" class="section-title">4 Kahoot-Style Touch Answer Cards (Gameplay Quadrants)</text>
+
+      <g transform="translate(24, 60)">
+        <!-- Red Triangle -->
+        <g transform="translate(0, 0)">
+          <rect width="165" height="130" rx="10" fill="#e21b3c" filter="url(#shadow3d)" />
+          <polygon points="82,30 60,65 104,65" fill="#ffffff" />
+          <text x="82" y="95" class="shape-text">Option 1</text>
+          <text x="82" y="112" class="swatch-hex" fill="#ffccd4">Red (#e21b3c)</text>
+        </g>
+
+        <!-- Blue Diamond -->
+        <g transform="translate(185, 0)">
+          <rect width="165" height="130" rx="10" fill="#1368ce" filter="url(#shadow3d)" />
+          <polygon points="82,25 102,48 82,71 62,48" fill="#ffffff" />
+          <text x="82" y="95" class="shape-text">Option 2</text>
+          <text x="82" y="112" class="swatch-hex" fill="#cfe2fe">Blue (#1368ce)</text>
+        </g>
+
+        <!-- Yellow Circle -->
+        <g transform="translate(370, 0)">
+          <rect width="165" height="130" rx="10" fill="#d88b02" filter="url(#shadow3d)" />
+          <circle cx="82" cy="48" r="22" fill="#ffffff" />
+          <text x="82" y="95" class="shape-text">Option 3</text>
+          <text x="82" y="112" class="swatch-hex" fill="#fef3c7">Yellow (#d88b02)</text>
+        </g>
+
+        <!-- Green Square -->
+        <g transform="translate(555, 0)">
+          <rect width="165" height="130" rx="10" fill="#26890c" filter="url(#shadow3d)" />
+          <rect x="62" y="28" width="40" height="40" rx="4" fill="#ffffff" />
+          <text x="82" y="95" class="shape-text">Option 4</text>
+          <text x="82" y="112" class="swatch-hex" fill="#dcfce7">Green (#26890c)</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- 3D TACTILE BUTTON SPECIFICATIONS & STATES -->
+    <g transform="translate(810, 0)">
+      <rect width="510" height="230" class="card-bg" />
+      <text x="24" y="34" class="section-title">3D Tactile Buttons &amp; Press Physics</text>
+
+      <g transform="translate(24, 60)">
+        <!-- Default State -->
+        <g transform="translate(0, 0)">
+          <rect width="140" height="44" rx="8" fill="#4882ab" filter="url(#shadow3d)" />
+          <text x="70" y="22" class="btn-text">Normal</text>
+          <text x="70" y="70" class="swatch-label" text-anchor="middle">dy: 4px shadow</text>
+        </g>
+
+        <!-- Hover State -->
+        <g transform="translate(160, 0)">
+          <rect width="140" height="44" rx="8" fill="#086288" filter="url(#shadow3d)" />
+          <text x="70" y="22" class="btn-text">Hover</text>
+          <text x="70" y="70" class="swatch-label" text-anchor="middle">brightness(1.08)</text>
+        </g>
+
+        <!-- Active/Pressed State -->
+        <g transform="translate(320, 0)">
+          <g transform="translate(0, 3)">
+            <rect width="140" height="44" rx="8" fill="#086288" />
+            <rect width="140" height="44" rx="8" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="1" />
+          </g>
+          <text x="70" y="25" class="btn-text">Pressed (Active)</text>
+          <text x="70" y="70" class="swatch-label" text-anchor="middle">translateY(3px)</text>
+        </g>
+      </g>
+
+      <!-- Team Badge Badges -->
+      <g transform="translate(24, 150)">
+        <text x="0" y="14" class="swatch-label">Team Color Badges:</text>
+        <rect x="130" y="0" width="70" height="26" rx="6" fill="#e21b3c" />
+        <text x="165" y="13" class="badge-text">[R] Red</text>
+
+        <rect x="210" y="0" width="70" height="26" rx="6" fill="#1368ce" />
+        <text x="245" y="13" class="badge-text">[B] Blue</text>
+
+        <rect x="290" y="0" width="70" height="26" rx="6" fill="#d88b02" />
+        <text x="325" y="13" class="badge-text">[G] Gold</text>
+
+        <rect x="370" y="0" width="70" height="26" rx="6" fill="#26890c" />
+        <text x="405" y="13" class="badge-text">[V] Viper</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ROW 3: TYPOGRAPHY & TOKEN GUIDE -->
+  <g transform="translate(60, 640)">
+    <rect width="1320" height="210" class="card-bg" />
+    <text x="24" y="34" class="section-title">Typography Scale &amp; Figma Import Tokens</text>
+
+    <g transform="translate(24, 60)">
+      <text x="0" y="24" font-family="'Inter', sans-serif" font-size="28px" font-weight="800" fill="#0f172a">Display Header 28px (Bold 800) — Lobby PINs, Brand Titles</text>
+      <text x="0" y="60" font-family="'Inter', sans-serif" font-size="20px" font-weight="700" fill="#1e293b">H1 / Question Prompt 20px (Bold 700) — Main question texts &amp; modal headers</text>
+      <text x="0" y="92" font-family="'Inter', sans-serif" font-size="16px" font-weight="600" fill="#334155">Card Title / Button 16px (Semi-Bold 600) — Shape options &amp; action triggers</text>
+      <text x="0" y="120" font-family="'Inter', sans-serif" font-size="14px" font-weight="400" fill="#64748b">Body / Meta Text 14px (Regular 400) — Subtitles, player roster chips, team descriptions</text>
+    </g>
+  </g>
+</svg>

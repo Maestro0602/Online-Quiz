@@ -26,119 +26,148 @@
     <!-- STAGE 1: LOBBY -->
     <section v-if="gameStore.isInLobby" class="lobby-stage animate-pop">
       <div class="lobby-center-card card-kahoot">
-        <div class="lobby-qr-pin">
-          <p class="join-prompt">Join on your phone or browser at this room PIN:</p>
-          <div class="giant-pin">{{ roomCode }}</div>
+        <!-- Top Room PIN Banner -->
+        <div class="lobby-top-banner">
+          <div class="lobby-pin-inline">
+            <span class="join-prompt">Join on your phone or browser at room PIN:</span>
+            <span class="giant-pin">{{ roomCode }}</span>
+          </div>
           <div class="player-count-badge">
             {{ totalPlayersCount }} {{ totalPlayersCount === 1 ? 'Player' : 'Players' }} Connected
           </div>
         </div>
 
-        <!-- All Connected Students Banner -->
-        <div class="all-students-roster-box">
-          <div class="roster-header">
-            <span class="roster-title">All Connected Students & Players ({{ totalPlayersCount }})</span>
-            <span class="roster-sub">Ready to be divided into balanced teams</span>
-          </div>
-          <div class="roster-chips">
-            <div v-if="allConnectedStudents.length === 0" class="waiting-text">
-              Waiting for players to join with PIN {{ roomCode }}...
-            </div>
-            <div
-              v-for="st in allConnectedStudents"
-              :key="st.id"
-              class="student-roster-chip animate-pop"
-              :style="{ borderLeftColor: st.teamColor }"
-            >
-              <span class="st-avatar">{{ st.avatar || st.user_name.substring(0, 2).toUpperCase() }}</span>
-              <span class="st-name">{{ st.user_name }}</span>
-              <span class="st-team" :style="{ color: st.teamColor }">• {{ st.teamName }}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Balanced Teams Grid -->
-        <div class="teams-lobby-grid">
-          <div
-            v-for="team in gameStore.session?.teams"
-            :key="team.id"
-            class="team-lobby-box"
-            :style="{ borderColor: team.color }"
-          >
-            <div class="team-box-header" :style="{ backgroundColor: team.color }">
-              <span class="t-badge">[{{ team.badge }}]</span>
-              <span class="t-name">{{ team.name }}</span>
-              <span class="t-count">({{ team.members.length }})</span>
+        <!-- 2-Column Split Layout: Left = Teams & Actions, Right = Big Spin Wheel & INPUTS List -->
+        <div class="lobby-split-layout">
+          <!-- LEFT COLUMN: Assigned Teams Board + Action Buttons -->
+          <div class="lobby-teams-pane">
+            <div class="pane-section-header">
+              <span class="pane-title">Assigned Teams Board ({{ gameStore.session?.teams?.length || 4 }} Groups)</span>
+              <span class="pane-sub">Auto-balanced by Spin Wheel</span>
             </div>
 
-            <div class="team-members-list">
-              <div v-if="team.members.length === 0" class="waiting-text">
-                Waiting for teammates...
-              </div>
+            <div class="teams-lobby-grid">
               <div
-                v-for="member in team.members"
-                :key="member.id"
-                class="member-chip animate-pop"
+                v-for="team in gameStore.session?.teams"
+                :key="team.id"
+                class="team-lobby-box"
+                :style="{ borderColor: team.color }"
               >
-                <span>[{{ member.avatar || member.user_name.substring(0, 2).toUpperCase() }}]</span>
-                <span>{{ member.user_name }}</span>
+                <div class="team-box-header" :style="{ backgroundColor: team.color }">
+                  <span class="t-badge">[{{ team.badge }}]</span>
+                  <span class="t-name">{{ team.name }}</span>
+                  <span class="t-count">{{ team.members.length }}</span>
+                </div>
+
+                <div class="team-members-list">
+                  <div v-if="team.members.length === 0" class="waiting-text">
+                    Waiting for teammates...
+                  </div>
+                  <div
+                    v-for="member in team.members"
+                    :key="member.id"
+                    class="member-chip animate-pop"
+                  >
+                    <span>[{{ member.avatar || member.user_name.substring(0, 2).toUpperCase() }}]</span>
+                    <span>{{ member.user_name }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="start-action">
+              <div class="lobby-action-row">
+                <button
+                  @click="triggerRandomizeWheel"
+                  :disabled="totalPlayersCount === 0 || isSpinningWheel"
+                  class="btn-kahoot btn-randomize"
+                >
+                  <span>Randomize Teams</span>
+                </button>
+
+                <button
+                  @click="handleStartGameClick"
+                  :disabled="totalPlayersCount === 0 || isStartingCountdown"
+                  class="btn-kahoot btn-primary btn-start-game animate-pulse-slow"
+                >
+                  <span v-if="isStartingCountdown">Starting in {{ countdownTimer }}s...</span>
+                  <span v-else>Start Game Now</span>
+                </button>
+              </div>
+              <p v-if="totalPlayersCount === 0" class="sub-hint">
+                Waiting for at least 1 player to join...
+              </p>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN: Big Team Picker Wheel + INPUTS Roster -->
+          <div class="lobby-wheel-inputs-pane">
+            <!-- Big Team Picker Wheel Card -->
+            <div class="wheel-side-card">
+              <h3 class="wheel-side-title">Team Picker Wheel</h3>
+              <p class="wheel-side-sub">
+                {{ wheelResultText || 'Click START in the center to spin & shuffle teams' }}
+              </p>
+
+              <div class="wheel-spinner-wrapper">
+                <div class="wheel-pointer">▼</div>
+                <div
+                  class="wheel-disc"
+                  :style="{ transform: `rotate(${wheelRotation}deg)` }"
+                >
+                  <div
+                    v-for="(team, idx) in gameStore.session?.teams"
+                    :key="team.id"
+                    class="wheel-slice"
+                    :style="{
+                      backgroundColor: team.color,
+                      transform: `rotate(${(360 / (gameStore.session?.teams.length || 2)) * idx}deg)`
+                    }"
+                  >
+                    <span class="slice-label">{{ team.name }}</span>
+                  </div>
+                </div>
+                <button
+                  class="wheel-center-start-btn"
+                  :disabled="totalPlayersCount === 0 || isSpinningWheel"
+                  @click="triggerRandomizeWheel"
+                  title="Spin Wheel to Randomize Teams"
+                >
+                  {{ isSpinningWheel ? '...' : 'START' }}
+                </button>
+              </div>
+            </div>
+
+            <!-- INPUTS [N] Connected Players Roster Box -->
+            <div class="all-students-roster-box">
+              <div class="roster-header">
+                <div class="inputs-heading-group">
+                  <span class="roster-title">INPUTS</span>
+                  <span class="inputs-count-box">{{ totalPlayersCount }}</span>
+                </div>
+                <span class="roster-sub">All Equal • {{ gameStore.session?.teams?.length || 4 }} Groups</span>
+              </div>
+              <div class="inputs-divider"></div>
+              <div class="roster-rows-list">
+                <div v-if="allConnectedStudents.length === 0" class="waiting-text">
+                  Waiting for players to join with PIN {{ roomCode }}...
+                </div>
+                <div
+                  v-for="st in allConnectedStudents"
+                  :key="st.id"
+                  class="student-input-row animate-pop"
+                >
+                  <span class="st-avatar">{{ st.avatar || st.user_name.substring(0, 2).toUpperCase() }}</span>
+                  <span class="st-name">{{ st.user_name }}</span>
+                  <span class="st-team-pill" :style="{ backgroundColor: st.teamColor }">{{ st.teamName }}</span>
+                  <span class="st-check-box">✓</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="start-action">
-          <div class="lobby-action-row">
-            <button
-              @click="triggerRandomizeWheel"
-              :disabled="totalPlayersCount === 0 || isSpinningWheel"
-              class="btn-kahoot btn-randomize"
-            >
-              <span>Randomize Teams (Spin Wheel)</span>
-            </button>
-
-            <button
-              @click="handleStartGameClick"
-              :disabled="totalPlayersCount === 0 || isStartingCountdown"
-              class="btn-kahoot btn-primary btn-start-game animate-pulse-slow"
-            >
-              <span v-if="isStartingCountdown">Starting in {{ countdownTimer }}s...</span>
-              <span v-else>Start Game Now</span>
-            </button>
-          </div>
-          <p v-if="totalPlayersCount === 0" class="sub-hint">
-            Waiting for at least 1 player to join...
-          </p>
         </div>
       </div>
     </section>
-
-    <!-- Randomize Wheel Modal -->
-    <div v-if="showWheelModal" class="wheel-modal-overlay">
-      <div class="wheel-modal-card card-kahoot animate-pop">
-        <h2>Team Balancer Wheel</h2>
-        <p class="wheel-sub">{{ wheelResultText }}</p>
-        <div class="wheel-spinner-wrapper">
-          <div class="wheel-pointer">▼</div>
-          <div
-            class="wheel-disc"
-            :style="{ transform: `rotate(${wheelRotation}deg)` }"
-          >
-            <div
-              v-for="(team, idx) in gameStore.session?.teams"
-              :key="team.id"
-              class="wheel-slice"
-              :style="{
-                backgroundColor: team.color,
-                transform: `rotate(${(360 / (gameStore.session?.teams.length || 2)) * idx}deg)`
-              }"
-            >
-              <span class="slice-label">{{ team.name }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Teams Assembled Countdown Overlay -->
     <div v-if="isStartingCountdown" class="teams-assembled-overlay">
@@ -533,39 +562,105 @@ onUnmounted(() => {
 
 /* LOBBY */
 .lobby-center-card {
-  text-align: center;
-  padding: 36px;
+  text-align: left;
+  padding: 28px;
+}
+
+.lobby-top-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1.5px solid var(--theme-card-border);
+  border-radius: 12px;
+  padding: 14px 22px;
+  margin-bottom: 24px;
+}
+
+.lobby-pin-inline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
 }
 
 .join-prompt {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: #555;
+  color: var(--theme-card-text);
 }
 
 .giant-pin {
-  font-size: 3.8rem;
+  font-size: 2.6rem;
   font-weight: 900;
   color: #46178f;
-  letter-spacing: 8px;
-  margin: 12px 0;
+  letter-spacing: 5px;
+  line-height: 1;
 }
 
 .player-count-badge {
   display: inline-block;
-  background: #f0f0f0;
-  color: #333;
+  background: #ffffff;
+  color: #222;
+  border: 1.5px solid var(--theme-card-border);
   font-weight: 800;
-  padding: 6px 16px;
+  padding: 8px 18px;
   border-radius: 20px;
-  font-size: 1.05rem;
+  font-size: 1rem;
+}
+
+.lobby-split-layout {
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  gap: 28px;
+  align-items: stretch;
+}
+
+@media (max-width: 960px) {
+  .lobby-split-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lobby-teams-pane {
+  display: flex;
+  flex-direction: column;
+}
+
+.pane-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+}
+
+.pane-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--theme-card-text);
+}
+
+.pane-sub {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--theme-card-text);
+  opacity: 0.75;
 }
 
 .teams-lobby-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 18px;
-  margin: 36px 0;
+  margin-bottom: 22px;
+  flex: 1;
+}
+
+@media (max-width: 600px) {
+  .teams-lobby-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .team-lobby-box {
@@ -573,7 +668,7 @@ onUnmounted(() => {
   border-radius: 12px;
   overflow: hidden;
   background: #fafafa;
-  min-height: 180px;
+  min-height: 210px;
   display: flex;
   flex-direction: column;
 }
@@ -590,6 +685,14 @@ onUnmounted(() => {
 .t-name {
   flex: 1;
   text-align: left;
+}
+
+.t-count {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 6px;
+  padding: 1px 8px;
+  font-size: 0.85rem;
 }
 
 .team-members-list {
@@ -615,6 +718,7 @@ onUnmounted(() => {
   padding: 6px 12px;
   font-weight: 700;
   font-size: 0.85rem;
+  color: #222;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -622,8 +726,9 @@ onUnmounted(() => {
 }
 
 .btn-start-game {
-  font-size: 1.4rem;
-  padding: 18px 48px;
+  flex: 1;
+  font-size: 1.35rem;
+  padding: 16px 32px;
   border-radius: 12px;
 }
 
@@ -631,6 +736,7 @@ onUnmounted(() => {
   color: #777;
   font-size: 0.9rem;
   margin-top: 8px;
+  text-align: center;
 }
 
 /* QUESTION STAGE */
@@ -922,13 +1028,45 @@ onUnmounted(() => {
   padding: 14px 28px;
 }
 
-/* ALL STUDENTS ROSTER */
+/* RIGHT COLUMN: WHEEL + INPUTS ROSTER */
+.lobby-wheel-inputs-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.wheel-side-card {
+  background: rgba(255, 255, 255, 0.55);
+  border: 2px solid var(--theme-card-border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.wheel-side-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--theme-card-text);
+  margin: 0 0 4px;
+}
+
+.wheel-side-sub {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--theme-card-text);
+  opacity: 0.8;
+  margin: 0 0 18px;
+}
+
+/* ALL STUDENTS / INPUTS ROSTER */
 .all-students-roster-box {
-  background: rgba(0, 0, 0, 0.05);
-  border: 1.5px solid var(--theme-card-border);
+  background: #fafafa;
+  border: 2px solid var(--theme-card-border);
   border-radius: 12px;
   padding: 16px 20px;
-  margin-bottom: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .roster-header {
@@ -937,39 +1075,62 @@ onUnmounted(() => {
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+}
+
+.inputs-heading-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .roster-title {
+  font-weight: 900;
+  font-size: 1.1rem;
+  color: #222;
+  letter-spacing: 0.5px;
+}
+
+.inputs-count-box {
+  background: #ffffff;
+  border: 1.5px solid #888;
+  color: #222;
   font-weight: 800;
-  font-size: 1.05rem;
-  color: var(--theme-card-text);
+  font-size: 0.85rem;
+  padding: 1px 8px;
+  border-radius: 4px;
 }
 
 .roster-sub {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
   color: var(--theme-card-text);
-  opacity: 0.7;
 }
 
-.roster-chips {
+.inputs-divider {
+  border-bottom: 1.5px dashed #ccc;
+  margin-bottom: 12px;
+}
+
+.roster-rows-list {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 210px;
+  overflow-y: auto;
 }
 
-.student-roster-chip {
-  display: inline-flex;
+.student-input-row {
+  display: flex;
   align-items: center;
-  gap: 8px;
-  background: var(--theme-card-bg);
-  color: var(--theme-card-text);
-  border: 1px solid var(--theme-card-border);
-  border-left-width: 5px;
-  padding: 6px 14px;
-  border-radius: 20px;
+  gap: 10px;
+  background: #f1f1f1;
+  border: 1px solid #e0e0e0;
+  padding: 7px 12px;
+  border-radius: 8px;
   font-weight: 700;
   font-size: 0.9rem;
+  color: #222;
 }
 
 .st-avatar {
@@ -982,18 +1143,41 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   font-size: 0.75rem;
+  flex-shrink: 0;
 }
 
-.st-team {
-  font-size: 0.8rem;
+.st-name {
+  flex: 1;
+  text-align: left;
+}
+
+.st-team-pill {
+  color: #ffffff;
+  font-size: 0.75rem;
   font-weight: 800;
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+.st-check-box {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid #333;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #222;
+  font-size: 0.75rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* LOBBY ACTION ROW */
 .lobby-action-row {
   display: flex;
   gap: 16px;
-  justify-content: center;
+  justify-content: space-between;
   flex-wrap: wrap;
   width: 100%;
 }
@@ -1003,8 +1187,8 @@ onUnmounted(() => {
   color: var(--theme-card-text);
   border: 1.5px solid var(--theme-card-border);
   box-shadow: 0 4px 0 var(--theme-card-border);
-  padding: 16px 28px;
-  font-size: 1.15rem;
+  padding: 16px 24px;
+  font-size: 1.1rem;
 }
 
 .btn-randomize:hover:not(:disabled) {
@@ -1012,8 +1196,7 @@ onUnmounted(() => {
   color: var(--theme-card-bg);
 }
 
-/* WHEEL MODAL */
-.wheel-modal-overlay,
+/* WHEEL SPINNER & CENTER START HUB */
 .teams-assembled-overlay {
   position: fixed;
   inset: 0;
@@ -1025,31 +1208,19 @@ onUnmounted(() => {
   padding: 20px;
 }
 
-.wheel-modal-card {
-  max-width: 460px;
-  width: 100%;
-  text-align: center;
-}
-
-.wheel-sub {
-  margin: 8px 0 20px;
-  font-weight: 700;
-  color: var(--theme-card-text);
-}
-
 .wheel-spinner-wrapper {
   position: relative;
-  width: 240px;
-  height: 240px;
+  width: 224px;
+  height: 224px;
   margin: 0 auto;
 }
 
 .wheel-pointer {
   position: absolute;
-  top: -14px;
+  top: -16px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   color: var(--theme-card-text);
   z-index: 10;
 }
@@ -1062,7 +1233,38 @@ onUnmounted(() => {
   position: relative;
   overflow: hidden;
   transition: transform 2.5s cubic-bezier(0.15, 0.9, 0.2, 1);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.wheel-center-start-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #1b1b1b;
+  color: #ffffff;
+  border: 4px solid #ffffff;
+  font-family: inherit;
+  font-weight: 900;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  z-index: 15;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.wheel-center-start-btn:hover:not(:disabled) {
+  transform: translate(-50%, -50%) scale(1.06);
+  background: #086288;
+}
+
+.wheel-center-start-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .wheel-slice {

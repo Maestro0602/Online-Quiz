@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <filter id="btn3d" x="-5%" y="-5%" width="110%" height="125%">
+      <feDropShadow dx="0" dy="4" stdDeviation="0" flood-color="rgba(0,0,0,0.25)" />
+    </filter>
+  </defs>
+
+  <!-- App Background: var(--theme-bg-base) = #086288 -->
+  <rect width="1440" height="900" fill="#086288" />
+
+  <!-- .kahoot-navbar (App.vue) -->
+  <rect width="1440" height="68" fill="#086288" />
+  <line x1="0" y1="68" x2="1440" y2="68" stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+  <g transform="translate(120, 16)">
+    <text x="0" y="27" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#fee6ba">qiuizez</text>
+    <g transform="translate(860, 0)">
+      <text x="51" y="24" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="rgba(255,255,255,0.85)" text-anchor="middle">Join Game</text>
+      <rect x="118" y="2" width="88" height="34" rx="8" fill="#086288" stroke="rgba(255,255,255,0.25)" filter="url(#btn3d)" />
+      <text x="162" y="24" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="#fee6ba" text-anchor="middle">Sign In</text>
+      <rect x="222" y="2" width="148" height="34" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="296" y="24" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#fee6ba" text-anchor="middle">Ocean (Default)  ▼</text>
+    </g>
+  </g>
+
+  <!-- LEFT CARD: Sign In Mode (.login-card in LoginView.vue, max-width: 460px, background: #fee6ba) -->
+  <g transform="translate(220, 115)">
+    <rect width="460" height="625" rx="16" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" />
+
+    <!-- .header-section -->
+    <text x="230" y="56" font-family="'Fredoka', sans-serif" font-size="38px" font-weight="800" fill="#086288" text-anchor="middle">qiuizez</text>
+    <text x="230" y="82" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="#086288" opacity="0.8" text-anchor="middle">Sign in to host live battles or join the game</text>
+
+    <!-- .demo-switch-box (background: #f8f6fc, border: 2px dashed #864cbf) -->
+    <g transform="translate(28, 104)">
+      <rect width="404" height="142" rx="12" fill="#f8f6fc" stroke="#864cbf" stroke-width="2" stroke-dasharray="6 4" />
+      <text x="14" y="24" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="800" fill="#46178f">QUICK 1-CLICK DEMO LOGIN</text>
+
+      <!-- Instructors row -->
+      <text x="14" y="46" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#777777">Instructors:</text>
+      <g transform="translate(14, 54)">
+        <rect x="0" y="0" width="142" height="28" rx="14" fill="#ffffff" stroke="#cccccc" />
+        <text x="71" y="18" font-family="'Fredoka', sans-serif" font-size="12.5px" font-weight="700" fill="#222222" text-anchor="middle">Prof. Ada Lovelace</text>
+
+        <rect x="150" y="0" width="128" height="28" rx="14" fill="#ffffff" stroke="#cccccc" />
+        <text x="214" y="18" font-family="'Fredoka', sans-serif" font-size="12.5px" font-weight="700" fill="#222222" text-anchor="middle">Dr. Alan Turing</text>
+      </g>
+
+      <!-- Students row -->
+      <text x="14" y="102" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#777777">Students:</text>
+      <g transform="translate(14, 108)">
+        <rect x="0" y="0" width="88" height="26" rx="13" fill="#ffffff" stroke="#cccccc" />
+        <text x="44" y="17" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#222222" text-anchor="middle">Alex Rivera</text>
+
+        <rect x="94" y="0" width="84" height="26" rx="13" fill="#ffffff" stroke="#cccccc" />
+        <text x="136" y="17" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#222222" text-anchor="middle">Bella Chen</text>
+
+        <rect x="184" y="0" width="98" height="26" rx="13" fill="#ffffff" stroke="#cccccc" />
+        <text x="233" y="17" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#222222" text-anchor="middle">Carlos Gomez</text>
+
+        <rect x="288" y="0" width="96" height="26" rx="13" fill="#ffffff" stroke="#cccccc" />
+        <text x="336" y="17" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#222222" text-anchor="middle">Diana Prince</text>
+      </g>
+    </g>
+
+    <!-- .tabs -->
+    <g transform="translate(28, 266)">
+      <line x1="0" y1="38" x2="404" y2="38" stroke="#eaeaea" stroke-width="2" />
+      <text x="101" y="25" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="700" fill="#46178f" text-anchor="middle">Sign In</text>
+      <line x1="0" y1="38" x2="202" y2="38" stroke="#46178f" stroke-width="3" />
+      <text x="303" y="25" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="700" fill="#888888" text-anchor="middle">Create Account</text>
+    </g>
+
+    <!-- Sign In Form (.form-body) -->
+    <g transform="translate(28, 326)">
+      <text x="0" y="16" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#086288">Email Address</text>
+      <rect x="0" y="24" width="404" height="44" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="14" y="52" font-family="'Fredoka', sans-serif" font-size="15.5px" font-weight="600" fill="#086288">ada@university.edu</text>
+
+      <text x="0" y="94" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#086288">Password</text>
+      <rect x="0" y="102" width="404" height="44" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="14" y="130" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="700" fill="#086288">•••••••••••</text>
+
+      <!-- Let's Play Button -->
+      <g transform="translate(0, 170)">
+        <rect width="404" height="48" rx="8" fill="#086288" filter="url(#btn3d)" />
+        <text x="202" y="30" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#fee6ba" text-anchor="middle">Let's Play</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- RIGHT CARD: Create Account Tab State (Showing the 4-Role Selector Grid) -->
+  <g transform="translate(760, 115)">
+    <rect width="460" height="680" rx="16" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" />
+
+    <text x="230" y="48" font-family="'Fredoka', sans-serif" font-size="32px" font-weight="800" fill="#086288" text-anchor="middle">qiuizez</text>
+    <text x="230" y="72" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="600" fill="#086288" opacity="0.8" text-anchor="middle">Create Account Tab State (`mode === 'register'`)</text>
+
+    <!-- .tabs -->
+    <g transform="translate(28, 92)">
+      <line x1="0" y1="36" x2="404" y2="36" stroke="#eaeaea" stroke-width="2" />
+      <text x="101" y="24" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="700" fill="#888888" text-anchor="middle">Sign In</text>
+      <text x="303" y="24" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="700" fill="#46178f" text-anchor="middle">Create Account</text>
+      <line x1="202" y1="36" x2="404" y2="36" stroke="#46178f" stroke-width="3" />
+    </g>
+
+    <!-- Register Form (.form-body) -->
+    <g transform="translate(28, 148)">
+      <text x="0" y="15" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#086288">Full Name / Nickname</text>
+      <rect x="0" y="22" width="404" height="42" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="14" y="49" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="#086288" opacity="0.55">e.g. Sarah Connor</text>
+
+      <text x="0" y="86" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#086288">Email Address</text>
+      <rect x="0" y="93" width="404" height="42" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="14" y="120" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="#086288" opacity="0.55">e.g. sarah@gmail.com</text>
+
+      <text x="0" y="157" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#086288">Password</text>
+      <rect x="0" y="164" width="404" height="42" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="14" y="191" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="#086288">••••••••</text>
+
+      <!-- .role-selector (2x2 grid) -->
+      <text x="0" y="228" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#086288">Role</text>
+      <g transform="translate(0, 236)">
+        <rect x="0" y="0" width="196" height="44" rx="8" fill="transparent" stroke="#dddddd" stroke-width="2" />
+        <text x="98" y="28" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#086288" text-anchor="middle">User (Player)</text>
+
+        <rect x="208" y="0" width="196" height="44" rx="8" fill="transparent" stroke="#dddddd" stroke-width="2" />
+        <text x="306" y="28" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#086288" text-anchor="middle">Student</text>
+
+        <rect x="0" y="54" width="196" height="44" rx="8" fill="transparent" stroke="#dddddd" stroke-width="2" />
+        <text x="98" y="82" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#086288" text-anchor="middle">Teacher</text>
+
+        <!-- Selected Role: Instructor -->
+        <rect x="208" y="54" width="196" height="44" rx="8" fill="#f1e9ff" stroke="#46178f" stroke-width="2" />
+        <text x="306" y="82" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#46178f" text-anchor="middle">Instructor</text>
+      </g>
+
+      <!-- Join the Game Button -->
+      <g transform="translate(0, 356)">
+        <rect width="404" height="48" rx="8" fill="#086288" filter="url(#btn3d)" />
+        <text x="202" y="30" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#fee6ba" text-anchor="middle">Join the Game</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- .kahoot-footer -->
+  <line x1="0" y1="848" x2="1440" y2="848" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+  <text x="720" y="878" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle">qiuizez • Collaborative Team Quiz Platform</text>
+</svg>

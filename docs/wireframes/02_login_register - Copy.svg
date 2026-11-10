@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" width="1440" height="900">
+  <defs>
+    <style>
+      .bg-login { fill: #086288; }
+      .card-white { fill: #ffffff; rx: 16; }
+      .tab-active { fill: #086288; }
+      .tab-inactive { fill: #f1f5f9; }
+      .tab-txt-act { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700; fill: #ffffff; text-anchor: middle; dominant-baseline: middle; }
+      .tab-txt-inact { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; fill: #64748b; text-anchor: middle; dominant-baseline: middle; }
+      .input-box { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.5; rx: 8; }
+      .input-lbl { font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; fill: #334155; }
+      .btn-main { fill: #4882ab; rx: 8; filter: url(#drop); }
+      .btn-txt { font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; fill: #ffffff; text-anchor: middle; dominant-baseline: middle; }
+      .demo-btn { fill: #f8fafc; stroke: #e2e8f0; stroke-width: 1.5; rx: 8; }
+    </style>
+    <filter id="drop">
+      <feDropShadow dx="0" dy="4" stdDeviation="0" flood-color="rgba(0,0,0,0.25)" />
+    </filter>
+  </defs>
+
+  <rect width="1440" height="900" class="bg-login" />
+
+  <!-- TOP NAVBAR -->
+  <g transform="translate(80, 22)">
+    <text x="0" y="24" font-family="'Inter', sans-serif" font-size="24px" font-weight="800" fill="#ffffff">qiuizez</text>
+  </g>
+
+  <!-- SPLIT LOGIN / DEMO CARD -->
+  <g transform="translate(380, 120)">
+    <rect width="680" height="640" class="card-white" filter="url(#drop)" />
+
+    <!-- TABS -->
+    <g transform="translate(50, 40)">
+      <rect x="0" y="0" width="280" height="42" rx="8" class="tab-active" />
+      <text x="140" y="21" class="tab-txt-act">Sign In</text>
+
+      <rect x="300" y="0" width="280" height="42" rx="8" class="tab-inactive" />
+      <text x="440" y="21" class="tab-txt-inact">Create Account</text>
+    </g>
+
+    <!-- FORM INPUTS -->
+    <g transform="translate(50, 115)">
+      <text x="0" y="15" class="input-lbl">Email Address</text>
+      <rect x="0" y="25" width="580" height="46" class="input-box" />
+      <text x="15" y="54" font-family="'Inter', sans-serif" font-size="14px" fill="#0f172a">ada@university.edu</text>
+
+      <text x="0" y="100" class="input-lbl">Password</text>
+      <rect x="0" y="110" width="580" height="46" class="input-box" />
+      <text x="15" y="139" font-family="'Inter', sans-serif" font-size="14px" fill="#0f172a">••••••••••••</text>
+
+      <!-- Submit button -->
+      <g transform="translate(0, 180)">
+        <rect width="580" height="48" class="btn-main" />
+        <text x="290" y="24" class="btn-txt">Sign In</text>
+      </g>
+    </g>
+
+    <!-- 1-CLICK DEMO ACCOUNT SELECTOR SECTION -->
+    <line x1="50" y1="380" x2="630" y2="380" stroke="#e2e8f0" stroke-width="1.5" />
+    <text x="340" y="415" font-family="'Inter', sans-serif" font-size="14px" font-weight="700" fill="#334155" text-anchor="middle">Or Test With 1-Click Demo Profiles</text>
+
+    <!-- Demo Profiles Grid -->
+    <g transform="translate(50, 435)">
+      <!-- Instructor 1 -->
+      <g transform="translate(0, 0)">
+        <rect width="280" height="65" class="demo-btn" />
+        <circle cx="35" cy="32" r="18" fill="#4882ab" />
+        <text x="35" y="37" font-family="'Inter', sans-serif" font-size="13px" font-weight="700" fill="#ffffff" text-anchor="middle">A</text>
+        <text x="65" y="26" font-family="'Inter', sans-serif" font-size="13px" font-weight="700" fill="#0f172a">Prof. Ada Lovelace</text>
+        <text x="65" y="44" font-family="'Inter', sans-serif" font-size="11px" font-weight="600" fill="#0369a1">[Instructor Role]</text>
+      </g>
+
+      <!-- Instructor 2 -->
+      <g transform="translate(300, 0)">
+        <rect width="280" height="65" class="demo-btn" />
+        <circle cx="35" cy="32" r="18" fill="#4882ab" />
+        <text x="35" y="37" font-family="'Inter', sans-serif" font-size="13px" font-weight="700" fill="#ffffff" text-anchor="middle">T</text>
+        <text x="65" y="26" font-family="'Inter', sans-serif" font-size="13px" font-weight="700" fill="#0f172a">Dr. Alan Turing</text>
+        <text x="65" y="44" font-family="'Inter', sans-serif" font-size="11px" font-weight="600" fill="#0369a1">[Teacher Role]</text>
+      </g>
+
+      <!-- Student 1 -->
+      <g transform="translate(0, 80)">
+        <rect width="280" height="65" class="demo-btn" />
+        <circle cx="35" cy="32" r="18" fill="#859b7d" />
+        <text x="35" y="37" font-family="'Inter', sans-serif" font-size="13px" font-weight="700" fill="#ffffff" text-anchor="middle">AR</text>
+        <text x="65" y="26" font-family="'Inter', sans-serif" font-size="13px" font-weight="700" fill="#0f172a">Alex Rivera</text>
+        <text x="65" y="44" font-family="'Inter', sans-serif" font-size="11px" font-weight="600" fill="#15803d">[Student Role]</text>
+      </g>
+
+      <!-- Student 2 -->
+      <g transform="translate(300, 80)">
+        <rect width="280" height="65" class="demo-btn" />
+        <circle cx="35" cy="32" r="18" fill="#859b7d" />
+        <text x="35" y="37" font-family="'Inter', sans-serif" font-size="13px" font-weight="700" fill="#ffffff" text-anchor="middle">BC</text>
+        <text x="65" y="26" font-family="'Inter', sans-serif" font-size="13px" font-weight="700" fill="#0f172a">Bella Chen</text>
+        <text x="65" y="44" font-family="'Inter', sans-serif" font-size="11px" font-weight="600" fill="#15803d">[User Role]</text>
+      </g>
+    </g>
+  </g>
+</svg>

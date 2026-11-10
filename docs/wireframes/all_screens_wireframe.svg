@@ -1,0 +1,1657 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4640 3260" width="4640" height="3260">
+  <defs>
+    <filter id="btn3d" x="-5%" y="-5%" width="110%" height="125%">
+      <feDropShadow dx="0" dy="4" stdDeviation="0" flood-color="rgba(0,0,0,0.25)" />
+    </filter>
+    <filter id="hostShadow" x="-5%" y="-5%" width="110%" height="125%">
+      <feDropShadow dx="0" dy="4" stdDeviation="0" flood-color="#4882ab" />
+    </filter>
+    <filter id="randShadow" x="-5%" y="-5%" width="110%" height="125%">
+      <feDropShadow dx="0" dy="4" stdDeviation="0" flood-color="#4882ab" />
+    </filter>
+    <filter id="optShadow" x="-5%" y="-5%" width="110%" height="125%">
+      <feDropShadow dx="0" dy="6" stdDeviation="0" flood-color="rgba(0,0,0,0.2)" />
+    </filter>
+    <filter id="cardDrop" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="rgba(0,0,0,0.35)" />
+    </filter>
+    <filter id="cardElev" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(0,0,0,0.25)" />
+    </filter>
+    <style>
+      .bg-base { fill: #086288; }
+      .card-cream { fill: #fee6ba; stroke: #4882ab; stroke-width: 2; rx: 14; }
+      .card-sage { fill: #d1e8cf; stroke: #859b7d; stroke-width: 2; rx: 12; }
+      .card-mono { fill: #ffffff; stroke: #000000; stroke-width: 2; rx: 12; }
+      .card-classic { fill: #ffffff; stroke: #46178f; stroke-width: 2; rx: 12; }
+      .sec-hdr { font-family: 'Fredoka', 'Montserrat', sans-serif; font-size: 19px; font-weight: 800; fill: #086288; }
+      .token-lbl { font-family: 'Fredoka', 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; fill: #086288; }
+      .token-hex { font-family: 'Montserrat', monospace; font-size: 11px; font-weight: 700; fill: #4882ab; }
+      .btn-txt { font-family: 'Fredoka', 'Montserrat', sans-serif; font-size: 15px; font-weight: 800; text-anchor: middle; dominant-baseline: middle; }
+    </style>
+  </defs>
+
+  <rect width="4640" height="3260" fill="#042f42" />
+
+  <g transform="translate(80, 55)">
+    <text x="0" y="38" font-family="'Fredoka', sans-serif" font-size="42px" font-weight="800" fill="#fee6ba">qiuizez — Complete Exact-Replica UI Wireframes &amp; 4-Theme Design System</text>
+    <text x="0" y="72" font-family="'Fredoka', sans-serif" font-size="20px" font-weight="600" fill="#93d0f8">All 9 Artboards Embedded Inline as Native Vector Groups (100% Figma Compatible — Zero External Links)</text>
+  </g>
+
+  <g id="artboard-0" transform="translate(80, 175)">
+    <text x="0" y="-16" font-family="'Fredoka', sans-serif" font-size="24px" font-weight="800" fill="#fee6ba">00. Design System & 4-Theme CSS Variables (main.css)</text>
+    <g>
+      
+  
+
+  <!-- App Background: var(--theme-bg-base) = #086288 -->
+  <rect width="1440" height="960" class="bg-base" />
+
+  <!-- Top Navbar Replica from App.vue -->
+  <rect width="1440" height="68" fill="#086288" />
+  <line x1="0" y1="68" x2="1440" y2="68" stroke="rgba(255,255,255,0.12)" stroke-width="2" />
+  <g transform="translate(120, 18)">
+    <text x="0" y="24" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#fee6ba">qiuizez</text>
+    <text x="160" y="22" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="rgba(255,255,255,0.9)">Design System &amp; 4-Theme CSS Variable Spec (`main.css` + `App.vue`)</text>
+    <rect x="1030" y="0" width="170" height="34" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+    <text x="1115" y="18" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="700" fill="#fee6ba" text-anchor="middle" dominant-baseline="middle">Ocean (Default)  ▼</text>
+  </g>
+
+  <!-- SECTION 1: THE 4 LIVE THEMES (EXACT CSS VARIABLES FROM main.css) -->
+  <g transform="translate(60, 95)">
+    <!-- THEME 1: [data-theme="ocean"] (Default) -->
+    <g transform="translate(0, 0)">
+      <rect width="315" height="275" rx="14" fill="#086288" stroke="#93d0f8" stroke-width="2" filter="url(#cardElev)" />
+      <!-- Inner .card-kahoot preview -->
+      <rect x="16" y="16" width="283" height="243" class="card-cream" />
+      <text x="32" y="46" class="sec-hdr">1. Ocean (Default)</text>
+      <text x="32" y="64" class="token-hex">[data-theme="ocean"]</text>
+
+      <!-- Swatches -->
+      <g transform="translate(32, 78)">
+        <rect x="0" y="0" width="54" height="42" rx="6" fill="#086288" stroke="#4882ab" />
+        <text x="0" y="56" class="token-lbl">--bg-base</text>
+        <text x="0" y="69" class="token-hex">#086288</text>
+
+        <rect x="65" y="0" width="54" height="42" rx="6" fill="#fee6ba" stroke="#4882ab" />
+        <text x="65" y="56" class="token-lbl">--card-bg</text>
+        <text x="65" y="69" class="token-hex">#fee6ba</text>
+
+        <rect x="130" y="0" width="54" height="42" rx="6" fill="#4882ab" />
+        <text x="130" y="56" class="token-lbl">--border</text>
+        <text x="130" y="69" class="token-hex">#4882ab</text>
+
+        <rect x="195" y="0" width="54" height="42" rx="6" fill="#93d0f8" />
+        <text x="195" y="56" class="token-lbl">--accent</text>
+        <text x="195" y="69" class="token-hex">#93d0f8</text>
+      </g>
+
+      <!-- Live Button Sample -->
+      <g transform="translate(32, 168)">
+        <rect width="120" height="40" rx="8" fill="#086288" filter="url(#btn3d)" />
+        <text x="60" y="20" class="btn-txt" fill="#fee6ba">Enter Room</text>
+
+        <rect x="132" y="0" width="118" height="40" rx="8" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#btn3d)" />
+        <text x="191" y="20" class="btn-txt" fill="#086288">Host</text>
+      </g>
+      <text x="32" y="238" class="token-hex">Card Text: #086288  |  Logo: #fee6ba</text>
+    </g>
+
+    <!-- THEME 2: [data-theme="sage"] -->
+    <g transform="translate(335, 0)">
+      <rect width="315" height="275" rx="14" fill="#5b6c54" stroke="#acc5a6" stroke-width="2" filter="url(#cardElev)" />
+      <rect x="16" y="16" width="283" height="243" class="card-sage" />
+      <text x="32" y="46" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="800" fill="#5b6c54">2. Sage Green</text>
+      <text x="32" y="64" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#859b7d">[data-theme="sage"]</text>
+
+      <g transform="translate(32, 78)">
+        <rect x="0" y="0" width="54" height="42" rx="6" fill="#5b6c54" />
+        <text x="0" y="56" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#5b6c54">--bg-base</text>
+        <text x="0" y="69" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#859b7d">#5b6c54</text>
+
+        <rect x="65" y="0" width="54" height="42" rx="6" fill="#d1e8cf" stroke="#859b7d" />
+        <text x="65" y="56" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#5b6c54">--card-bg</text>
+        <text x="65" y="69" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#859b7d">#d1e8cf</text>
+
+        <rect x="130" y="0" width="54" height="42" rx="6" fill="#859b7d" />
+        <text x="130" y="56" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#5b6c54">--border</text>
+        <text x="130" y="69" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#859b7d">#859b7d</text>
+
+        <rect x="195" y="0" width="54" height="42" rx="6" fill="#acc5a6" />
+        <text x="195" y="56" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#5b6c54">--logo</text>
+        <text x="195" y="69" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#859b7d">#acc5a6</text>
+      </g>
+
+      <g transform="translate(32, 168)">
+        <rect width="120" height="40" rx="8" fill="#5b6c54" filter="url(#btn3d)" />
+        <text x="60" y="20" class="btn-txt" fill="#d1e8cf">Enter Room</text>
+
+        <rect x="132" y="0" width="118" height="40" rx="8" fill="#d1e8cf" stroke="#859b7d" stroke-width="1.5" filter="url(#btn3d)" />
+        <text x="191" y="20" class="btn-txt" fill="#5b6c54">Host</text>
+      </g>
+      <text x="32" y="238" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#5b6c54">Card Text: #5b6c54  |  Logo: #acc5a6</text>
+    </g>
+
+    <!-- THEME 3: [data-theme="monochrome"] -->
+    <g transform="translate(670, 0)">
+      <rect width="315" height="275" rx="14" fill="#000000" stroke="#ffffff" stroke-width="2" filter="url(#cardElev)" />
+      <rect x="16" y="16" width="283" height="243" class="card-mono" />
+      <text x="32" y="46" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="800" fill="#000000">3. Black &amp; White</text>
+      <text x="32" y="64" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#333333">[data-theme="monochrome"]</text>
+
+      <g transform="translate(32, 78)">
+        <rect x="0" y="0" width="54" height="42" rx="6" fill="#000000" />
+        <text x="0" y="56" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#000000">--bg-base</text>
+        <text x="0" y="69" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#333333">#000000</text>
+
+        <rect x="65" y="0" width="54" height="42" rx="6" fill="#ffffff" stroke="#000000" stroke-width="1.5" />
+        <text x="65" y="56" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#000000">--card-bg</text>
+        <text x="65" y="69" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#333333">#ffffff</text>
+
+        <rect x="130" y="0" width="54" height="42" rx="6" fill="#000000" />
+        <text x="130" y="56" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#000000">--border</text>
+        <text x="130" y="69" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#333333">#000000</text>
+
+        <rect x="195" y="0" width="54" height="42" rx="6" fill="#1a1a1a" />
+        <text x="195" y="56" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#000000">--hover</text>
+        <text x="195" y="69" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#333333">#1a1a1a</text>
+      </g>
+
+      <g transform="translate(32, 168)">
+        <rect width="120" height="40" rx="8" fill="#000000" filter="url(#btn3d)" />
+        <text x="60" y="20" class="btn-txt" fill="#ffffff">Enter Room</text>
+
+        <rect x="132" y="0" width="118" height="40" rx="8" fill="#ffffff" stroke="#000000" stroke-width="1.5" filter="url(#btn3d)" />
+        <text x="191" y="20" class="btn-txt" fill="#000000">Host</text>
+      </g>
+      <text x="32" y="238" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#000000">Card Text: #000000  |  Logo: #ffffff</text>
+    </g>
+
+    <!-- THEME 4: [data-theme="classic"] -->
+    <g transform="translate(1005, 0)">
+      <rect width="315" height="275" rx="14" fill="#46178f" stroke="#ffa602" stroke-width="2" filter="url(#cardElev)" />
+      <rect x="16" y="16" width="283" height="243" class="card-classic" />
+      <text x="32" y="46" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="800" fill="#46178f">4. Classic Purple</text>
+      <text x="32" y="64" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#46178f">[data-theme="classic"]</text>
+
+      <g transform="translate(32, 78)">
+        <rect x="0" y="0" width="54" height="42" rx="6" fill="#46178f" />
+        <text x="0" y="56" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#222222">--bg-base</text>
+        <text x="0" y="69" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#46178f">#46178f</text>
+
+        <rect x="65" y="0" width="54" height="42" rx="6" fill="#320f6b" />
+        <text x="65" y="56" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#222222">--navbar</text>
+        <text x="65" y="69" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#46178f">#320f6b</text>
+
+        <rect x="130" y="0" width="54" height="42" rx="6" fill="#ffffff" stroke="#46178f" />
+        <text x="130" y="56" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#222222">--card-bg</text>
+        <text x="130" y="69" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#46178f">#ffffff</text>
+
+        <rect x="195" y="0" width="54" height="42" rx="6" fill="#ffa602" />
+        <text x="195" y="56" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#222222">--btn-pri</text>
+        <text x="195" y="69" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#46178f">#ffa602</text>
+      </g>
+
+      <g transform="translate(32, 168)">
+        <rect width="120" height="40" rx="8" fill="#ffa602" filter="url(#btn3d)" />
+        <text x="60" y="20" class="btn-txt" fill="#ffffff">Enter Room</text>
+
+        <rect x="132" y="0" width="118" height="40" rx="8" fill="#ffffff" stroke="#46178f" stroke-width="1.5" filter="url(#btn3d)" />
+        <text x="191" y="20" class="btn-txt" fill="#222222">Host</text>
+      </g>
+      <text x="32" y="238" font-family="'Montserrat', monospace" font-size="11px" font-weight="700" fill="#222222">Card Text: #222222  |  Logo: #ffffff</text>
+    </g>
+  </g>
+
+  <!-- SECTION 2: KAHOOT SHAPE ANSWER CARDS & TEAM PRESETS -->
+  <g transform="translate(60, 395)">
+    <rect width="790" height="250" class="card-cream" filter="url(#cardElev)" />
+    <text x="28" y="38" class="sec-hdr">Kahoot 4-Shape Answer Cards (`.opt-card` / `.kahoot-btn`)</text>
+
+    <g transform="translate(28, 56)">
+      <!-- Red Triangle -->
+      <g transform="translate(0, 0)">
+        <rect width="355" height="75" rx="12" fill="#e21b3c" filter="url(#btn3d)" />
+        <text x="32" y="45" font-family="'Fredoka', sans-serif" font-size="28px" font-weight="900" fill="#ffffff">▲</text>
+        <text x="72" y="44" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#ffffff">Type Annotations &amp; Interfaces</text>
+      </g>
+
+      <!-- Blue Diamond -->
+      <g transform="translate(375, 0)">
+        <rect width="355" height="75" rx="12" fill="#1368ce" filter="url(#btn3d)" />
+        <text x="32" y="45" font-family="'Fredoka', sans-serif" font-size="28px" font-weight="900" fill="#ffffff">◆</text>
+        <text x="72" y="44" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#ffffff">Classes &amp; Prototypes</text>
+      </g>
+
+      <!-- Yellow Circle (Dark #222 text per .opt-yellow) -->
+      <g transform="translate(0, 95)">
+        <rect width="355" height="75" rx="12" fill="#d88b02" filter="url(#btn3d)" />
+        <text x="32" y="45" font-family="'Fredoka', sans-serif" font-size="28px" font-weight="900" fill="#222222">●</text>
+        <text x="72" y="44" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#222222">Async / Await Promises</text>
+      </g>
+
+      <!-- Green Square -->
+      <g transform="translate(375, 95)">
+        <rect width="355" height="75" rx="12" fill="#26890c" filter="url(#btn3d)" />
+        <text x="32" y="45" font-family="'Fredoka', sans-serif" font-size="28px" font-weight="900" fill="#ffffff">■</text>
+        <text x="72" y="44" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#ffffff">JSON Schema Validators</text>
+      </g>
+    </g>
+
+    <!-- TEAM PRESETS & BUTTONS CARD -->
+    <g transform="translate(815, 0)">
+      <rect width="505" height="250" class="card-cream" filter="url(#cardElev)" />
+      <text x="28" y="38" class="sec-hdr">Team Presets (`store.ts`) &amp; Button Variants</text>
+
+      <!-- Team Pills -->
+      <g transform="translate(28, 58)">
+        <rect x="0" y="0" width="215" height="36" rx="18" fill="#fafafa" stroke="#e21b3c" stroke-width="2" />
+        <text x="107" y="23" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="800" fill="#e21b3c" text-anchor="middle">[R] Red Rockets (#e21b3c)</text>
+
+        <rect x="230" y="0" width="215" height="36" rx="18" fill="#fafafa" stroke="#1368ce" stroke-width="2" />
+        <text x="337" y="23" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="800" fill="#1368ce" text-anchor="middle">[B] Blue Blasters (#1368ce)</text>
+
+        <rect x="0" y="48" width="215" height="36" rx="18" fill="#fafafa" stroke="#d88b02" stroke-width="2" />
+        <text x="107" y="71" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="800" fill="#d88b02" text-anchor="middle">[G] Golden Geeks (#d88b02)</text>
+
+        <rect x="230" y="48" width="215" height="36" rx="18" fill="#fafafa" stroke="#26890c" stroke-width="2" />
+        <text x="337" y="71" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="800" fill="#26890c" text-anchor="middle">[V] Green Giants (#26890c)</text>
+      </g>
+
+      <!-- Utility Buttons (.btn-primary, .btn-yellow, .btn-red, .btn-white) -->
+      <g transform="translate(28, 165)">
+        <rect x="0" y="0" width="105" height="42" rx="8" fill="#086288" filter="url(#btn3d)" />
+        <text x="52" y="21" class="btn-txt" fill="#fee6ba">.btn-primary</text>
+
+        <rect x="115" y="0" width="105" height="42" rx="8" fill="#ffa602" filter="url(#btn3d)" />
+        <text x="167" y="21" class="btn-txt" fill="#222222">.btn-yellow</text>
+
+        <rect x="230" y="0" width="105" height="42" rx="8" fill="#e21b3c" filter="url(#btn3d)" />
+        <text x="282" y="21" class="btn-txt" fill="#ffffff">.btn-red</text>
+
+        <rect x="345" y="0" width="105" height="42" rx="8" fill="#ffffff" filter="url(#btn3d)" />
+        <text x="397" y="21" class="btn-txt" fill="#46178f">.btn-white</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- SECTION 3: TYPOGRAPHY & COMPONENT TOKENS -->
+  <g transform="translate(60, 670)">
+    <rect width="1320" height="230" class="card-cream" filter="url(#cardElev)" />
+    <text x="28" y="38" class="sec-hdr">Typography (`Fredoka` &amp; `Montserrat`) &amp; Component Tokens</text>
+
+    <g transform="translate(28, 68)">
+      <text x="0" y="24" font-family="'Fredoka', sans-serif" font-size="34px" font-weight="800" fill="#086288">qiuizez — Hero Title 2.6rem (800 Bold) &amp; Giant PIN 3.8rem (900 Black)</text>
+      <text x="0" y="64" font-family="'Fredoka', sans-serif" font-size="24px" font-weight="800" fill="#086288">Section Header / Question Prompt 2.0rem (800 Bold)</text>
+      <text x="0" y="100" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#086288">Button &amp; Input Text 1.1rem – 1.3rem (700 Bold) — Tactile `box-shadow: 0 4px 0 rgba(0,0,0,0.25)`</text>
+      <text x="0" y="132" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="600" fill="#4882ab">Meta Badges, Role Pills &amp; Student Roster Chips 0.85rem – 0.95rem (700 Bold)</text>
+    </g>
+  </g>
+
+    </g>
+    <rect x="0" y="0" width="1440" height="940" fill="none" stroke="#93d0f8" stroke-width="3" rx="8" />
+  </g>
+
+  <g id="artboard-1" transform="translate(1600, 175)">
+    <text x="0" y="-16" font-family="'Fredoka', sans-serif" font-size="24px" font-weight="800" fill="#fee6ba">01. HomeView.vue — Join Room & PIN Card</text>
+    <g>
+      
+  
+
+  <!-- Background: var(--theme-bg-base) = #086288 -->
+  <rect width="1440" height="900" fill="#086288" />
+
+  <!-- .kahoot-navbar (App.vue) -->
+  <rect width="1440" height="68" fill="#086288" />
+  <line x1="0" y1="68" x2="1440" y2="68" stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+  <g transform="translate(120, 16)">
+    <!-- .brand-logo -->
+    <text x="0" y="27" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#fee6ba">qiuizez</text>
+
+    <!-- .nav-links -->
+    <g transform="translate(860, 0)">
+      <rect x="0" y="2" width="102" height="34" rx="6" fill="rgba(255,255,255,0.18)" />
+      <text x="51" y="24" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="#ffffff" text-anchor="middle">Join Game</text>
+
+      <!-- Sign In (.btn-kahoot .btn-primary .btn-sm) -->
+      <rect x="118" y="2" width="88" height="34" rx="8" fill="#086288" stroke="rgba(255,255,255,0.25)" filter="url(#btn3d)" />
+      <text x="162" y="24" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="#fee6ba" text-anchor="middle">Sign In</text>
+
+      <!-- .theme-toggle-btn -->
+      <rect x="222" y="2" width="148" height="34" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="296" y="24" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#fee6ba" text-anchor="middle">Ocean (Default)  ▼</text>
+    </g>
+  </g>
+
+  <!-- .home-card .card-kahoot (max-width: 440px, centered in .home-page) -->
+  <g transform="translate(500, 165)">
+    <rect width="440" height="535" rx="18" fill="#ffffff" stroke="#4882ab" stroke-width="1.5" filter="url(#cardDrop)" />
+
+    <!-- .brand-hero -->
+    <text x="220" y="68" font-family="'Fredoka', sans-serif" font-size="42px" font-weight="800" fill="#086288" text-anchor="middle">qiuizez</text>
+    <text x="220" y="96" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="#086288" opacity="0.8" text-anchor="middle">Enter room PIN to join your team battle</text>
+
+    <!-- .student-input-group -->
+    <g transform="translate(28, 128)">
+      <text x="0" y="16" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#086288">Your Nickname</text>
+      <rect x="0" y="24" width="384" height="54" rx="10" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="192" y="58" font-family="'Fredoka', sans-serif" font-size="21px" font-weight="800" fill="#086288" opacity="0.45" text-anchor="middle">e.g. PlayerOne</text>
+    </g>
+
+    <!-- .pin-input-group -->
+    <g transform="translate(28, 224)">
+      <rect x="0" y="0" width="384" height="58" rx="10" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="192" y="38" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#086288" opacity="0.45" text-anchor="middle" letter-spacing="4px">Game PIN</text>
+    </g>
+
+    <!-- .btn-enter-game (.btn-kahoot .btn-primary) -->
+    <g transform="translate(28, 300)">
+      <rect width="384" height="56" rx="10" fill="#086288" filter="url(#btn3d)" />
+      <text x="192" y="35" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="700" fill="#fee6ba" text-anchor="middle">Enter Room</text>
+    </g>
+
+    <!-- .host-shortcut (border-top: 1px solid #4882ab) -->
+    <line x1="28" y1="384" x2="412" y2="384" stroke="#4882ab" stroke-width="1" />
+    <g transform="translate(28, 404)">
+      <rect width="384" height="48" rx="8" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#hostShadow)" />
+      <text x="192" y="30" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#086288" text-anchor="middle">Host</text>
+    </g>
+
+    <!-- Authenticated student pill variant preview at bottom of card -->
+    <g transform="translate(28, 468)">
+      <rect width="384" height="44" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="4 3" />
+      <text x="192" y="27" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="600" fill="#4882ab" text-anchor="middle">Signed-in variant: [AR] Ready to play as Alex Rivera (Change)</text>
+    </g>
+  </g>
+
+  <!-- .kahoot-footer (App.vue) -->
+  <line x1="0" y1="848" x2="1440" y2="848" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+  <text x="720" y="878" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle">qiuizez • Collaborative Team Quiz Platform</text>
+
+    </g>
+    <rect x="0" y="0" width="1440" height="940" fill="none" stroke="#93d0f8" stroke-width="3" rx="8" />
+  </g>
+
+  <g id="artboard-2" transform="translate(3120, 175)">
+    <text x="0" y="-16" font-family="'Fredoka', sans-serif" font-size="24px" font-weight="800" fill="#fee6ba">02. LoginView.vue — Demo Switcher, Login & 4-Role Register</text>
+    <g>
+      
+  
+
+  <!-- App Background: var(--theme-bg-base) = #086288 -->
+  <rect width="1440" height="900" fill="#086288" />
+
+  <!-- .kahoot-navbar (App.vue) -->
+  <rect width="1440" height="68" fill="#086288" />
+  <line x1="0" y1="68" x2="1440" y2="68" stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+  <g transform="translate(120, 16)">
+    <text x="0" y="27" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#fee6ba">qiuizez</text>
+    <g transform="translate(860, 0)">
+      <text x="51" y="24" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="rgba(255,255,255,0.85)" text-anchor="middle">Join Game</text>
+      <rect x="118" y="2" width="88" height="34" rx="8" fill="#086288" stroke="rgba(255,255,255,0.25)" filter="url(#btn3d)" />
+      <text x="162" y="24" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="#fee6ba" text-anchor="middle">Sign In</text>
+      <rect x="222" y="2" width="148" height="34" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="296" y="24" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#fee6ba" text-anchor="middle">Ocean (Default)  ▼</text>
+    </g>
+  </g>
+
+  <!-- LEFT CARD: Sign In Mode (.login-card in LoginView.vue, max-width: 460px, background: #fee6ba) -->
+  <g transform="translate(220, 115)">
+    <rect width="460" height="625" rx="16" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" />
+
+    <!-- .header-section -->
+    <text x="230" y="56" font-family="'Fredoka', sans-serif" font-size="38px" font-weight="800" fill="#086288" text-anchor="middle">qiuizez</text>
+    <text x="230" y="82" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="#086288" opacity="0.8" text-anchor="middle">Sign in to host live battles or join the game</text>
+
+    <!-- .demo-switch-box (background: #f8f6fc, border: 2px dashed #864cbf) -->
+    <g transform="translate(28, 104)">
+      <rect width="404" height="142" rx="12" fill="#f8f6fc" stroke="#864cbf" stroke-width="2" stroke-dasharray="6 4" />
+      <text x="14" y="24" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="800" fill="#46178f">QUICK 1-CLICK DEMO LOGIN</text>
+
+      <!-- Instructors row -->
+      <text x="14" y="46" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#777777">Instructors:</text>
+      <g transform="translate(14, 54)">
+        <rect x="0" y="0" width="142" height="28" rx="14" fill="#ffffff" stroke="#cccccc" />
+        <text x="71" y="18" font-family="'Fredoka', sans-serif" font-size="12.5px" font-weight="700" fill="#222222" text-anchor="middle">Prof. Ada Lovelace</text>
+
+        <rect x="150" y="0" width="128" height="28" rx="14" fill="#ffffff" stroke="#cccccc" />
+        <text x="214" y="18" font-family="'Fredoka', sans-serif" font-size="12.5px" font-weight="700" fill="#222222" text-anchor="middle">Dr. Alan Turing</text>
+      </g>
+
+      <!-- Students row -->
+      <text x="14" y="102" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#777777">Students:</text>
+      <g transform="translate(14, 108)">
+        <rect x="0" y="0" width="88" height="26" rx="13" fill="#ffffff" stroke="#cccccc" />
+        <text x="44" y="17" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#222222" text-anchor="middle">Alex Rivera</text>
+
+        <rect x="94" y="0" width="84" height="26" rx="13" fill="#ffffff" stroke="#cccccc" />
+        <text x="136" y="17" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#222222" text-anchor="middle">Bella Chen</text>
+
+        <rect x="184" y="0" width="98" height="26" rx="13" fill="#ffffff" stroke="#cccccc" />
+        <text x="233" y="17" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#222222" text-anchor="middle">Carlos Gomez</text>
+
+        <rect x="288" y="0" width="96" height="26" rx="13" fill="#ffffff" stroke="#cccccc" />
+        <text x="336" y="17" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#222222" text-anchor="middle">Diana Prince</text>
+      </g>
+    </g>
+
+    <!-- .tabs -->
+    <g transform="translate(28, 266)">
+      <line x1="0" y1="38" x2="404" y2="38" stroke="#eaeaea" stroke-width="2" />
+      <text x="101" y="25" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="700" fill="#46178f" text-anchor="middle">Sign In</text>
+      <line x1="0" y1="38" x2="202" y2="38" stroke="#46178f" stroke-width="3" />
+      <text x="303" y="25" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="700" fill="#888888" text-anchor="middle">Create Account</text>
+    </g>
+
+    <!-- Sign In Form (.form-body) -->
+    <g transform="translate(28, 326)">
+      <text x="0" y="16" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#086288">Email Address</text>
+      <rect x="0" y="24" width="404" height="44" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="14" y="52" font-family="'Fredoka', sans-serif" font-size="15.5px" font-weight="600" fill="#086288">ada@university.edu</text>
+
+      <text x="0" y="94" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#086288">Password</text>
+      <rect x="0" y="102" width="404" height="44" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="14" y="130" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="700" fill="#086288">•••••••••••</text>
+
+      <!-- Let's Play Button -->
+      <g transform="translate(0, 170)">
+        <rect width="404" height="48" rx="8" fill="#086288" filter="url(#btn3d)" />
+        <text x="202" y="30" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#fee6ba" text-anchor="middle">Let's Play</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- RIGHT CARD: Create Account Tab State (Showing the 4-Role Selector Grid) -->
+  <g transform="translate(760, 115)">
+    <rect width="460" height="680" rx="16" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" />
+
+    <text x="230" y="48" font-family="'Fredoka', sans-serif" font-size="32px" font-weight="800" fill="#086288" text-anchor="middle">qiuizez</text>
+    <text x="230" y="72" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="600" fill="#086288" opacity="0.8" text-anchor="middle">Create Account Tab State (`mode === 'register'`)</text>
+
+    <!-- .tabs -->
+    <g transform="translate(28, 92)">
+      <line x1="0" y1="36" x2="404" y2="36" stroke="#eaeaea" stroke-width="2" />
+      <text x="101" y="24" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="700" fill="#888888" text-anchor="middle">Sign In</text>
+      <text x="303" y="24" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="700" fill="#46178f" text-anchor="middle">Create Account</text>
+      <line x1="202" y1="36" x2="404" y2="36" stroke="#46178f" stroke-width="3" />
+    </g>
+
+    <!-- Register Form (.form-body) -->
+    <g transform="translate(28, 148)">
+      <text x="0" y="15" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#086288">Full Name / Nickname</text>
+      <rect x="0" y="22" width="404" height="42" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="14" y="49" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="#086288" opacity="0.55">e.g. Sarah Connor</text>
+
+      <text x="0" y="86" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#086288">Email Address</text>
+      <rect x="0" y="93" width="404" height="42" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="14" y="120" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="#086288" opacity="0.55">e.g. sarah@gmail.com</text>
+
+      <text x="0" y="157" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#086288">Password</text>
+      <rect x="0" y="164" width="404" height="42" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="14" y="191" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="#086288">••••••••</text>
+
+      <!-- .role-selector (2x2 grid) -->
+      <text x="0" y="228" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#086288">Role</text>
+      <g transform="translate(0, 236)">
+        <rect x="0" y="0" width="196" height="44" rx="8" fill="transparent" stroke="#dddddd" stroke-width="2" />
+        <text x="98" y="28" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#086288" text-anchor="middle">User (Player)</text>
+
+        <rect x="208" y="0" width="196" height="44" rx="8" fill="transparent" stroke="#dddddd" stroke-width="2" />
+        <text x="306" y="28" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#086288" text-anchor="middle">Student</text>
+
+        <rect x="0" y="54" width="196" height="44" rx="8" fill="transparent" stroke="#dddddd" stroke-width="2" />
+        <text x="98" y="82" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#086288" text-anchor="middle">Teacher</text>
+
+        <!-- Selected Role: Instructor -->
+        <rect x="208" y="54" width="196" height="44" rx="8" fill="#f1e9ff" stroke="#46178f" stroke-width="2" />
+        <text x="306" y="82" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#46178f" text-anchor="middle">Instructor</text>
+      </g>
+
+      <!-- Join the Game Button -->
+      <g transform="translate(0, 356)">
+        <rect width="404" height="48" rx="8" fill="#086288" filter="url(#btn3d)" />
+        <text x="202" y="30" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#fee6ba" text-anchor="middle">Join the Game</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- .kahoot-footer -->
+  <line x1="0" y1="848" x2="1440" y2="848" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+  <text x="720" y="878" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle">qiuizez • Collaborative Team Quiz Platform</text>
+
+    </g>
+    <rect x="0" y="0" width="1440" height="940" fill="none" stroke="#93d0f8" stroke-width="3" rx="8" />
+  </g>
+
+  <g id="artboard-3" transform="translate(80, 1205)">
+    <text x="0" y="-16" font-family="'Fredoka', sans-serif" font-size="24px" font-weight="800" fill="#fee6ba">03. InstructorDashboardView.vue — My Quizzes & Launch Modal</text>
+    <g>
+      
+  
+
+  <!-- App Background: var(--theme-bg-base) = #086288 -->
+  <rect width="1440" height="900" fill="#086288" />
+
+  <!-- .kahoot-navbar (Authenticated Instructor State from App.vue) -->
+  <rect width="1440" height="68" fill="#086288" />
+  <line x1="0" y1="68" x2="1440" y2="68" stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+  <g transform="translate(120, 14)">
+    <text x="0" y="29" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#fee6ba">qiuizez</text>
+
+    <g transform="translate(460, 0)">
+      <text x="45" y="26" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="rgba(255,255,255,0.85)" text-anchor="middle">Join Game</text>
+
+      <!-- Active link: Instructor Dashboard -->
+      <rect x="105" y="4" width="175" height="34" rx="6" fill="rgba(255,255,255,0.18)" />
+      <text x="192" y="26" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="#ffffff" text-anchor="middle">Instructor Dashboard</text>
+
+      <!-- + New Quiz (.btn-nav-action) -->
+      <rect x="292" y="4" width="102" height="34" rx="6" fill="#086288" stroke="#4882ab" stroke-width="1.5" />
+      <text x="343" y="26" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#fee6ba" text-anchor="middle">+ New Quiz</text>
+
+      <!-- .user-pill -->
+      <rect x="408" y="0" width="218" height="42" rx="21" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.2)" />
+      <text x="430" y="27" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="800" fill="#ffffff">A</text>
+      <text x="452" y="19" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#ffffff">Prof. Ada Lovelace</text>
+      <text x="452" y="33" font-family="'Fredoka', sans-serif" font-size="10px" font-weight="800" fill="#fee6ba">INSTRUCTOR</text>
+      <text x="595" y="26" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="rgba(255,255,255,0.75)" text-anchor="middle">Logout</text>
+
+      <!-- Theme Switcher -->
+      <rect x="638" y="4" width="142" height="34" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="709" y="26" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="700" fill="#fee6ba" text-anchor="middle">Ocean (Default) ▼</text>
+    </g>
+  </g>
+
+  <!-- .dashboard-container (max-width: 1100px, centered at x=170) -->
+  <g transform="translate(170, 100)">
+    <!-- .dashboard-header -->
+    <g transform="translate(0, 0)">
+      <!-- .badge-role -->
+      <rect x="0" y="0" width="215" height="26" rx="13" fill="rgba(255,166,2,0.25)" stroke="#ffa602" stroke-width="1" />
+      <text x="107" y="17" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="#ffa602" text-anchor="middle">INSTRUCTOR CONTROL CENTER</text>
+
+      <text x="0" y="60" font-family="'Fredoka', sans-serif" font-size="35px" font-weight="800" fill="#ffffff">My Quizzes</text>
+      <text x="0" y="84" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="500" fill="rgba(255,255,255,0.75)">Create quizzes, launch collaborative live team battles, and track champions</text>
+
+      <!-- + Create New Quiz (.btn-kahoot .btn-primary) -->
+      <g transform="translate(910, 26)">
+        <rect width="190" height="46" rx="8" fill="#086288" stroke="#4882ab" stroke-width="1.5" filter="url(#btn3d)" />
+        <text x="95" y="29" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="700" fill="#fee6ba" text-anchor="middle">+ Create New Quiz</text>
+      </g>
+    </g>
+
+    <!-- .quiz-grid (2 cards side by side, matching defaultQuizzes in store.ts) -->
+    <g transform="translate(0, 118)">
+      <!-- QUIZ CARD 1: Computer Science & Web Dev Showdown -->
+      <g transform="translate(0, 0)">
+        <rect width="535" height="270" rx="12" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+        <!-- border-top: 6px solid #46178f -->
+        <path d="M 10 0 L 525 0 Q 535 0 535 10 L 535 6 L 0 6 L 0 10 Q 0 0 10 0 Z" fill="#46178f" />
+
+        <!-- .card-top -->
+        <rect x="24" y="24" width="84" height="24" rx="12" fill="#e8f5e9" />
+        <text x="66" y="40" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="#2e7d32" text-anchor="middle">PUBLISHED</text>
+        <text x="511" y="40" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#666666" text-anchor="end">5 Questions</text>
+
+        <!-- .quiz-title & .quiz-desc -->
+        <text x="24" y="78" font-family="'Fredoka', sans-serif" font-size="20px" font-weight="800" fill="#222222">Computer Science &amp; Web Dev Showdown</text>
+        <text x="24" y="106" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="500" fill="#666666">Test your knowledge on TypeScript, Vue 3, algorithms, and</text>
+        <text x="24" y="126" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="500" fill="#666666">browser wizardry!</text>
+
+        <!-- .quiz-meta -->
+        <rect x="24" y="150" width="487" height="36" rx="6" fill="#f9f9f9" />
+        <text x="36" y="173" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#555555">Duration: 90s Total     Points: 5000 Pts</text>
+
+        <!-- .card-footer -->
+        <line x1="24" y1="202" x2="511" y2="202" stroke="#eeeeee" stroke-width="1" />
+        <g transform="translate(24, 214)">
+          <!-- .btn-launch -->
+          <rect width="235" height="40" rx="8" fill="#086288" filter="url(#btn3d)" />
+          <text x="117" y="25" font-family="'Fredoka', sans-serif" font-size="15.5px" font-weight="700" fill="#fee6ba" text-anchor="middle">Launch Game</text>
+
+          <!-- .icon-actions (Edit, Unpublish, Delete) -->
+          <rect x="250" y="3" width="58" height="34" rx="6" fill="#f0f0f0" stroke="#dddddd" />
+          <text x="279" y="25" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#333333" text-anchor="middle">Edit</text>
+
+          <rect x="314" y="3" width="90" height="34" rx="6" fill="#f0f0f0" stroke="#dddddd" />
+          <text x="359" y="25" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#333333" text-anchor="middle">Unpublish</text>
+
+          <rect x="410" y="3" width="77" height="34" rx="6" fill="#f0f0f0" stroke="#dddddd" />
+          <text x="448" y="25" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#333333" text-anchor="middle">Delete</text>
+        </g>
+      </g>
+
+      <!-- QUIZ CARD 2: Science and Tech Trivia -->
+      <g transform="translate(565, 0)">
+        <rect width="535" height="270" rx="12" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+        <path d="M 10 0 L 525 0 Q 535 0 535 10 L 535 6 L 0 6 L 0 10 Q 0 0 10 0 Z" fill="#46178f" />
+
+        <rect x="24" y="24" width="84" height="24" rx="12" fill="#e8f5e9" />
+        <text x="66" y="40" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="#2e7d32" text-anchor="middle">PUBLISHED</text>
+        <text x="511" y="40" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#666666" text-anchor="end">3 Questions</text>
+
+        <text x="24" y="78" font-family="'Fredoka', sans-serif" font-size="20px" font-weight="800" fill="#222222">Science and Tech Trivia</text>
+        <text x="24" y="106" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="500" fill="#666666">Fast-paced team brain challenge with tricky science and</text>
+        <text x="24" y="126" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="500" fill="#666666">tech questions!</text>
+
+        <rect x="24" y="150" width="487" height="36" rx="6" fill="#f9f9f9" />
+        <text x="36" y="173" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#555555">Duration: 50s Total     Points: 3000 Pts</text>
+
+        <line x1="24" y1="202" x2="511" y2="202" stroke="#eeeeee" stroke-width="1" />
+        <g transform="translate(24, 214)">
+          <rect width="235" height="40" rx="8" fill="#086288" filter="url(#btn3d)" />
+          <text x="117" y="25" font-family="'Fredoka', sans-serif" font-size="15.5px" font-weight="700" fill="#fee6ba" text-anchor="middle">Launch Game</text>
+
+          <rect x="250" y="3" width="58" height="34" rx="6" fill="#f0f0f0" stroke="#dddddd" />
+          <text x="279" y="25" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#333333" text-anchor="middle">Edit</text>
+
+          <rect x="314" y="3" width="90" height="34" rx="6" fill="#f0f0f0" stroke="#dddddd" />
+          <text x="359" y="25" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#333333" text-anchor="middle">Unpublish</text>
+
+          <rect x="410" y="3" width="77" height="34" rx="6" fill="#f0f0f0" stroke="#dddddd" />
+          <text x="448" y="25" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#333333" text-anchor="middle">Delete</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- LAUNCH GAME SESSION MODAL PREVIEW (.modal-content, max-width: 520px) -->
+    <g transform="translate(290, 415)">
+      <rect width="520" height="320" rx="16" fill="#ffffff" stroke="#46178f" stroke-width="2" filter="url(#cardElev)" />
+
+      <!-- .modal-header -->
+      <text x="24" y="38" font-family="'Fredoka', sans-serif" font-size="22px" font-weight="800" fill="#46178f">Launch Live Quiz Session</text>
+      <text x="496" y="36" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="#888888" text-anchor="end">Close</text>
+
+      <!-- .selected-quiz-info -->
+      <rect x="24" y="54" width="472" height="52" rx="8" fill="#f5f0ff" stroke="#d4c0f8" />
+      <text x="36" y="76" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="800" fill="#46178f">Computer Science &amp; Web Dev Showdown</text>
+      <text x="36" y="96" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="600" fill="#555555">5 Questions ready for team battle</text>
+
+      <!-- Team count selector -->
+      <text x="24" y="132" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="800" fill="#333333">Select Number of Teams (2 to 4):</text>
+      <g transform="translate(24, 144)">
+        <rect x="0" y="0" width="148" height="62" rx="10" fill="#ffffff" stroke="#dddddd" stroke-width="2" />
+        <text x="74" y="32" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#26890c" text-anchor="middle">2</text>
+        <text x="74" y="52" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#555555" text-anchor="middle">Teams</text>
+
+        <rect x="162" y="0" width="148" height="62" rx="10" fill="#ffffff" stroke="#dddddd" stroke-width="2" />
+        <text x="236" y="32" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#26890c" text-anchor="middle">3</text>
+        <text x="236" y="52" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#555555" text-anchor="middle">Teams</text>
+
+        <!-- Selected: 4 Teams -->
+        <rect x="324" y="0" width="148" height="62" rx="10" fill="#edf7ee" stroke="#26890c" stroke-width="2" />
+        <text x="398" y="32" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#26890c" text-anchor="middle">4</text>
+        <text x="398" y="52" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="700" fill="#555555" text-anchor="middle">Teams</text>
+      </g>
+
+      <!-- .teams-preview pills -->
+      <g transform="translate(24, 218)">
+        <rect x="0" y="0" width="110" height="28" rx="14" fill="#fafafa" stroke="#e21b3c" stroke-width="2" />
+        <text x="55" y="18" font-family="'Fredoka', sans-serif" font-size="11.5px" font-weight="800" fill="#e21b3c" text-anchor="middle">[R] Red Rockets</text>
+
+        <rect x="118" y="0" width="114" height="28" rx="14" fill="#fafafa" stroke="#1368ce" stroke-width="2" />
+        <text x="175" y="18" font-family="'Fredoka', sans-serif" font-size="11.5px" font-weight="800" fill="#1368ce" text-anchor="middle">[B] Blue Blasters</text>
+
+        <rect x="240" y="0" width="114" height="28" rx="14" fill="#fafafa" stroke="#ffa602" stroke-width="2" />
+        <text x="297" y="18" font-family="'Fredoka', sans-serif" font-size="11.5px" font-weight="800" fill="#ffa602" text-anchor="middle">[G] Golden Geeks</text>
+
+        <rect x="362" y="0" width="110" height="28" rx="14" fill="#fafafa" stroke="#26890c" stroke-width="2" />
+        <text x="417" y="18" font-family="'Fredoka', sans-serif" font-size="11.5px" font-weight="800" fill="#26890c" text-anchor="middle">[V] Green Giants</text>
+      </g>
+
+      <!-- .modal-footer -->
+      <line x1="24" y1="258" x2="496" y2="258" stroke="#eeeeee" stroke-width="1" />
+      <g transform="translate(230, 268)">
+        <rect x="0" y="0" width="95" height="38" rx="8" fill="#6c757d" filter="url(#btn3d)" />
+        <text x="47" y="24" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#ffffff" text-anchor="middle">Cancel</text>
+
+        <rect x="108" y="0" width="158" height="38" rx="8" fill="#086288" filter="url(#btn3d)" />
+        <text x="187" y="24" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#fee6ba" text-anchor="middle">Start Live Lobby</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- .kahoot-footer -->
+  <line x1="0" y1="848" x2="1440" y2="848" stroke="rgba(255,255,255,0.08)" stroke-width="1" />
+  <text x="720" y="878" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle">qiuizez • Collaborative Team Quiz Platform</text>
+
+    </g>
+    <rect x="0" y="0" width="1440" height="940" fill="none" stroke="#93d0f8" stroke-width="3" rx="8" />
+  </g>
+
+  <g id="artboard-4" transform="translate(1600, 1205)">
+    <text x="0" y="-16" font-family="'Fredoka', sans-serif" font-size="24px" font-weight="800" fill="#fee6ba">04. QuizEditorView.vue — Question Builder & 4 Shape Options</text>
+    <g>
+      
+  
+
+  <!-- App Background: var(--theme-bg-base) = #086288 -->
+  <rect width="1440" height="940" fill="#086288" />
+
+  <!-- .kahoot-navbar (App.vue) -->
+  <rect width="1440" height="68" fill="#086288" />
+  <line x1="0" y1="68" x2="1440" y2="68" stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+  <g transform="translate(120, 14)">
+    <text x="0" y="29" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#fee6ba">qiuizez</text>
+    <g transform="translate(460, 0)">
+      <text x="45" y="26" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="rgba(255,255,255,0.85)" text-anchor="middle">Join Game</text>
+      <text x="192" y="26" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="rgba(255,255,255,0.85)" text-anchor="middle">Instructor Dashboard</text>
+      <rect x="292" y="4" width="102" height="34" rx="6" fill="#086288" stroke="#4882ab" stroke-width="1.5" />
+      <text x="343" y="26" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#fee6ba" text-anchor="middle">+ New Quiz</text>
+      <rect x="408" y="0" width="218" height="42" rx="21" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.2)" />
+      <text x="430" y="27" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="800" fill="#ffffff">A</text>
+      <text x="452" y="19" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#ffffff">Prof. Ada Lovelace</text>
+      <text x="452" y="33" font-family="'Fredoka', sans-serif" font-size="10px" font-weight="800" fill="#fee6ba">INSTRUCTOR</text>
+      <text x="595" y="26" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="rgba(255,255,255,0.75)" text-anchor="middle">Logout</text>
+      <rect x="638" y="4" width="142" height="34" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="709" y="26" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="700" fill="#fee6ba" text-anchor="middle">Ocean (Default) ▼</text>
+    </g>
+  </g>
+
+  <!-- .editor-container (max-width: 960px, centered at x=240) -->
+  <g transform="translate(240, 96)">
+    <!-- .editor-header -->
+    <text x="0" y="16" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="rgba(255,255,255,0.8)">← Back to Dashboard</text>
+    <text x="0" y="48" font-family="'Fredoka', sans-serif" font-size="32px" font-weight="800" fill="#ffffff">Edit Quiz</text>
+
+    <g transform="translate(820, 10)">
+      <rect width="140" height="44" rx="8" fill="#086288" stroke="#4882ab" stroke-width="1.5" filter="url(#btn3d)" />
+      <text x="70" y="28" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="700" fill="#fee6ba" text-anchor="middle">Save Quiz</text>
+    </g>
+
+    <!-- .meta-card .card-kahoot (background: #fee6ba) -->
+    <g transform="translate(0, 72)">
+      <rect width="960" height="175" rx="12" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+
+      <g transform="translate(24, 22)">
+        <!-- Quiz Title (flex-2) -->
+        <text x="0" y="16" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#444444">Quiz Title <tspan fill="#e21b3c">*</tspan></text>
+        <rect x="0" y="24" width="600" height="44" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+        <text x="14" y="52" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#086288">Computer Science &amp; Web Dev Showdown</text>
+
+        <!-- Status (flex-1) -->
+        <text x="620" y="16" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#444444">Status</text>
+        <rect x="620" y="24" width="292" height="44" rx="8" fill="#f9f9f9" stroke="#dddddd" stroke-width="2" />
+        <rect x="634" y="37" width="18" height="18" rx="3" fill="#086288" />
+        <text x="643" y="51" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="900" fill="#ffffff" text-anchor="middle">✓</text>
+        <text x="662" y="51" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#086288">Published (Available to Host)</text>
+
+        <!-- Description -->
+        <text x="0" y="92" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#444444">Description / Instructions</text>
+        <rect x="0" y="100" width="912" height="42" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+        <text x="14" y="126" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="#086288">Test your knowledge on TypeScript, Vue 3, algorithms, and browser wizardry!</text>
+      </g>
+    </g>
+
+    <!-- .questions-section -->
+    <g transform="translate(0, 270)">
+      <text x="0" y="26" font-family="'Fredoka', sans-serif" font-size="24px" font-weight="800" fill="#ffffff">Questions (5)</text>
+      <g transform="translate(815, 0)">
+        <rect width="145" height="36" rx="8" fill="#ffa602" filter="url(#btn3d)" />
+        <text x="72" y="23" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="#222222" text-anchor="middle">+ Add Question</text>
+      </g>
+
+      <!-- .question-card .card-kahoot (border-left: 8px solid #ffa602) -->
+      <g transform="translate(0, 46)">
+        <rect width="960" height="420" rx="12" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+        <path d="M 0 10 Q 0 0 8 0 L 8 420 Q 0 420 0 410 Z" fill="#ffa602" />
+
+        <!-- .q-header -->
+        <g transform="translate(24, 20)">
+          <!-- .q-badge -->
+          <rect x="0" y="0" width="110" height="28" rx="14" fill="#ffa602" />
+          <text x="55" y="19" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="800" fill="#222222" text-anchor="middle">Question 1</text>
+
+          <!-- .q-settings -->
+          <g transform="translate(555, 0)">
+            <text x="0" y="19" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#555555">Time Limit:</text>
+            <rect x="78" y="0" width="64" height="28" rx="6" fill="#ffffff" stroke="#cccccc" />
+            <text x="110" y="19" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#222222" text-anchor="middle">20s ▼</text>
+
+            <text x="158" y="19" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#555555">Points:</text>
+            <rect x="208" y="0" width="88" height="28" rx="6" fill="#ffffff" stroke="#cccccc" />
+            <text x="252" y="19" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#222222" text-anchor="middle">1,000 pts ▼</text>
+
+            <rect x="308" y="0" width="54" height="28" rx="4" fill="#f0f0f0" stroke="#cccccc" />
+            <text x="335" y="19" font-family="'Fredoka', sans-serif" font-size="12.5px" font-weight="700" fill="#c62828" text-anchor="middle">Delete</text>
+          </g>
+        </g>
+
+        <!-- .prompt-input -->
+        <g transform="translate(24, 64)">
+          <rect width="912" height="46" rx="8" fill="transparent" stroke="#4882ab" stroke-width="2" />
+          <text x="14" y="30" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#086288">Which TypeScript feature guarantees compile-time type safety without runtime overhead?</text>
+        </g>
+
+        <text x="24" y="134" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#666666">Select which option is correct (marked with a checkmark):</text>
+
+        <!-- .kahoot-options-grid (2x2 colored .option-field cards) -->
+        <g transform="translate(24, 146)">
+          <!-- Option 1: .opt-red .is-correct (outline: 4px solid #ffffff) -->
+          <g transform="translate(0, 0)">
+            <rect width="448" height="106" rx="10" fill="#e21b3c" stroke="#ffffff" stroke-width="4" filter="url(#btn3d)" />
+            <text x="16" y="32" font-family="'Fredoka', sans-serif" font-size="21px" font-weight="900" fill="#ffffff">▲</text>
+
+            <!-- .correct-radio-label -->
+            <rect x="310" y="10" width="124" height="26" rx="13" fill="rgba(0,0,0,0.25)" />
+            <circle cx="324" cy="23" r="6" fill="#ffffff" />
+            <circle cx="324" cy="23" r="3" fill="#e21b3c" />
+            <text x="380" y="28" font-family="'Fredoka', sans-serif" font-size="12.5px" font-weight="800" fill="#ffffff" text-anchor="middle">Correct Answer</text>
+
+            <!-- .opt-input (white input inside colored box) -->
+            <rect x="14" y="48" width="420" height="42" rx="6" fill="#ffffff" />
+            <text x="26" y="75" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="600" fill="#222222">Type Annotations &amp; Interfaces</text>
+          </g>
+
+          <!-- Option 2: .opt-blue -->
+          <g transform="translate(464, 0)">
+            <rect width="448" height="106" rx="10" fill="#1368ce" filter="url(#btn3d)" />
+            <text x="16" y="32" font-family="'Fredoka', sans-serif" font-size="21px" font-weight="900" fill="#ffffff">◆</text>
+
+            <rect x="310" y="10" width="124" height="26" rx="13" fill="rgba(0,0,0,0.25)" />
+            <circle cx="324" cy="23" r="6" fill="none" stroke="#ffffff" stroke-width="1.5" />
+            <text x="380" y="28" font-family="'Fredoka', sans-serif" font-size="12.5px" font-weight="800" fill="#ffffff" text-anchor="middle">Correct Answer</text>
+
+            <rect x="14" y="48" width="420" height="42" rx="6" fill="#ffffff" />
+            <text x="26" y="75" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="600" fill="#222222">Classes &amp; Prototypes</text>
+          </g>
+
+          <!-- Option 3: .opt-yellow (Dark #222 icon & radio text) -->
+          <g transform="translate(0, 120)">
+            <rect width="448" height="106" rx="10" fill="#d88b02" filter="url(#btn3d)" />
+            <text x="16" y="32" font-family="'Fredoka', sans-serif" font-size="21px" font-weight="900" fill="#222222">●</text>
+
+            <rect x="310" y="10" width="124" height="26" rx="13" fill="rgba(0,0,0,0.18)" />
+            <circle cx="324" cy="23" r="6" fill="none" stroke="#222222" stroke-width="1.5" />
+            <text x="380" y="28" font-family="'Fredoka', sans-serif" font-size="12.5px" font-weight="800" fill="#222222" text-anchor="middle">Correct Answer</text>
+
+            <rect x="14" y="48" width="420" height="42" rx="6" fill="#ffffff" />
+            <text x="26" y="75" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="600" fill="#222222">Async / Await Promises</text>
+          </g>
+
+          <!-- Option 4: .opt-green -->
+          <g transform="translate(464, 120)">
+            <rect width="448" height="106" rx="10" fill="#26890c" filter="url(#btn3d)" />
+            <text x="16" y="32" font-family="'Fredoka', sans-serif" font-size="21px" font-weight="900" fill="#ffffff">■</text>
+
+            <rect x="310" y="10" width="124" height="26" rx="13" fill="rgba(0,0,0,0.25)" />
+            <circle cx="324" cy="23" r="6" fill="none" stroke="#ffffff" stroke-width="1.5" />
+            <text x="380" y="28" font-family="'Fredoka', sans-serif" font-size="12.5px" font-weight="800" fill="#ffffff" text-anchor="middle">Correct Answer</text>
+
+            <rect x="14" y="48" width="420" height="42" rx="6" fill="#ffffff" />
+            <text x="26" y="75" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="600" fill="#222222">JSON Schema Validators</text>
+          </g>
+        </g>
+      </g>
+
+      <!-- .add-q-bottom (.btn-white .btn-block-custom) -->
+      <g transform="translate(0, 482)">
+        <rect width="960" height="48" rx="8" fill="#ffffff" filter="url(#btn3d)" />
+        <text x="480" y="30" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#46178f" text-anchor="middle">+ Add Another Question</text>
+      </g>
+    </g>
+  </g>
+
+    </g>
+    <rect x="0" y="0" width="1440" height="940" fill="none" stroke="#93d0f8" stroke-width="3" rx="8" />
+  </g>
+
+  <g id="artboard-5" transform="translate(3120, 1205)">
+    <text x="0" y="-16" font-family="'Fredoka', sans-serif" font-size="24px" font-weight="800" fill="#fee6ba">05. HostGameView.vue (Stage 1) — Lobby, Roster & Spin Wheel</text>
+    <g>
+      
+  
+
+  <!-- App Background: var(--theme-bg-base) = #086288 -->
+  <rect width="1440" height="940" fill="#086288" />
+
+  <!-- .kahoot-navbar (App.vue) -->
+  <rect width="1440" height="68" fill="#086288" />
+  <line x1="0" y1="68" x2="1440" y2="68" stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+  <g transform="translate(140, 14)">
+    <text x="0" y="29" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#fee6ba">qiuizez</text>
+    <g transform="translate(380, 0)">
+      <text x="45" y="26" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="rgba(255,255,255,0.85)" text-anchor="middle">Join Game</text>
+      <text x="192" y="26" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="rgba(255,255,255,0.85)" text-anchor="middle">Instructor Dashboard</text>
+      <rect x="292" y="4" width="102" height="34" rx="6" fill="#086288" stroke="#4882ab" stroke-width="1.5" />
+      <text x="343" y="26" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#fee6ba" text-anchor="middle">+ New Quiz</text>
+      <rect x="408" y="0" width="218" height="42" rx="21" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.2)" />
+      <text x="430" y="27" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="800" fill="#ffffff">A</text>
+      <text x="452" y="19" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#ffffff">Prof. Ada Lovelace</text>
+      <text x="452" y="33" font-family="'Fredoka', sans-serif" font-size="10px" font-weight="800" fill="#fee6ba">INSTRUCTOR</text>
+      <text x="595" y="26" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="rgba(255,255,255,0.75)" text-anchor="middle">Logout</text>
+      <rect x="638" y="4" width="142" height="34" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="709" y="26" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="700" fill="#fee6ba" text-anchor="middle">Ocean (Default) ▼</text>
+    </g>
+  </g>
+
+  <!-- .host-view (width: 1160px, centered at x=140) -->
+  <g transform="translate(140, 86)">
+    <!-- .host-header -->
+    <g transform="translate(0, 0)">
+      <rect width="1160" height="58" rx="14" fill="rgba(0,0,0,0.3)" />
+      <rect x="20" y="8" width="84" height="19" rx="9.5" fill="#ffa602" />
+      <text x="62" y="21" font-family="'Fredoka', sans-serif" font-size="11px" font-weight="800" fill="#222222" text-anchor="middle">HOST VIEW</text>
+      <text x="20" y="46" font-family="'Fredoka', sans-serif" font-size="21px" font-weight="800" fill="#ffffff">Computer Science &amp; Web Dev Showdown</text>
+
+      <!-- .pin-display (white pill with #46178f PIN) -->
+      <g transform="translate(475, 6)">
+        <rect width="235" height="46" rx="23" fill="#ffffff" />
+        <text x="20" y="29" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="800" fill="#666666">GAME PIN:</text>
+        <text x="102" y="31" font-family="'Fredoka', sans-serif" font-size="25px" font-weight="900" fill="#46178f" letter-spacing="2px">739218</text>
+      </g>
+
+      <!-- .btn-red End Game -->
+      <g transform="translate(1030, 10)">
+        <rect width="110" height="38" rx="8" fill="#e21b3c" filter="url(#btn3d)" />
+        <text x="55" y="24" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="#ffffff" text-anchor="middle">End Game</text>
+      </g>
+    </g>
+
+    <!-- .lobby-center-card .card-kahoot (background: #fee6ba, border: #4882ab) -->
+    <g transform="translate(0, 74)">
+      <rect width="1160" height="742" rx="14" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+
+      <!-- 1. Top Room PIN Banner (y: 22..94, height: 72) -->
+      <g transform="translate(28, 22)">
+        <rect width="1104" height="72" rx="12" fill="rgba(0,0,0,0.05)" stroke="#4882ab" stroke-width="1.5" />
+        <text x="24" y="42" font-family="'Fredoka', sans-serif" font-size="17.5px" font-weight="700" fill="#086288">Join on your phone or browser at room PIN:</text>
+        <text x="388" y="51" font-family="'Fredoka', sans-serif" font-size="40px" font-weight="900" fill="#46178f" letter-spacing="5px">739218</text>
+
+        <!-- .player-count-badge -->
+        <rect x="874" y="18" width="206" height="36" rx="18" fill="#ffffff" stroke="#4882ab" stroke-width="1.5" />
+        <text x="977" y="41" font-family="'Fredoka', sans-serif" font-size="15.5px" font-weight="800" fill="#222222" text-anchor="middle">4 Players Connected</text>
+      </g>
+
+      <!-- 2. LEFT COLUMN: Assigned Teams Board + Bottom Action Row (x: 28..668, width: 640, y: 114..704) -->
+      <g transform="translate(28, 114)">
+        <!-- Section Header -->
+        <text x="4" y="20" font-family="'Fredoka', sans-serif" font-size="18.5px" font-weight="800" fill="#086288">Assigned Teams Board (4 Groups)</text>
+        <text x="636" y="20" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#086288" opacity="0.75" text-anchor="end">Auto-balanced by Spin Wheel</text>
+
+        <!-- 2x2 Team Boxes Grid (y: 34..506) -->
+        <g transform="translate(0, 34)">
+          <!-- Team 1: Red Rockets (x: 0..310, y: 0..226) -->
+          <g transform="translate(0, 0)">
+            <rect width="310" height="226" rx="12" fill="#fafafa" stroke="#e21b3c" stroke-width="3" />
+            <rect width="310" height="42" rx="9" fill="#e21b3c" />
+            <text x="16" y="27" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="800" fill="#ffffff">[R]  Red Rockets</text>
+            <rect x="268" y="9" width="28" height="24" rx="5" fill="rgba(0,0,0,0.2)" stroke="rgba(255,255,255,0.65)" stroke-width="1" />
+            <text x="282" y="26" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="800" fill="#ffffff" text-anchor="middle">1</text>
+
+            <g transform="translate(16, 58)">
+              <rect width="154" height="34" rx="17" fill="#ffffff" stroke="#dddddd" stroke-width="1.5" />
+              <text x="77" y="22" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#222222" text-anchor="middle">[AR] Alex Rivera</text>
+            </g>
+          </g>
+
+          <!-- Team 2: Blue Blasters (x: 330..640, y: 0..226) -->
+          <g transform="translate(330, 0)">
+            <rect width="310" height="226" rx="12" fill="#fafafa" stroke="#1368ce" stroke-width="3" />
+            <rect width="310" height="42" rx="9" fill="#1368ce" />
+            <text x="16" y="27" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="800" fill="#ffffff">[B]  Blue Blasters</text>
+            <rect x="268" y="9" width="28" height="24" rx="5" fill="rgba(0,0,0,0.2)" stroke="rgba(255,255,255,0.65)" stroke-width="1" />
+            <text x="282" y="26" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="800" fill="#ffffff" text-anchor="middle">1</text>
+
+            <g transform="translate(16, 58)">
+              <rect width="148" height="34" rx="17" fill="#ffffff" stroke="#dddddd" stroke-width="1.5" />
+              <text x="74" y="22" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#222222" text-anchor="middle">[BC] Bella Chen</text>
+            </g>
+          </g>
+
+          <!-- Team 3: Golden Geeks (x: 0..310, y: 246..472) -->
+          <g transform="translate(0, 246)">
+            <rect width="310" height="226" rx="12" fill="#fafafa" stroke="#d88b02" stroke-width="3" />
+            <rect width="310" height="42" rx="9" fill="#d88b02" />
+            <text x="16" y="27" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="800" fill="#ffffff">[G]  Golden Geeks</text>
+            <rect x="268" y="9" width="28" height="24" rx="5" fill="rgba(0,0,0,0.2)" stroke="rgba(255,255,255,0.65)" stroke-width="1" />
+            <text x="282" y="26" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="800" fill="#ffffff" text-anchor="middle">1</text>
+
+            <g transform="translate(16, 58)">
+              <rect width="166" height="34" rx="17" fill="#ffffff" stroke="#dddddd" stroke-width="1.5" />
+              <text x="83" y="22" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#222222" text-anchor="middle">[CG] Carlos Gomez</text>
+            </g>
+          </g>
+
+          <!-- Team 4: Green Giants (x: 330..640, y: 246..472) -->
+          <g transform="translate(330, 246)">
+            <rect width="310" height="226" rx="12" fill="#fafafa" stroke="#26890c" stroke-width="3" />
+            <rect width="310" height="42" rx="9" fill="#26890c" />
+            <text x="16" y="27" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="800" fill="#ffffff">[V]  Green Giants</text>
+            <rect x="268" y="9" width="28" height="24" rx="5" fill="rgba(0,0,0,0.2)" stroke="rgba(255,255,255,0.65)" stroke-width="1" />
+            <text x="282" y="26" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="800" fill="#ffffff" text-anchor="middle">1</text>
+
+            <g transform="translate(16, 58)">
+              <rect width="158" height="34" rx="17" fill="#ffffff" stroke="#dddddd" stroke-width="1.5" />
+              <text x="79" y="22" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#222222" text-anchor="middle">[DP] Diana Prince</text>
+            </g>
+          </g>
+        </g>
+
+        <!-- Bottom Action Row (x: 0..640, y: 532..590) -->
+        <g transform="translate(0, 532)">
+          <!-- .btn-randomize -->
+          <rect x="0" y="0" width="240" height="58" rx="10" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#randShadow)" />
+          <text x="120" y="36" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="700" fill="#086288" text-anchor="middle">Randomize Teams</text>
+
+          <!-- .btn-start-game (.btn-primary) -->
+          <rect x="260" y="0" width="380" height="58" rx="12" fill="#086288" filter="url(#btn3d)" />
+          <text x="450" y="36" font-family="'Fredoka', sans-serif" font-size="22px" font-weight="700" fill="#fee6ba" text-anchor="middle">Start Game Now</text>
+        </g>
+      </g>
+
+      <!-- 3. RIGHT COLUMN: Big Team Picker Wheel + INPUTS [4] Roster (x: 696..1132, width: 436, y: 114..704) -->
+      <g transform="translate(696, 114)">
+        <!-- Top Card: Big Team Picker Wheel (y: 0..328) -->
+        <g transform="translate(0, 0)">
+          <rect width="436" height="328" rx="12" fill="rgba(255,255,255,0.55)" stroke="#4882ab" stroke-width="2" />
+          <text x="218" y="30" font-family="'Fredoka', sans-serif" font-size="18.5px" font-weight="800" fill="#086288" text-anchor="middle">Team Picker Wheel</text>
+          <text x="218" y="50" font-family="'Fredoka', sans-serif" font-size="12.5px" font-weight="700" fill="#086288" opacity="0.8" text-anchor="middle">Click START in the center to spin &amp; shuffle teams</text>
+
+          <!-- Large 4-Slice Wheel Disc + Center START Hub (cx: 218, cy: 192, r: 108) -->
+          <g transform="translate(218, 192)">
+            <circle cx="0" cy="0" r="110" fill="#ffffff" stroke="#4882ab" stroke-width="4" />
+            <!-- Top-Right: Red Rockets -->
+            <path d="M 0 0 L 0 -108 A 108 108 0 0 1 108 0 Z" fill="#e21b3c" />
+            <text x="54" y="-44" font-family="'Fredoka', sans-serif" font-size="11.5px" font-weight="800" fill="#ffffff" text-anchor="middle">Red Rockets</text>
+
+            <!-- Bottom-Right: Blue Blasters -->
+            <path d="M 0 0 L 108 0 A 108 108 0 0 1 0 108 Z" fill="#1368ce" />
+            <text x="54" y="52" font-family="'Fredoka', sans-serif" font-size="11.5px" font-weight="800" fill="#ffffff" text-anchor="middle">Blue Blasters</text>
+
+            <!-- Bottom-Left: Golden Geeks -->
+            <path d="M 0 0 L 0 108 A 108 108 0 0 1 -108 0 Z" fill="#d88b02" />
+            <text x="-54" y="52" font-family="'Fredoka', sans-serif" font-size="11.5px" font-weight="800" fill="#ffffff" text-anchor="middle">Golden Geeks</text>
+
+            <!-- Top-Left: Green Giants -->
+            <path d="M 0 0 L -108 0 A 108 108 0 0 1 0 -108 Z" fill="#26890c" />
+            <text x="-54" y="-44" font-family="'Fredoka', sans-serif" font-size="11.5px" font-weight="800" fill="#ffffff" text-anchor="middle">Green Giants</text>
+
+            <!-- Center START Button Hub -->
+            <circle cx="0" cy="0" r="36" fill="#1b1b1b" stroke="#ffffff" stroke-width="4" filter="url(#btn3d)" />
+            <text x="0" y="5" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="1px">START</text>
+
+            <!-- Top Pointer -->
+            <text x="0" y="-102" font-family="'Fredoka', sans-serif" font-size="22px" font-weight="900" fill="#086288" text-anchor="middle">▼</text>
+          </g>
+        </g>
+
+        <!-- Bottom Card: INPUTS [4] Connected Players List (y: 346..590, height: 244) -->
+        <g transform="translate(0, 346)">
+          <rect width="436" height="244" rx="12" fill="#fafafa" stroke="#4882ab" stroke-width="2" />
+          <text x="20" y="29" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="900" fill="#222222" letter-spacing="0.5px">INPUTS</text>
+          <rect x="92" y="11" width="26" height="22" rx="4" fill="#ffffff" stroke="#888888" stroke-width="1.5" />
+          <text x="105" y="27" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="800" fill="#222222" text-anchor="middle">4</text>
+          <text x="416" y="27" font-family="'Fredoka', sans-serif" font-size="12.5px" font-weight="700" fill="#086288" text-anchor="end">All Equal • 4 Groups</text>
+          <line x1="20" y1="42" x2="416" y2="42" stroke="#cccccc" stroke-width="1.5" stroke-dasharray="4 4" />
+
+          <!-- Input Row 1: Alex Rivera -->
+          <g transform="translate(20, 54)">
+            <rect width="396" height="36" rx="8" fill="#f1f1f1" stroke="#e0e0e0" stroke-width="1" />
+            <circle cx="22" cy="18" r="12" fill="#4882ab" />
+            <text x="22" y="22" font-family="'Fredoka', sans-serif" font-size="10.5px" font-weight="800" fill="#fee6ba" text-anchor="middle">AR</text>
+            <text x="42" y="23" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#222222">Alex Rivera</text>
+            <rect x="252" y="8" width="102" height="20" rx="10" fill="#e21b3c" />
+            <text x="303" y="22" font-family="'Fredoka', sans-serif" font-size="11px" font-weight="800" fill="#ffffff" text-anchor="middle">Red Rockets</text>
+            <rect x="364" y="8" width="20" height="20" rx="4" fill="#ffffff" stroke="#333333" stroke-width="1.5" />
+            <text x="374" y="23" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="900" fill="#222222" text-anchor="middle">✓</text>
+          </g>
+
+          <!-- Input Row 2: Bella Chen -->
+          <g transform="translate(20, 98)">
+            <rect width="396" height="36" rx="8" fill="#f1f1f1" stroke="#e0e0e0" stroke-width="1" />
+            <circle cx="22" cy="18" r="12" fill="#4882ab" />
+            <text x="22" y="22" font-family="'Fredoka', sans-serif" font-size="10.5px" font-weight="800" fill="#fee6ba" text-anchor="middle">BC</text>
+            <text x="42" y="23" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#222222">Bella Chen</text>
+            <rect x="252" y="8" width="102" height="20" rx="10" fill="#1368ce" />
+            <text x="303" y="22" font-family="'Fredoka', sans-serif" font-size="11px" font-weight="800" fill="#ffffff" text-anchor="middle">Blue Blasters</text>
+            <rect x="364" y="8" width="20" height="20" rx="4" fill="#ffffff" stroke="#333333" stroke-width="1.5" />
+            <text x="374" y="23" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="900" fill="#222222" text-anchor="middle">✓</text>
+          </g>
+
+          <!-- Input Row 3: Carlos Gomez -->
+          <g transform="translate(20, 142)">
+            <rect width="396" height="36" rx="8" fill="#f1f1f1" stroke="#e0e0e0" stroke-width="1" />
+            <circle cx="22" cy="18" r="12" fill="#4882ab" />
+            <text x="22" y="22" font-family="'Fredoka', sans-serif" font-size="10.5px" font-weight="800" fill="#fee6ba" text-anchor="middle">CG</text>
+            <text x="42" y="23" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#222222">Carlos Gomez</text>
+            <rect x="252" y="8" width="102" height="20" rx="10" fill="#d88b02" />
+            <text x="303" y="22" font-family="'Fredoka', sans-serif" font-size="11px" font-weight="800" fill="#ffffff" text-anchor="middle">Golden Geeks</text>
+            <rect x="364" y="8" width="20" height="20" rx="4" fill="#ffffff" stroke="#333333" stroke-width="1.5" />
+            <text x="374" y="23" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="900" fill="#222222" text-anchor="middle">✓</text>
+          </g>
+
+          <!-- Input Row 4: Diana Prince -->
+          <g transform="translate(20, 186)">
+            <rect width="396" height="36" rx="8" fill="#f1f1f1" stroke="#e0e0e0" stroke-width="1" />
+            <circle cx="22" cy="18" r="12" fill="#4882ab" />
+            <text x="22" y="22" font-family="'Fredoka', sans-serif" font-size="10.5px" font-weight="800" fill="#fee6ba" text-anchor="middle">DP</text>
+            <text x="42" y="23" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#222222">Diana Prince</text>
+            <rect x="252" y="8" width="102" height="20" rx="10" fill="#26890c" />
+            <text x="303" y="22" font-family="'Fredoka', sans-serif" font-size="11px" font-weight="800" fill="#ffffff" text-anchor="middle">Green Giants</text>
+            <rect x="364" y="8" width="20" height="20" rx="4" fill="#ffffff" stroke="#333333" stroke-width="1.5" />
+            <text x="374" y="23" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="900" fill="#222222" text-anchor="middle">✓</text>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+
+    </g>
+    <rect x="0" y="0" width="1440" height="940" fill="none" stroke="#93d0f8" stroke-width="3" rx="8" />
+  </g>
+
+  <g id="artboard-6" transform="translate(80, 2235)">
+    <text x="0" y="-16" font-family="'Fredoka', sans-serif" font-size="24px" font-weight="800" fill="#fee6ba">06. HostGameView.vue (Stages 2 & 3) — Active Question & Leaderboard</text>
+    <g>
+      
+  
+
+  <!-- App Background: var(--theme-bg-base) = #086288 -->
+  <rect width="1440" height="940" fill="#086288" />
+
+  <!-- .kahoot-navbar (App.vue) -->
+  <rect width="1440" height="68" fill="#086288" />
+  <line x1="0" y1="68" x2="1440" y2="68" stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+  <g transform="translate(120, 14)">
+    <text x="0" y="29" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#fee6ba">qiuizez</text>
+    <g transform="translate(460, 0)">
+      <text x="45" y="26" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="rgba(255,255,255,0.85)" text-anchor="middle">Join Game</text>
+      <text x="192" y="26" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="rgba(255,255,255,0.85)" text-anchor="middle">Instructor Dashboard</text>
+      <rect x="292" y="4" width="102" height="34" rx="6" fill="#086288" stroke="#4882ab" stroke-width="1.5" />
+      <text x="343" y="26" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#fee6ba" text-anchor="middle">+ New Quiz</text>
+      <rect x="408" y="0" width="218" height="42" rx="21" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.2)" />
+      <text x="430" y="27" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="800" fill="#ffffff">A</text>
+      <text x="452" y="19" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#ffffff">Prof. Ada Lovelace</text>
+      <text x="452" y="33" font-family="'Fredoka', sans-serif" font-size="10px" font-weight="800" fill="#fee6ba">INSTRUCTOR</text>
+      <text x="595" y="26" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="rgba(255,255,255,0.75)" text-anchor="middle">Logout</text>
+      <rect x="638" y="4" width="142" height="34" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="709" y="26" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="700" fill="#fee6ba" text-anchor="middle">Ocean (Default) ▼</text>
+    </g>
+  </g>
+
+  <!-- .host-view (max-width: 1100px, centered at x=170) -->
+  <g transform="translate(170, 92)">
+    <!-- .host-header -->
+    <g transform="translate(0, 0)">
+      <rect x="0" y="0" width="90" height="22" rx="11" fill="#ffa602" />
+      <text x="45" y="15" font-family="'Fredoka', sans-serif" font-size="11.5px" font-weight="800" fill="#222222" text-anchor="middle">HOST VIEW</text>
+      <text x="0" y="48" font-family="'Fredoka', sans-serif" font-size="23px" font-weight="800" fill="#ffffff">Computer Science &amp; Web Dev Showdown</text>
+
+      <g transform="translate(450, 6)">
+        <rect width="235" height="46" rx="23" fill="#ffffff" />
+        <text x="20" y="29" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="800" fill="#666666">GAME PIN:</text>
+        <text x="102" y="31" font-family="'Fredoka', sans-serif" font-size="25px" font-weight="900" fill="#46178f" letter-spacing="2px">739218</text>
+      </g>
+
+      <g transform="translate(990, 10)">
+        <rect width="110" height="38" rx="8" fill="#e21b3c" filter="url(#btn3d)" />
+        <text x="55" y="24" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="#ffffff" text-anchor="middle">End Game</text>
+      </g>
+    </g>
+
+    <!-- STAGE 2: QUESTION ACTIVE (.question-stage) -->
+    <g transform="translate(0, 74)">
+      <!-- .q-top-bar -->
+      <text x="0" y="42" font-family="'Fredoka', sans-serif" font-size="21px" font-weight="800" fill="#ffffff">Question 1 / 5</text>
+
+      <!-- .q-timer-circle (72x72 white circle, #46178f text) -->
+      <circle cx="550" cy="36" r="36" fill="#ffffff" filter="url(#cardElev)" />
+      <text x="550" y="47" font-family="'Fredoka', sans-serif" font-size="35px" font-weight="900" fill="#46178f" text-anchor="middle">16</text>
+
+      <!-- .btn-white .btn-sm Skip / Reveal Answer → -->
+      <g transform="translate(895, 16)">
+        <rect width="205" height="40" rx="8" fill="#ffffff" filter="url(#btn3d)" />
+        <text x="102" y="25" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="#46178f" text-anchor="middle">Skip / Reveal Answer →</text>
+      </g>
+
+      <!-- .prompt-container .card-kahoot (background: #fee6ba, color: #222) -->
+      <g transform="translate(0, 86)">
+        <rect width="1100" height="125" rx="12" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+        <text x="550" y="56" font-family="'Fredoka', sans-serif" font-size="30px" font-weight="800" fill="#222222" text-anchor="middle">Which TypeScript feature guarantees compile-time</text>
+        <text x="550" y="94" font-family="'Fredoka', sans-serif" font-size="30px" font-weight="800" fill="#222222" text-anchor="middle">type safety without runtime overhead?</text>
+      </g>
+
+      <!-- .options-display-grid (2x2 grid of .opt-card) -->
+      <g transform="translate(0, 232)">
+        <!-- .opt-red -->
+        <g transform="translate(0, 0)">
+          <rect width="542" height="84" rx="12" fill="#e21b3c" filter="url(#optShadow)" />
+          <text x="28" y="52" font-family="'Fredoka', sans-serif" font-size="32px" font-weight="900" fill="#ffffff">▲</text>
+          <text x="76" y="50" font-family="'Fredoka', sans-serif" font-size="22px" font-weight="700" fill="#ffffff">Type Annotations &amp; Interfaces</text>
+        </g>
+
+        <!-- .opt-blue -->
+        <g transform="translate(558, 0)">
+          <rect width="542" height="84" rx="12" fill="#1368ce" filter="url(#optShadow)" />
+          <text x="28" y="52" font-family="'Fredoka', sans-serif" font-size="32px" font-weight="900" fill="#ffffff">◆</text>
+          <text x="76" y="50" font-family="'Fredoka', sans-serif" font-size="22px" font-weight="700" fill="#ffffff">Classes &amp; Prototypes</text>
+        </g>
+
+        <!-- .opt-yellow (color: #222) -->
+        <g transform="translate(0, 100)">
+          <rect width="542" height="84" rx="12" fill="#d88b02" filter="url(#optShadow)" />
+          <text x="28" y="52" font-family="'Fredoka', sans-serif" font-size="32px" font-weight="900" fill="#222222">●</text>
+          <text x="76" y="50" font-family="'Fredoka', sans-serif" font-size="22px" font-weight="700" fill="#222222">Async / Await Promises</text>
+        </g>
+
+        <!-- .opt-green -->
+        <g transform="translate(558, 100)">
+          <rect width="542" height="84" rx="12" fill="#26890c" filter="url(#optShadow)" />
+          <text x="28" y="52" font-family="'Fredoka', sans-serif" font-size="32px" font-weight="900" fill="#ffffff">■</text>
+          <text x="76" y="50" font-family="'Fredoka', sans-serif" font-size="22px" font-weight="700" fill="#ffffff">JSON Schema Validators</text>
+        </g>
+      </g>
+
+      <!-- STAGE 3 PREVIEW BELOW: QUESTION RESULT & LEADERBOARD (.result-container .card-kahoot) -->
+      <g transform="translate(0, 440)">
+        <rect width="1100" height="310" rx="12" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+
+        <!-- .result-header -->
+        <text x="28" y="42" font-family="'Fredoka', sans-serif" font-size="22px" font-weight="800" fill="#46178f">Stage 3: Question Result &amp; Team Leaderboard</text>
+        <g transform="translate(902, 16)">
+          <rect width="170" height="40" rx="8" fill="#086288" filter="url(#btn3d)" />
+          <text x="85" y="25" font-family="'Fredoka', sans-serif" font-size="15.5px" font-weight="700" fill="#fee6ba" text-anchor="middle">Next Question →</text>
+        </g>
+
+        <!-- .answer-breakdown-row (4 .stat-pill columns) -->
+        <g transform="translate(28, 66)">
+          <!-- Pill 1: Correct highlight -->
+          <rect x="0" y="0" width="248" height="78" rx="10" fill="#e21b3c" stroke="#26890c" stroke-width="4" />
+          <text x="124" y="26" font-family="'Fredoka', sans-serif" font-size="20px" font-weight="900" fill="#ffffff" text-anchor="middle">▲  3 votes</text>
+          <rect x="86" y="42" width="76" height="22" rx="11" fill="#ffffff" />
+          <text x="124" y="57" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="#26890c" text-anchor="middle">Correct</text>
+
+          <rect x="262" y="0" width="248" height="78" rx="10" fill="#1368ce" />
+          <text x="386" y="46" font-family="'Fredoka', sans-serif" font-size="20px" font-weight="900" fill="#ffffff" text-anchor="middle">◆  1 vote</text>
+
+          <rect x="524" y="0" width="248" height="78" rx="10" fill="#d88b02" />
+          <text x="648" y="46" font-family="'Fredoka', sans-serif" font-size="20px" font-weight="900" fill="#222222" text-anchor="middle">●  0 votes</text>
+
+          <rect x="786" y="0" width="258" height="78" rx="10" fill="#26890c" />
+          <text x="915" y="46" font-family="'Fredoka', sans-serif" font-size="20px" font-weight="900" fill="#ffffff" text-anchor="middle">■  0 votes</text>
+        </g>
+
+        <!-- .leaderboard-table -->
+        <g transform="translate(28, 162)">
+          <text x="0" y="18" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="800" fill="#333333">Team Standings</text>
+
+          <!-- Row 1 -->
+          <rect x="0" y="28" width="512" height="46" rx="10" fill="#f8f8f8" stroke="#eeeeee" />
+          <text x="18" y="57" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="900" fill="#d4af37">#1</text>
+          <text x="58" y="57" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="800" fill="#e21b3c">[R] Red Rockets <tspan fill="#777777" font-size="13.5px" font-weight="600">(1 members)</tspan></text>
+          <text x="494" y="57" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="800" fill="#46178f" text-anchor="end">1,450 pts</text>
+
+          <!-- Row 2 -->
+          <rect x="532" y="28" width="512" height="46" rx="10" fill="#f8f8f8" stroke="#eeeeee" />
+          <text x="550" y="57" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="900" fill="#aaaaaa">#2</text>
+          <text x="590" y="57" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="800" fill="#1368ce">[B] Blue Blasters <tspan fill="#777777" font-size="13.5px" font-weight="600">(1 members)</tspan></text>
+          <text x="1026" y="57" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="800" fill="#46178f" text-anchor="end">1,380 pts</text>
+
+          <!-- Row 3 & 4 -->
+          <rect x="0" y="82" width="512" height="46" rx="10" fill="#f8f8f8" stroke="#eeeeee" />
+          <text x="18" y="111" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="900" fill="#cd7f32">#3</text>
+          <text x="58" y="111" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="800" fill="#d88b02">[G] Golden Geeks <tspan fill="#777777" font-size="13.5px" font-weight="600">(1 members)</tspan></text>
+          <text x="494" y="111" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="800" fill="#46178f" text-anchor="end">1,210 pts</text>
+
+          <rect x="532" y="82" width="512" height="46" rx="10" fill="#f8f8f8" stroke="#eeeeee" />
+          <text x="550" y="111" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="900" fill="#666666">#4</text>
+          <text x="590" y="111" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="800" fill="#26890c">[V] Green Giants <tspan fill="#777777" font-size="13.5px" font-weight="600">(1 members)</tspan></text>
+          <text x="1026" y="111" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="800" fill="#46178f" text-anchor="end">0 pts</text>
+        </g>
+      </g>
+    </g>
+  </g>
+
+    </g>
+    <rect x="0" y="0" width="1440" height="940" fill="none" stroke="#93d0f8" stroke-width="3" rx="8" />
+  </g>
+
+  <g id="artboard-7" transform="translate(1600, 2235)">
+    <text x="0" y="-16" font-family="'Fredoka', sans-serif" font-size="24px" font-weight="800" fill="#fee6ba">07. StudentGameView.vue — Touch Gamepad, Lobby & Round Feedback</text>
+    <g>
+      
+  
+
+  <!-- App Background: var(--theme-bg-base) = #086288 -->
+  <rect width="1440" height="940" fill="#086288" />
+
+  <!-- .kahoot-navbar (App.vue) -->
+  <rect width="1440" height="68" fill="#086288" />
+  <line x1="0" y1="68" x2="1440" y2="68" stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+  <g transform="translate(120, 14)">
+    <text x="0" y="29" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#fee6ba">qiuizez</text>
+    <g transform="translate(650, 0)">
+      <rect x="0" y="4" width="102" height="34" rx="6" fill="rgba(255,255,255,0.18)" />
+      <text x="51" y="26" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="700" fill="#ffffff" text-anchor="middle">Join Game</text>
+
+      <rect x="118" y="0" width="218" height="42" rx="21" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.2)" />
+      <text x="140" y="27" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="800" fill="#ffffff">AR</text>
+      <text x="166" y="19" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#ffffff">Alex Rivera</text>
+      <text x="166" y="33" font-family="'Fredoka', sans-serif" font-size="10px" font-weight="800" fill="#93d0f8">STUDENT</text>
+      <text x="304" y="26" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="rgba(255,255,255,0.75)" text-anchor="middle">Logout</text>
+
+      <rect x="350" y="4" width="142" height="34" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="421" y="26" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="700" fill="#fee6ba" text-anchor="middle">Ocean (Default) ▼</text>
+    </g>
+  </g>
+
+  <!-- LEFT COLUMN: STAGE 2 ACTIVE QUESTION GAMEPAD (.student-view, max-width: 680px) -->
+  <g transform="translate(60, 92)">
+    <!-- .student-header -->
+    <rect width="640" height="68" rx="14" fill="rgba(0,0,0,0.28)" stroke="#e21b3c" stroke-width="2" />
+    <text x="20" y="44" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="900" fill="#ffffff">[R]</text>
+    <text x="68" y="28" font-family="'Fredoka', sans-serif" font-size="10.5px" font-weight="800" fill="rgba(255,255,255,0.7)">YOUR TEAM</text>
+    <text x="68" y="48" font-family="'Fredoka', sans-serif" font-size="18.5px" font-weight="900" fill="#e21b3c">Red Rockets</text>
+
+    <!-- .score-pills -->
+    <g transform="translate(425, 12)">
+      <rect x="0" y="0" width="96" height="44" rx="10" fill="rgba(255,255,255,0.15)" />
+      <text x="48" y="17" font-family="'Fredoka', sans-serif" font-size="10px" font-weight="700" fill="rgba(255,255,255,0.7)" text-anchor="middle">Team Score</text>
+      <text x="48" y="36" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="800" fill="#ffa602" text-anchor="middle">1,450</text>
+
+      <rect x="106" y="0" width="96" height="44" rx="10" fill="rgba(255,255,255,0.15)" />
+      <text x="154" y="17" font-family="'Fredoka', sans-serif" font-size="10px" font-weight="700" fill="rgba(255,255,255,0.7)" text-anchor="middle">My Score</text>
+      <text x="154" y="36" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="800" fill="#ffa602" text-anchor="middle">1,450</text>
+    </g>
+
+    <!-- .q-bar -->
+    <g transform="translate(0, 86)">
+      <text x="0" y="24" font-family="'Fredoka', sans-serif" font-size="18.5px" font-weight="800" fill="#ffffff">Q1 / 5</text>
+      <rect x="530" y="0" width="110" height="34" rx="17" fill="#ffffff" filter="url(#cardElev)" />
+      <text x="585" y="23" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="900" fill="#46178f" text-anchor="middle">Time: 16s</text>
+    </g>
+
+    <!-- .question-box .card-kahoot (background: #fee6ba) -->
+    <g transform="translate(0, 134)">
+      <rect width="640" height="96" rx="12" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+      <text x="320" y="42" font-family="'Fredoka', sans-serif" font-size="21px" font-weight="800" fill="#222222" text-anchor="middle">Which TypeScript feature guarantees compile-time</text>
+      <text x="320" y="72" font-family="'Fredoka', sans-serif" font-size="21px" font-weight="800" fill="#222222" text-anchor="middle">type safety without runtime overhead?</text>
+    </g>
+
+    <!-- .kahoot-buttons-grid (2x2 grid of tactile .kahoot-btn touch buttons) -->
+    <g transform="translate(0, 248)">
+      <!-- Red Triangle -->
+      <g transform="translate(0, 0)">
+        <rect width="312" height="142" rx="12" fill="#e21b3c" filter="url(#btn3d)" />
+        <text x="24" y="82" font-family="'Fredoka', sans-serif" font-size="35px" font-weight="900" fill="#ffffff">▲</text>
+        <text x="72" y="68" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="700" fill="#ffffff">Type Annotations &amp;</text>
+        <text x="72" y="94" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="700" fill="#ffffff">Interfaces</text>
+      </g>
+
+      <!-- Blue Diamond -->
+      <g transform="translate(328, 0)">
+        <rect width="312" height="142" rx="12" fill="#1368ce" filter="url(#btn3d)" />
+        <text x="24" y="82" font-family="'Fredoka', sans-serif" font-size="35px" font-weight="900" fill="#ffffff">◆</text>
+        <text x="72" y="78" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="700" fill="#ffffff">Classes &amp; Prototypes</text>
+      </g>
+
+      <!-- Yellow Circle (color: #222) -->
+      <g transform="translate(0, 158)">
+        <rect width="312" height="142" rx="12" fill="#d88b02" filter="url(#btn3d)" />
+        <text x="24" y="82" font-family="'Fredoka', sans-serif" font-size="35px" font-weight="900" fill="#222222">●</text>
+        <text x="72" y="78" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="700" fill="#222222">Async / Await Promises</text>
+      </g>
+
+      <!-- Green Square -->
+      <g transform="translate(328, 158)">
+        <rect width="312" height="142" rx="12" fill="#26890c" filter="url(#btn3d)" />
+        <text x="24" y="82" font-family="'Fredoka', sans-serif" font-size="35px" font-weight="900" fill="#ffffff">■</text>
+        <text x="72" y="78" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="700" fill="#ffffff">JSON Schema Validators</text>
+      </g>
+    </g>
+
+    <!-- Answer Locked-In State (.locked-in-box .card-kahoot) -->
+    <g transform="translate(0, 568)">
+      <rect width="640" height="215" rx="12" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+      <rect x="265" y="22" width="110" height="26" rx="12" fill="#f0f0f0" />
+      <text x="320" y="40" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="800" fill="#46178f" text-anchor="middle">SUBMITTED</text>
+      <text x="320" y="78" font-family="'Fredoka', sans-serif" font-size="28px" font-weight="800" fill="#46178f" text-anchor="middle">Answer Locked In</text>
+      <text x="320" y="106" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="#666666" text-anchor="middle">Waiting for teammates and timer to reveal the result...</text>
+
+      <rect x="170" y="128" width="300" height="52" rx="10" fill="#e21b3c" filter="url(#btn3d)" />
+      <text x="320" y="160" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="700" fill="#ffffff" text-anchor="middle">▲  Type Annotations &amp; Interfaces</text>
+    </g>
+  </g>
+
+  <!-- RIGHT COLUMN: STAGE 1 STUDENT LOBBY & STAGE 3 ROUND FEEDBACK -->
+  <g transform="translate(740, 92)">
+    <!-- Stage 1: Student Lobby Card (.lobby-card .card-kahoot) -->
+    <g transform="translate(0, 0)">
+      <rect width="640" height="410" rx="12" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+      <text x="320" y="46" font-family="'Fredoka', sans-serif" font-size="28px" font-weight="800" fill="#333333" text-anchor="middle">Welcome, Alex Rivera</text>
+      <text x="320" y="72" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="#666666" text-anchor="middle">You have been automatically assigned to:</text>
+
+      <!-- .team-showcase -->
+      <g transform="translate(36, 92)">
+        <rect width="568" height="145" rx="16" fill="rgba(226,27,60,0.12)" stroke="#e21b3c" stroke-width="4" />
+        <text x="284" y="54" font-family="'Fredoka', sans-serif" font-size="44px" font-weight="900" fill="#e21b3c" text-anchor="middle">[R]</text>
+        <text x="284" y="96" font-family="'Fredoka', sans-serif" font-size="34px" font-weight="900" fill="#e21b3c" text-anchor="middle">Red Rockets</text>
+        <text x="284" y="124" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="#555555" text-anchor="middle">Collaborate with your teammates to climb the podium</text>
+      </g>
+
+      <!-- .teammates-box -->
+      <g transform="translate(36, 254)">
+        <rect width="568" height="90" rx="12" fill="#f9f9f9" />
+        <text x="284" y="28" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#666666" text-anchor="middle">Your Teammates (2):</text>
+        <g transform="translate(155, 42)">
+          <rect x="0" y="0" width="125" height="32" rx="16" fill="#ffffff" stroke="#dddddd" />
+          <text x="62" y="21" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#333333" text-anchor="middle">[AR] Alex Rivera</text>
+
+          <rect x="135" y="0" width="125" height="32" rx="16" fill="#ffffff" stroke="#dddddd" />
+          <text x="197" y="21" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#333333" text-anchor="middle">[DP] Diana Prince</text>
+        </g>
+      </g>
+
+      <text x="320" y="382" font-family="'Fredoka', sans-serif" font-size="17.5px" font-weight="800" fill="#46178f" text-anchor="middle">Waiting for instructor to start the quiz...</text>
+    </g>
+
+    <!-- Stage 3: Student Round Result Card (.result-card .card-kahoot .result-correct) -->
+    <g transform="translate(0, 435)">
+      <rect width="640" height="348" rx="12" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+      <path d="M 10 0 L 630 0 Q 640 0 640 8 L 0 8 Q 0 0 10 0 Z" fill="#26890c" />
+
+      <text x="320" y="62" font-family="'Fredoka', sans-serif" font-size="35px" font-weight="900" fill="#26890c" text-anchor="middle">Correct!</text>
+      <text x="320" y="96" font-family="'Fredoka', sans-serif" font-size="21px" font-weight="800" fill="#ffa602" text-anchor="middle">+1,400 Points Earned</text>
+
+      <!-- .team-contribution-box -->
+      <g transform="translate(36, 122)">
+        <rect width="568" height="145" rx="12" fill="#f8f8f8" />
+        <text x="24" y="38" font-family="'Fredoka', sans-serif" font-size="16.5px" font-weight="600" fill="#333333">Your Individual Score:</text>
+        <text x="544" y="38" font-family="'Fredoka', sans-serif" font-size="16.5px" font-weight="800" fill="#333333" text-anchor="end">1,450 pts</text>
+
+        <text x="24" y="78" font-family="'Fredoka', sans-serif" font-size="16.5px" font-weight="600" fill="#333333">Red Rockets Total:</text>
+        <text x="544" y="78" font-family="'Fredoka', sans-serif" font-size="16.5px" font-weight="800" fill="#e21b3c" text-anchor="end">2,850 pts</text>
+
+        <text x="24" y="118" font-family="'Fredoka', sans-serif" font-size="16.5px" font-weight="600" fill="#333333">Current Team Rank:</text>
+        <text x="544" y="118" font-family="'Fredoka', sans-serif" font-size="16.5px" font-weight="800" fill="#333333" text-anchor="end">#1 of 4</text>
+      </g>
+
+      <text x="320" y="312" font-family="'Fredoka', sans-serif" font-size="16px" font-weight="800" fill="#46178f" text-anchor="middle">Get ready for the next question...</text>
+    </g>
+  </g>
+
+    </g>
+    <rect x="0" y="0" width="1440" height="940" fill="none" stroke="#93d0f8" stroke-width="3" rx="8" />
+  </g>
+
+  <g id="artboard-8" transform="translate(3120, 2235)">
+    <text x="0" y="-16" font-family="'Fredoka', sans-serif" font-size="24px" font-weight="800" fill="#fee6ba">08. SummaryView.vue — Official Match Report & MVP Standings</text>
+    <g>
+      
+  
+
+  <!-- App Background: var(--theme-bg-base) = #086288 -->
+  <rect width="1440" height="940" fill="#086288" />
+
+  <!-- .kahoot-navbar (App.vue) -->
+  <rect width="1440" height="68" fill="#086288" />
+  <line x1="0" y1="68" x2="1440" y2="68" stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+  <g transform="translate(120, 14)">
+    <text x="0" y="29" font-family="'Fredoka', sans-serif" font-size="26px" font-weight="800" fill="#fee6ba">qiuizez</text>
+    <g transform="translate(460, 0)">
+      <text x="45" y="26" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="rgba(255,255,255,0.85)" text-anchor="middle">Join Game</text>
+      <text x="192" y="26" font-family="'Fredoka', sans-serif" font-size="15px" font-weight="600" fill="rgba(255,255,255,0.85)" text-anchor="middle">Instructor Dashboard</text>
+      <rect x="292" y="4" width="102" height="34" rx="6" fill="#086288" stroke="#4882ab" stroke-width="1.5" />
+      <text x="343" y="26" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#fee6ba" text-anchor="middle">+ New Quiz</text>
+      <rect x="408" y="0" width="218" height="42" rx="21" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.2)" />
+      <text x="430" y="27" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="800" fill="#ffffff">A</text>
+      <text x="452" y="19" font-family="'Fredoka', sans-serif" font-size="13.5px" font-weight="700" fill="#ffffff">Prof. Ada Lovelace</text>
+      <text x="452" y="33" font-family="'Fredoka', sans-serif" font-size="10px" font-weight="800" fill="#fee6ba">INSTRUCTOR</text>
+      <text x="595" y="26" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="rgba(255,255,255,0.75)" text-anchor="middle">Logout</text>
+      <rect x="638" y="4" width="142" height="34" rx="8" fill="transparent" stroke="#4882ab" stroke-width="1.5" />
+      <text x="709" y="26" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="700" fill="#fee6ba" text-anchor="middle">Ocean (Default) ▼</text>
+    </g>
+  </g>
+
+  <!-- .summary-container (max-width: 960px, centered at x=240) -->
+  <g transform="translate(240, 92)">
+    <!-- 1. .summary-header .card-kahoot -->
+    <g transform="translate(0, 0)">
+      <rect width="960" height="125" rx="12" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+
+      <!-- .summary-badge -->
+      <rect x="24" y="20" width="165" height="24" rx="12" fill="#f1e9ff" />
+      <text x="106" y="36" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="#46178f" text-anchor="middle">OFFICIAL MATCH REPORT</text>
+
+      <text x="24" y="72" font-family="'Fredoka', sans-serif" font-size="28px" font-weight="900" fill="#222222">Computer Science &amp; Web Dev Showdown</text>
+
+      <!-- .stats-row -->
+      <g transform="translate(24, 84)">
+        <rect x="0" y="0" width="138" height="26" rx="6" fill="#f5f5f5" stroke="#dddddd" />
+        <text x="69" y="18" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="700" fill="#555555" text-anchor="middle">Room PIN: 739218</text>
+
+        <rect x="148" y="0" width="160" height="26" rx="6" fill="#f5f5f5" stroke="#dddddd" />
+        <text x="228" y="18" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="700" fill="#555555" text-anchor="middle">4 Total Participants</text>
+
+        <rect x="318" y="0" width="150" height="26" rx="6" fill="#f5f5f5" stroke="#dddddd" />
+        <text x="393" y="18" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="700" fill="#555555" text-anchor="middle">4 Competing Teams</text>
+      </g>
+
+      <!-- .header-actions (Celebrate, Play Again, Dashboard) -->
+      <g transform="translate(612, 44)">
+        <rect x="0" y="0" width="102" height="36" rx="8" fill="#ffa602" filter="url(#btn3d)" />
+        <text x="51" y="23" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#222222" text-anchor="middle">Celebrate</text>
+
+        <rect x="112" y="0" width="106" height="36" rx="8" fill="#ffffff" filter="url(#btn3d)" />
+        <text x="165" y="23" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#46178f" text-anchor="middle">Play Again</text>
+
+        <rect x="228" y="0" width="102" height="36" rx="8" fill="#086288" filter="url(#btn3d)" />
+        <text x="279" y="23" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="700" fill="#fee6ba" text-anchor="middle">Dashboard</text>
+      </g>
+    </g>
+
+    <!-- 2. .podium-section .card-kahoot (Final Team Standings) -->
+    <g transform="translate(0, 146)">
+      <rect width="960" height="325" rx="12" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+      <text x="24" y="38" font-family="'Fredoka', sans-serif" font-size="24px" font-weight="800" fill="#46178f">Final Team Standings</text>
+
+      <!-- .team-rank-cards (3 columns) -->
+      <g transform="translate(24, 54)">
+        <!-- Team #1 Card -->
+        <g transform="translate(0, 0)">
+          <rect width="292" height="248" rx="12" fill="#ffffff" stroke="#e21b3c" stroke-width="3" />
+          <rect width="292" height="46" rx="9" fill="#e21b3c" />
+          <text x="14" y="29" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="800" fill="#ffffff">#1  [R]  Red Rockets</text>
+          <text x="278" y="29" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="900" fill="#ffffff" text-anchor="end">4,890 pts</text>
+
+          <text x="16" y="72" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="#888888">TEAM CONTRIBUTORS:</text>
+
+          <!-- Member 1 (MVP) -->
+          <g transform="translate(16, 84)">
+            <rect width="260" height="40" rx="8" fill="#f9f9f9" stroke="#eeeeee" />
+            <rect x="10" y="10" width="38" height="20" rx="10" fill="#fff3cd" />
+            <text x="29" y="24" font-family="'Fredoka', sans-serif" font-size="10.5px" font-weight="800" fill="#856404" text-anchor="middle">MVP</text>
+            <text x="56" y="25" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#333333">[AR] Alex Rivera</text>
+            <text x="248" y="25" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="800" fill="#46178f" text-anchor="end">2,890 pts</text>
+          </g>
+
+          <!-- Member 2 -->
+          <g transform="translate(16, 134)">
+            <rect width="260" height="40" rx="8" fill="#f9f9f9" stroke="#eeeeee" />
+            <text x="14" y="25" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#333333">[DP] Diana Prince</text>
+            <text x="248" y="25" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="800" fill="#46178f" text-anchor="end">2,000 pts</text>
+          </g>
+        </g>
+
+        <!-- Team #2 Card -->
+        <g transform="translate(310, 0)">
+          <rect width="292" height="248" rx="12" fill="#ffffff" stroke="#1368ce" stroke-width="3" />
+          <rect width="292" height="46" rx="9" fill="#1368ce" />
+          <text x="14" y="29" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="800" fill="#ffffff">#2  [B]  Blue Blasters</text>
+          <text x="278" y="29" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="900" fill="#ffffff" text-anchor="end">4,210 pts</text>
+
+          <text x="16" y="72" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="#888888">TEAM CONTRIBUTORS:</text>
+
+          <g transform="translate(16, 84)">
+            <rect width="260" height="40" rx="8" fill="#f9f9f9" stroke="#eeeeee" />
+            <rect x="10" y="10" width="38" height="20" rx="10" fill="#fff3cd" />
+            <text x="29" y="24" font-family="'Fredoka', sans-serif" font-size="10.5px" font-weight="800" fill="#856404" text-anchor="middle">MVP</text>
+            <text x="56" y="25" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#333333">[BC] Bella Chen</text>
+            <text x="248" y="25" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="800" fill="#46178f" text-anchor="end">4,210 pts</text>
+          </g>
+        </g>
+
+        <!-- Team #3 Card -->
+        <g transform="translate(620, 0)">
+          <rect width="292" height="248" rx="12" fill="#ffffff" stroke="#d88b02" stroke-width="3" />
+          <rect width="292" height="46" rx="9" fill="#d88b02" />
+          <text x="14" y="29" font-family="'Fredoka', sans-serif" font-size="18px" font-weight="800" fill="#ffffff">#3  [G]  Golden Geeks</text>
+          <text x="278" y="29" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="900" fill="#ffffff" text-anchor="end">3,650 pts</text>
+
+          <text x="16" y="72" font-family="'Fredoka', sans-serif" font-size="12px" font-weight="800" fill="#888888">TEAM CONTRIBUTORS:</text>
+
+          <g transform="translate(16, 84)">
+            <rect width="260" height="40" rx="8" fill="#f9f9f9" stroke="#eeeeee" />
+            <rect x="10" y="10" width="38" height="20" rx="10" fill="#fff3cd" />
+            <text x="29" y="24" font-family="'Fredoka', sans-serif" font-size="10.5px" font-weight="800" fill="#856404" text-anchor="middle">MVP</text>
+            <text x="56" y="25" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="700" fill="#333333">[CG] Carlos Gomez</text>
+            <text x="248" y="25" font-family="'Fredoka', sans-serif" font-size="14px" font-weight="800" fill="#46178f" text-anchor="end">3,650 pts</text>
+          </g>
+        </g>
+      </g>
+    </g>
+
+    <!-- 3. .mvp-section .card-kahoot (Top Individual Contributors) -->
+    <g transform="translate(0, 492)">
+      <rect width="960" height="275" rx="12" fill="#fee6ba" stroke="#4882ab" stroke-width="1.5" filter="url(#cardElev)" />
+      <text x="24" y="36" font-family="'Fredoka', sans-serif" font-size="24px" font-weight="800" fill="#46178f">Top Individual Contributors (MVPs)</text>
+      <text x="24" y="56" font-family="'Fredoka', sans-serif" font-size="14.5px" font-weight="600" fill="#666666">Highest scoring students across all teams:</text>
+
+      <!-- .mvp-list -->
+      <g transform="translate(24, 72)">
+        <!-- MVP 1 -->
+        <g transform="translate(0, 0)">
+          <rect width="912" height="54" rx="10" fill="#f9f9f9" stroke="#eaeaea" />
+          <text x="20" y="34" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="900" fill="#d4af37">1st</text>
+          <text x="90" y="26" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="800" fill="#222222">Bella Chen</text>
+          <text x="90" y="44" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="700" fill="#1368ce">Team Blue Blasters</text>
+          <text x="890" y="35" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="900" fill="#26890c" text-anchor="end">4,210 pts</text>
+        </g>
+
+        <!-- MVP 2 -->
+        <g transform="translate(0, 64)">
+          <rect width="912" height="54" rx="10" fill="#f9f9f9" stroke="#eaeaea" />
+          <text x="20" y="34" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="900" fill="#888888">2nd</text>
+          <text x="90" y="26" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="800" fill="#222222">Carlos Gomez</text>
+          <text x="90" y="44" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="700" fill="#d88b02">Team Golden Geeks</text>
+          <text x="890" y="35" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="900" fill="#26890c" text-anchor="end">3,650 pts</text>
+        </g>
+
+        <!-- MVP 3 -->
+        <g transform="translate(0, 128)">
+          <rect width="912" height="54" rx="10" fill="#f9f9f9" stroke="#eaeaea" />
+          <text x="20" y="34" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="900" fill="#cd7f32">3rd</text>
+          <text x="90" y="26" font-family="'Fredoka', sans-serif" font-size="17px" font-weight="800" fill="#222222">Alex Rivera</text>
+          <text x="90" y="44" font-family="'Fredoka', sans-serif" font-size="13px" font-weight="700" fill="#e21b3c">Team Red Rockets</text>
+          <text x="890" y="35" font-family="'Fredoka', sans-serif" font-size="19px" font-weight="900" fill="#26890c" text-anchor="end">2,890 pts</text>
+        </g>
+      </g>
+    </g>
+  </g>
+
+    </g>
+    <rect x="0" y="0" width="1440" height="940" fill="none" stroke="#93d0f8" stroke-width="3" rx="8" />
+  </g>
+
+</svg>
