@@ -15,6 +15,16 @@
       <div class="header-actions">
         <button
           v-if="!gameStore.isEnded"
+          type="button"
+          @click="handleToggleAutoReveal"
+          class="btn-kahoot btn-sm btn-autoreveal"
+          :class="{ active: gameStore.autoReveal }"
+          title="Saved per account: automatically reveal answers at 0s or when all players answer"
+        >
+          Auto-Reveal: {{ gameStore.autoReveal ? 'ON' : 'OFF' }}
+        </button>
+        <button
+          v-if="!gameStore.isEnded"
           @click="confirmEndGame"
           class="btn-kahoot btn-red btn-sm"
         >
@@ -23,8 +33,32 @@
       </div>
     </header>
 
+    <!-- LOADING & RECOVERY STATES -->
+    <section v-if="gameStore.sessionLoading" class="recovery-stage">
+      <div class="recovery-card card-kahoot">
+        <div class="spinner"></div>
+        <h2>Loading Room {{ roomCode }}...</h2>
+        <p>Connecting to live quiz session.</p>
+      </div>
+    </section>
+
+    <section v-else-if="gameStore.sessionError || !gameStore.session" class="recovery-stage animate-pop">
+      <div class="recovery-card card-kahoot">
+        <h2>Room Not Found</h2>
+        <p>{{ gameStore.sessionError || `Game room ${roomCode} does not exist or has expired.` }}</p>
+        <div class="recovery-actions">
+          <router-link to="/instructor" class="btn-kahoot btn-primary">
+            Go to Dashboard
+          </router-link>
+          <button type="button" @click="openPreviewLobby" class="btn-kahoot btn-yellow">
+            Open Demo Preview Lobby
+          </button>
+        </div>
+      </div>
+    </section>
+
     <!-- STAGE 1: LOBBY -->
-    <section v-if="gameStore.isInLobby" class="lobby-stage animate-pop">
+    <section v-else-if="gameStore.isInLobby" class="lobby-stage animate-pop">
       <div class="lobby-center-card card-kahoot">
         <!-- Top Room PIN Banner -->
         <div class="lobby-top-banner">
@@ -111,22 +145,31 @@
 
               <div class="wheel-spinner-wrapper">
                 <div class="wheel-pointer">▼</div>
-                <div
-                  class="wheel-disc"
+                <svg
+                  class="wheel-svg"
+                  viewBox="-120 -120 240 240"
                   :style="{ transform: `rotate(${wheelRotation}deg)` }"
                 >
-                  <div
-                    v-for="(team, idx) in gameStore.session?.teams"
-                    :key="team.id"
-                    class="wheel-slice"
-                    :style="{
-                      backgroundColor: team.color,
-                      transform: `rotate(${(360 / (gameStore.session?.teams.length || 2)) * idx}deg)`
-                    }"
-                  >
-                    <span class="slice-label">{{ team.name }}</span>
-                  </div>
-                </div>
+                  <g v-for="(slice, idx) in wheelSlices" :key="idx">
+                    <path
+                      :d="slice.path"
+                      :fill="slice.color"
+                      stroke="#ffffff"
+                      stroke-width="2"
+                    />
+                    <text
+                      :transform="`rotate(${slice.textAngle}) translate(70, 4)`"
+                      text-anchor="middle"
+                      fill="#ffffff"
+                      font-family="'Fredoka', sans-serif"
+                      font-weight="800"
+                      font-size="11.5px"
+                      class="wheel-svg-label"
+                    >
+                      {{ slice.label }}
+                    </text>
+                  </g>
+                </svg>
                 <button
                   class="wheel-center-start-btn"
                   :disabled="totalPlayersCount === 0 || isSpinningWheel"
@@ -145,8 +188,35 @@
                   <span class="roster-title">INPUTS</span>
                   <span class="inputs-count-box">{{ totalPlayersCount }}</span>
                 </div>
-                <span class="roster-sub">All Equal • {{ gameStore.session?.teams?.length || 4 }} Groups</span>
+                <div class="group-count-pills">
+                  <span class="groups-label">Groups:</span>
+                  <button
+                    v-for="n in [2, 3, 4]"
+                    :key="n"
+                    type="button"
+                    class="btn-group-count"
+                    :class="{ active: (gameStore.session?.teams?.length || 4) === n }"
+                    @click="changeTeamCount(n)"
+                  >
+                    {{ n }}
+                  </button>
+                </div>
               </div>
+              <form class="add-player-row" @submit.prevent="handleAddManualPlayer">
+                <input
+                  v-model="newPlayerName"
+                  type="text"
+                  maxlength="24"
+                  placeholder="Add participant name..."
+                  class="input-add-player"
+                />
+                <button type="submit" class="btn-add-player" :disabled="!newPlayerName.trim()">
+                  + Add
+                </button>
+                <button type="button" class="btn-add-bots" @click="addDemoBots" title="Add sample players">
+                  + Bots
+                </button>
+              </form>
               <div class="inputs-divider"></div>
               <div class="roster-rows-list">
                 <div v-if="allConnectedStudents.length === 0" class="waiting-text">
@@ -160,7 +230,14 @@
                   <span class="st-avatar">{{ st.avatar || st.user_name.substring(0, 2).toUpperCase() }}</span>
                   <span class="st-name">{{ st.user_name }}</span>
                   <span class="st-team-pill" :style="{ backgroundColor: st.teamColor }">{{ st.teamName }}</span>
-                  <span class="st-check-box">✓</span>
+                  <button
+                    type="button"
+                    class="btn-remove-player"
+                    @click="removePlayer(st.id)"
+                    title="Remove participant"
+                  >
+                    ×
+                  </button>
                 </div>
               </div>
             </div>
@@ -192,8 +269,14 @@
     <!-- STAGE 2: QUESTION ACTIVE -->
     <section v-else-if="gameStore.isQuestionActive" class="question-stage">
       <div class="q-top-bar">
-        <div class="q-progress">
-          Question {{ (gameStore.session?.current_question_index || 0) + 1 }} / {{ gameStore.session?.total_questions }}
+        <div class="q-top-left">
+          <div class="q-progress">
+            Question {{ (gameStore.session?.current_question_index || 0) + 1 }} / {{ gameStore.session?.total_questions }}
+          </div>
+          <div class="q-answers-badge">
+            Answers Locked In:
+            <strong>{{ gameStore.answersReceived }} / {{ gameStore.totalActivePlayers || totalPlayersCount }}</strong>
+          </div>
         </div>
         <div class="q-timer-circle" :class="{ 'warning': gameStore.timeRemaining <= 5 }">
           {{ gameStore.timeRemaining }}
@@ -382,6 +465,93 @@ const allConnectedStudents = computed(() => {
   return list;
 });
 
+// Slices for the wheel showing each connected participant's name
+const wheelSlices = computed(() => {
+  const participants = allConnectedStudents.value;
+  const count = participants.length;
+  if (count === 0) {
+    // If no participants, show fallback team slices
+    const teams = gameStore.session?.teams || [];
+    const tCount = Math.max(1, teams.length);
+    const sliceAngle = 360 / tCount;
+    return teams.map((team, idx) => {
+      const startAngle = (idx * sliceAngle - 90) * (Math.PI / 180);
+      const endAngle = ((idx + 1) * sliceAngle - 90) * (Math.PI / 180);
+      const r = 116;
+      const x1 = Math.cos(startAngle) * r;
+      const y1 = Math.sin(startAngle) * r;
+      const x2 = Math.cos(endAngle) * r;
+      const y2 = Math.sin(endAngle) * r;
+      const largeArc = sliceAngle > 180 ? 1 : 0;
+      return {
+        label: team.name,
+        color: team.color,
+        path: `M 0 0 L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`,
+        textAngle: idx * sliceAngle + sliceAngle / 2 - 90
+      };
+    });
+  }
+
+  const sliceAngle = 360 / count;
+  const r = 116;
+  const colors = ['#e21b3c', '#1368ce', '#d88b02', '#26890c', '#8e44ad', '#e67e22'];
+
+  return participants.map((p, idx) => {
+    if (count === 1) {
+      return {
+        label: p.user_name,
+        color: p.teamColor || colors[0],
+        path: `M -${r} 0 A ${r} ${r} 0 1 0 ${r} 0 A ${r} ${r} 0 1 0 -${r} 0`,
+        textAngle: -90
+      };
+    }
+
+    const startAngle = (idx * sliceAngle - 90) * (Math.PI / 180);
+    const endAngle = ((idx + 1) * sliceAngle - 90) * (Math.PI / 180);
+    const x1 = Math.cos(startAngle) * r;
+    const y1 = Math.sin(startAngle) * r;
+    const x2 = Math.cos(endAngle) * r;
+    const y2 = Math.sin(endAngle) * r;
+    const largeArc = sliceAngle > 180 ? 1 : 0;
+
+    return {
+      label: p.user_name,
+      color: p.teamColor || colors[idx % colors.length],
+      path: `M 0 0 L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`,
+      textAngle: idx * sliceAngle + sliceAngle / 2 - 90
+    };
+  });
+});
+
+const newPlayerName = ref('');
+
+function handleAddManualPlayer() {
+  const clean = newPlayerName.value.trim();
+  if (!clean) return;
+  gameStore.hostAddPlayer(roomCode.value, clean);
+  newPlayerName.value = '';
+}
+
+function addDemoBots() {
+  const sampleNames = ['Maya Lin', 'Liam Park', 'Zoe Patel', 'Noah Kim'];
+  const existing = new Set(allConnectedStudents.value.map(s => s.user_name.toLowerCase()));
+  const missing = sampleNames.filter(name => !existing.has(name.toLowerCase()));
+
+  if (missing.length > 0) {
+    missing.forEach(name => gameStore.hostAddPlayer(roomCode.value, name));
+  } else {
+    gameStore.hostAddPlayer(roomCode.value, `Player ${totalPlayersCount.value + 1}`);
+  }
+}
+
+function removePlayer(memberId: string) {
+  gameStore.hostRemovePlayer(roomCode.value, memberId);
+}
+
+function changeTeamCount(count: number) {
+  gameStore.hostSetTeamCount(roomCode.value, count);
+}
+
 const isLastQuestion = computed(() => {
   if (!gameStore.session) return false;
   return gameStore.session.current_question_index >= (gameStore.session.total_questions - 1);
@@ -439,19 +609,101 @@ function handleStartGameClick() {
   }, 1000);
 }
 
+function handleToggleAutoReveal() {
+  gameStore.toggleAutoReveal(authStore.user?.id || 'guest-host');
+}
+
+function openPreviewLobby() {
+  gameStore.sessionError = null;
+  gameStore.session = {
+    id: `preview-${roomCode.value}`,
+    quiz_id: 'preview-quiz',
+    quiz_title: 'Computer Science & Web Dev Showdown',
+    room_code: roomCode.value,
+    status: 'lobby',
+    team_count: 4,
+    current_question_index: -1,
+    total_questions: 5,
+    host_user_id: authStore.user?.id || 'guest-host',
+    created_at: new Date().toISOString(),
+    teams: [
+      {
+        id: 't-preview-1',
+        session_id: roomCode.value,
+        name: 'Red Rockets',
+        color: '#e21b3c',
+        badge: 'R',
+        total_score: 0,
+        members: [
+          { id: 'm-1', user_id: 'u-1', user_name: 'Alex Rivera', team_id: 't-preview-1', individual_score: 0, is_online: true, avatar: 'AR' }
+        ]
+      },
+      {
+        id: 't-preview-2',
+        session_id: roomCode.value,
+        name: 'Blue Blasters',
+        color: '#1368ce',
+        badge: 'B',
+        total_score: 0,
+        members: [
+          { id: 'm-2', user_id: 'u-2', user_name: 'Bella Chen', team_id: 't-preview-2', individual_score: 0, is_online: true, avatar: 'BC' }
+        ]
+      },
+      {
+        id: 't-preview-3',
+        session_id: roomCode.value,
+        name: 'Golden Geeks',
+        color: '#d88b02',
+        badge: 'G',
+        total_score: 0,
+        members: [
+          { id: 'm-3', user_id: 'u-3', user_name: 'Carlos Gomez', team_id: 't-preview-3', individual_score: 0, is_online: true, avatar: 'CG' }
+        ]
+      },
+      {
+        id: 't-preview-4',
+        session_id: roomCode.value,
+        name: 'Green Giants',
+        color: '#26890c',
+        badge: 'V',
+        total_score: 0,
+        members: [
+          { id: 'm-4', user_id: 'u-4', user_name: 'Diana Prince', team_id: 't-preview-4', individual_score: 0, is_online: true, avatar: 'DP' }
+        ]
+      }
+    ]
+  };
+}
+
+watch(
+  () => authStore.user?.id,
+  (uid) => {
+    gameStore.loadHostSettings(uid || 'guest-host');
+  },
+  { immediate: true }
+);
+
 onMounted(async () => {
-  // Fetch initial session state
+  gameStore.loadHostSettings(authStore.user?.id || 'guest-host');
+  gameStore.sessionLoading = true;
+  gameStore.sessionError = null;
   try {
     const res = await fetch(`/api/sessions/${roomCode.value}`);
     if (res.ok) {
       const data = await res.json();
       gameStore.session = data.session;
+    } else {
+      gameStore.session = null;
+      gameStore.sessionError = `Room PIN "${roomCode.value}" was not found or has expired.`;
     }
   } catch (err) {
     console.error('Error fetching session', err);
+    gameStore.session = null;
+    gameStore.sessionError = 'Could not reach the game server. Check your connection and try again.';
+  } finally {
+    gameStore.sessionLoading = false;
   }
 
-  // Initialize socket
   gameStore.initSocket(roomCode.value, authStore.user?.id || 'host-user', 'instructor');
 });
 
@@ -558,6 +810,58 @@ onUnmounted(() => {
   font-weight: 900;
   color: #46178f;
   letter-spacing: 2px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-autoreveal {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+}
+
+.btn-autoreveal.active {
+  background: #26890c;
+  color: #ffffff;
+  border-color: #26890c;
+}
+
+.recovery-stage {
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+.recovery-card {
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  padding: 36px 28px;
+}
+
+.recovery-card h2 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--theme-card-text);
+  margin-bottom: 10px;
+}
+
+.recovery-card p {
+  font-weight: 600;
+  opacity: 0.85;
+  margin-bottom: 22px;
+}
+
+.recovery-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 /* LOBBY */
@@ -747,10 +1051,33 @@ onUnmounted(() => {
   margin-bottom: 20px;
 }
 
+.q-top-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .q-progress {
   color: white;
   font-weight: 800;
   font-size: 1.3rem;
+}
+
+.q-answers-badge {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.q-answers-badge strong {
+  color: #fee6ba;
+  font-weight: 900;
+  margin-left: 4px;
 }
 
 .q-timer-circle {
@@ -1101,9 +1428,80 @@ onUnmounted(() => {
   border-radius: 4px;
 }
 
-.roster-sub {
+.group-count-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.groups-label {
   font-size: 0.82rem;
   font-weight: 700;
+  color: var(--theme-card-text);
+}
+
+.btn-group-count {
+  width: 28px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1.5px solid var(--theme-card-border);
+  background: #ffffff;
+  color: var(--theme-card-text);
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-group-count.active {
+  background: var(--theme-card-border);
+  color: #ffffff;
+}
+
+.add-player-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.input-add-player {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1.5px solid var(--theme-card-border);
+  background: #ffffff;
+  color: #222;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.btn-add-player,
+.btn-add-bots {
+  border-radius: 6px;
+  border: 1.5px solid var(--theme-card-border);
+  padding: 6px 10px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-add-player {
+  background: var(--theme-button-primary);
+  color: var(--theme-button-text);
+}
+
+.btn-add-player:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-add-bots {
+  background: var(--theme-card-bg);
   color: var(--theme-card-text);
 }
 
@@ -1159,18 +1557,27 @@ onUnmounted(() => {
   border-radius: 12px;
 }
 
-.st-check-box {
-  width: 20px;
-  height: 20px;
-  border: 1.5px solid #333;
-  border-radius: 4px;
+.btn-remove-player {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: 1.5px solid #d9534f;
   background: #ffffff;
-  color: #222;
-  font-size: 0.75rem;
+  color: #d9534f;
+  font-family: inherit;
+  font-size: 0.95rem;
   font-weight: 900;
+  line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-remove-player:hover {
+  background: #d9534f;
+  color: #ffffff;
 }
 
 /* LOBBY ACTION ROW */
@@ -1210,30 +1617,35 @@ onUnmounted(() => {
 
 .wheel-spinner-wrapper {
   position: relative;
-  width: 224px;
-  height: 224px;
+  width: 240px;
+  height: 240px;
   margin: 0 auto;
 }
 
 .wheel-pointer {
   position: absolute;
-  top: -16px;
+  top: -18px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   color: var(--theme-card-text);
   z-index: 10;
+  line-height: 1;
 }
 
-.wheel-disc {
+.wheel-svg {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   border: 4px solid var(--theme-card-border);
-  position: relative;
-  overflow: hidden;
-  transition: transform 2.5s cubic-bezier(0.15, 0.9, 0.2, 1);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transition: transform 2.5s cubic-bezier(0.15, 0.9, 0.2, 1);
+  display: block;
+}
+
+.wheel-svg-label {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+  pointer-events: none;
 }
 
 .wheel-center-start-btn {

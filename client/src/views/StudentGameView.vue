@@ -24,8 +24,27 @@
       </div>
     </header>
 
+    <!-- LOADING & RECOVERY STATES -->
+    <section v-if="gameStore.sessionLoading" class="student-recovery-stage">
+      <div class="student-recovery-card card-kahoot">
+        <div class="spinner"></div>
+        <h2>Joining Room {{ roomCode }}...</h2>
+        <p>Connecting to your team session.</p>
+      </div>
+    </section>
+
+    <section v-else-if="gameStore.sessionError || !gameStore.session" class="student-recovery-stage animate-pop">
+      <div class="student-recovery-card card-kahoot">
+        <h2>Room Not Found</h2>
+        <p>{{ gameStore.sessionError || `Game room ${roomCode} does not exist or has already ended.` }}</p>
+        <router-link to="/" class="btn-kahoot btn-primary btn-recovery-home">
+          Back to Join Game
+        </router-link>
+      </div>
+    </section>
+
     <!-- STAGE 1: LOBBY -->
-    <section v-if="gameStore.isInLobby" class="student-lobby-stage animate-pop">
+    <section v-else-if="gameStore.isInLobby" class="student-lobby-stage animate-pop">
       <div class="lobby-card card-kahoot">
         <div class="welcome-header">
           <h2>Welcome, {{ gameStore.myMember?.user_name }}</h2>
@@ -219,7 +238,8 @@ onMounted(async () => {
     try { gameStore.myMember = JSON.parse(savedMember); } catch {}
   }
 
-  // Fetch initial session state
+  gameStore.sessionLoading = true;
+  gameStore.sessionError = null;
   try {
     const res = await fetch(`/api/sessions/${roomCode.value}`);
     if (res.ok) {
@@ -236,9 +256,16 @@ onMounted(async () => {
           }
         }
       }
+    } else {
+      gameStore.session = null;
+      gameStore.sessionError = `Room PIN "${roomCode.value}" was not found or has ended.`;
     }
   } catch (err) {
     console.error('Failed to load session info', err);
+    gameStore.session = null;
+    gameStore.sessionError = 'Could not connect to the game server. Please try joining again.';
+  } finally {
+    gameStore.sessionLoading = false;
   }
 
   // Connect socket
@@ -672,5 +699,35 @@ function getTeamLightBg(color: string) {
   width: 100%;
   padding: 16px;
   font-size: 1.15rem;
+}
+
+.student-recovery-stage {
+  display: flex;
+  justify-content: center;
+  padding: 36px 12px;
+}
+
+.student-recovery-card {
+  width: 100%;
+  text-align: center;
+  padding: 36px 24px;
+}
+
+.student-recovery-card h2 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--theme-card-text);
+  margin-bottom: 10px;
+}
+
+.student-recovery-card p {
+  font-weight: 600;
+  opacity: 0.85;
+  margin-bottom: 22px;
+}
+
+.btn-recovery-home {
+  padding: 14px 28px;
+  font-size: 1.05rem;
 }
 </style>

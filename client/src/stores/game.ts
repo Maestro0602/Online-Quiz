@@ -98,6 +98,13 @@ class SoundFX {
 
 export const soundFX = new SoundFX();
 
+const TEAM_PRESETS = [
+  { name: 'Red Rockets', color: '#e21b3c', badge: 'R' },
+  { name: 'Blue Blasters', color: '#1368ce', badge: 'B' },
+  { name: 'Golden Geeks', color: '#d88b02', badge: 'G' },
+  { name: 'Green Giants', color: '#26890c', badge: 'V' }
+];
+
 export const useGameStore = defineStore('game', () => {
   const socket = ref<Socket | null>(null);
   const session = ref<GameSession | null>(null);
@@ -107,8 +114,39 @@ export const useGameStore = defineStore('game', () => {
   const selectedAnswerIndex = ref<number | null>(null);
   const answerResult = ref<PlayerAnswerResult | null>(null);
   const answerStats = ref<number[]>([0, 0, 0, 0]);
+  const answersReceived = ref(0);
+  const totalActivePlayers = ref(0);
+  const sessionLoading = ref(false);
+  const sessionError = ref<string | null>(null);
+  const autoReveal = ref(false);
+  const activeRoomCode = ref('');
+  const activeRole = ref('student');
+  const hasAutoRevealedQuestion = ref(false);
   const timeRemaining = ref(20);
   const timerInterval = ref<any>(null);
+
+  function loadHostSettings(userId: string) {
+    const key = `qiuizez_host_settings_${userId || 'guest-host'}`;
+    try {
+      const saved = localStorage.getItem(key);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        autoReveal.value = !!parsed.autoReveal;
+      } else {
+        autoReveal.value = false;
+      }
+    } catch {
+      autoReveal.value = false;
+    }
+  }
+
+  function toggleAutoReveal(userId: string) {
+    autoReveal.value = !autoReveal.value;
+    const key = `qiuizez_host_settings_${userId || 'guest-host'}`;
+    try {
+      localStorage.setItem(key, JSON.stringify({ autoReveal: autoReveal.value }));
+    } catch {}
+  }
 
   const isInLobby = computed(() => session.value?.status === 'lobby');
   const isQuestionActive = computed(() => session.value?.status === 'question_active');
@@ -122,17 +160,21 @@ export const useGameStore = defineStore('game', () => {
   });
 
   function initSocket(roomCode: string, userId: string, role = 'student') {
+    activeRoomCode.value = roomCode;
+    activeRole.value = role;
+
     if (!socket.value) {
       socket.value = io({
         transports: ['websocket', 'polling']
       });
 
       socket.value.on('connect', () => {
-        socket.value?.emit('session:join', { room_code: roomCode, user_id: userId, role });
+        socket.value?.emit('session:join', { room_code: activeRoomCode.value, user_id: userId, role: activeRole.value });
       });
 
       socket.value.on('session:updated', (updated: GameSession) => {
         session.value = updated;
+        sessionError.value = null;
         // Re-sync my team and member if exists
         if (myMember.value) {
           for (const team of updated.teams) {
@@ -150,7 +192,28 @@ export const useGameStore = defineStore('game', () => {
         selectedAnswerIndex.value = null;
         answerResult.value = null;
         answerStats.value = [0, 0, 0, 0];
+        answersReceived.value = 0;
+        hasAutoRevealedQuestion.value = false;
+        totalActivePlayers.value = session.value
+          ? session.value.teams.reduce((s, t) => s + t.members.length, 0)
+          : 0;
         startTimer(payload.time_limit || 20);
+      });
+
+      socket.value.on('question:progress', (payload: { answers_received: number; total_players: number }) => {
+        answersReceived.value = payload.answers_received;
+        totalActivePlayers.value = payload.total_players;
+        if (
+          activeRole.value === 'instructor' &&
+          autoReveal.value &&
+          !hasAutoRevealedQuestion.value &&
+          isQuestionActive.value &&
+          payload.total_players > 0 &&
+          payload.answers_received >= payload.total_players
+        ) {
+          hasAutoRevealedQuestion.value = true;
+          hostShowResult(activeRoomCode.value);
+        }
       });
 
       socket.value.on('player:answer_result', (result: PlayerAnswerResult) => {
@@ -189,6 +252,16 @@ export const useGameStore = defineStore('game', () => {
         }
       } else {
         stopTimer();
+        if (
+          activeRole.value === 'instructor' &&
+          autoReveal.value &&
+          !hasAutoRevealedQuestion.value &&
+          isQuestionActive.value
+        ) {
+          hasAutoRevealedQuestion.value = true;
+          soundFX.playTick();
+          hostShowResult(activeRoomCode.value);
+        }
       }
     }, 1000);
   }
@@ -224,7 +297,95 @@ export const useGameStore = defineStore('game', () => {
     socket.value?.emit('session:next_question', { room_code: roomCode });
   }
 
+  function hostAddPlayer(roomCode: string, userName: string) {
+    const cleanName = userName.trim();
+    if (!cleanName) return;
+
+    if (session.value?.id.startsWith('preview-') && session.value.teams.length > 0) {
+      const targetTeam = session.value.teams.reduce(
+        (min, t) => (t.members.length < min.members.length ? t : min),
+        session.value.teams[0]
+      );
+      const suffix = Math.random().toString(36).slice(2, 6);
+      targetTeam.members.push({
+        id: `m-${Date.now()}-${suffix}`,
+        user_id: `u-${Date.now()}-${suffix}`,
+        user_name: cleanName,
+        team_id: targetTeam.id,
+        individual_score: 0,
+        is_online: true,
+        avatar: cleanName.substring(0, 2).toUpperCase()
+      });
+      return;
+    }
+
+    socket.value?.emit('session:add_player', { room_code: roomCode, user_name: cleanName });
+  }
+
+  function hostRemovePlayer(roomCode: string, memberId: string) {
+    if (session.value?.id.startsWith('preview-')) {
+      for (const team of session.value.teams) {
+        team.members = team.members.filter(m => m.id !== memberId && m.user_id !== memberId);
+      }
+      return;
+    }
+
+    socket.value?.emit('session:remove_player', { room_code: roomCode, member_id: memberId });
+  }
+
+  function hostSetTeamCount(roomCode: string, teamCount: number) {
+    const count = Math.max(2, Math.min(4, Number(teamCount) || 2));
+
+    if (session.value?.id.startsWith('preview-')) {
+      const allMembers: TeamMember[] = [];
+      for (const team of session.value.teams) {
+        allMembers.push(...team.members);
+      }
+      const nextTeams: Team[] = [];
+      for (let i = 0; i < count; i++) {
+        const preset = TEAM_PRESETS[i % TEAM_PRESETS.length];
+        nextTeams.push({
+          id: `t-preview-${i + 1}`,
+          session_id: roomCode,
+          name: preset.name,
+          color: preset.color,
+          badge: preset.badge,
+          total_score: 0,
+          members: []
+        });
+      }
+      allMembers.forEach((member, idx) => {
+        const targetTeam = nextTeams[idx % count];
+        member.team_id = targetTeam.id;
+        targetTeam.members.push(member);
+      });
+      session.value.teams = nextTeams;
+      session.value.team_count = count;
+      return;
+    }
+
+    socket.value?.emit('session:set_team_count', { room_code: roomCode, team_count: count });
+  }
+
   function hostRandomizeTeams(roomCode: string) {
+    if (session.value?.id.startsWith('preview-') && session.value.teams.length > 0) {
+      const allMembers: TeamMember[] = [];
+      for (const team of session.value.teams) {
+        allMembers.push(...team.members);
+        team.members = [];
+      }
+      for (let i = allMembers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [allMembers[i], allMembers[j]] = [allMembers[j], allMembers[i]];
+      }
+      allMembers.forEach((member, index) => {
+        const targetTeam = session.value!.teams[index % session.value!.teams.length];
+        member.team_id = targetTeam.id;
+        targetTeam.members.push(member);
+      });
+      return;
+    }
+
     socket.value?.emit('session:randomize_teams', { room_code: roomCode });
   }
 
@@ -243,6 +404,11 @@ export const useGameStore = defineStore('game', () => {
     myMember.value = null;
     selectedAnswerIndex.value = null;
     answerResult.value = null;
+    answersReceived.value = 0;
+    totalActivePlayers.value = 0;
+    sessionLoading.value = false;
+    sessionError.value = null;
+    hasAutoRevealedQuestion.value = false;
   }
 
   return {
@@ -253,15 +419,25 @@ export const useGameStore = defineStore('game', () => {
     selectedAnswerIndex,
     answerResult,
     answerStats,
+    answersReceived,
+    totalActivePlayers,
+    sessionLoading,
+    sessionError,
+    autoReveal,
     timeRemaining,
     isInLobby,
     isQuestionActive,
     isQuestionResult,
     isEnded,
     rankedTeams,
+    loadHostSettings,
+    toggleAutoReveal,
     initSocket,
     submitAnswer,
     hostStartGame,
+    hostAddPlayer,
+    hostRemovePlayer,
+    hostSetTeamCount,
     hostRandomizeTeams,
     hostShowResult,
     hostNextQuestion,

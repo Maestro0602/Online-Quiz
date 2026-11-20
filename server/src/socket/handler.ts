@@ -6,8 +6,12 @@ import {
   ConnectedSocket
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { store } from '../data/store.js';
-import { TeamMember } from '@quizchaos/shared';
+import { store, TEAM_PRESETS } from '../data/store.js';
+import { GameSession, Team, TeamMember } from '@quizchaos/shared';
+
+function getTotalPlayers(session: GameSession): number {
+  return session.teams.reduce((sum, t) => sum + t.members.length, 0);
+}
 
 // Track student answers per question in memory: `${roomCode}:${questionId}` -> Map<userId, answer>
 const answerRecords = new Map<string, Map<string, { selectedIndex: number; points: number; isCorrect: boolean }>>();
@@ -85,6 +89,10 @@ export class GameGateway {
       total_questions: quiz.questions.length,
       time_limit: session.time_remaining
     });
+    this.server.to(room_code).emit('question:progress', {
+      answers_received: 0,
+      total_players: getTotalPlayers(session)
+    });
   }
 
   @SubscribeMessage('player:submit_answer')
@@ -132,6 +140,11 @@ export class GameGateway {
       selectedIndex: selected_option_index,
       points: pointsAwarded,
       isCorrect
+    });
+
+    this.server.to(room_code).emit('question:progress', {
+      answers_received: qAnswers.size,
+      total_players: getTotalPlayers(session)
     });
 
     let studentMember: TeamMember | undefined;
@@ -221,6 +234,10 @@ export class GameGateway {
         total_questions: quiz.questions.length,
         time_limit: session.time_remaining
       });
+      this.server.to(room_code).emit('question:progress', {
+        answers_received: 0,
+        total_players: getTotalPlayers(session)
+      });
     } else {
       session.status = 'ended';
       this.server.to(room_code).emit('session:updated', session);
@@ -241,5 +258,84 @@ export class GameGateway {
     this.server.to(room_code).emit('session:ended', {
       final_leaderboard: session.teams
     });
+  }
+
+  @SubscribeMessage('session:add_player')
+  handleAddPlayer(
+    @MessageBody() data: { room_code: string; user_name: string; avatar?: string }
+  ) {
+    const { room_code, user_name, avatar } = data;
+    const session = store.sessions.get(room_code);
+    const cleanName = user_name?.trim();
+    if (!session || session.status !== 'lobby' || session.teams.length === 0 || !cleanName) return;
+
+    const targetTeam = session.teams.reduce(
+      (min, t) => (t.members.length < min.members.length ? t : min),
+      session.teams[0]
+    );
+
+    const suffix = Math.random().toString(36).slice(2, 6);
+    const newMember: TeamMember = {
+      id: `tm-${Date.now()}-${suffix}`,
+      user_id: `manual-${Date.now()}-${suffix}`,
+      user_name: cleanName,
+      team_id: targetTeam.id,
+      individual_score: 0,
+      is_online: true,
+      avatar: avatar || cleanName.substring(0, 2).toUpperCase()
+    };
+
+    targetTeam.members.push(newMember);
+    this.server.to(room_code).emit('session:updated', session);
+  }
+
+  @SubscribeMessage('session:remove_player')
+  handleRemovePlayer(@MessageBody() data: { room_code: string; member_id: string }) {
+    const { room_code, member_id } = data;
+    const session = store.sessions.get(room_code);
+    if (!session || session.status !== 'lobby') return;
+
+    for (const team of session.teams) {
+      team.members = team.members.filter(m => m.id !== member_id && m.user_id !== member_id);
+    }
+
+    this.server.to(room_code).emit('session:updated', session);
+  }
+
+  @SubscribeMessage('session:set_team_count')
+  handleSetTeamCount(@MessageBody() data: { room_code: string; team_count: number }) {
+    const { room_code, team_count } = data;
+    const session = store.sessions.get(room_code);
+    if (!session || session.status !== 'lobby') return;
+
+    const count = Math.max(2, Math.min(4, Number(team_count) || 2));
+    const allMembers: TeamMember[] = [];
+    for (const team of session.teams) {
+      allMembers.push(...team.members);
+    }
+
+    const nextTeams: Team[] = [];
+    for (let i = 0; i < count; i++) {
+      const preset = TEAM_PRESETS[i % TEAM_PRESETS.length];
+      nextTeams.push({
+        id: `team-${room_code}-${i + 1}`,
+        session_id: room_code,
+        name: preset.name,
+        color: preset.color,
+        badge: preset.badge,
+        total_score: 0,
+        members: []
+      });
+    }
+
+    allMembers.forEach((member, idx) => {
+      const targetTeam = nextTeams[idx % count];
+      member.team_id = targetTeam.id;
+      targetTeam.members.push(member);
+    });
+
+    session.teams = nextTeams;
+    session.team_count = count;
+    this.server.to(room_code).emit('session:updated', session);
   }
 }
