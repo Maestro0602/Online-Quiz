@@ -76,6 +76,18 @@
             <div class="q-badge">Question {{ qIndex + 1 }}</div>
             <div class="q-settings">
               <div class="setting-item">
+                <label>Type:</label>
+                <select
+                  :value="isTrueFalseQuestion(q) ? 'tf' : 'mc'"
+                  @change="onQuestionTypeChange(q, ($event.target as HTMLSelectElement).value)"
+                  class="select-kahoot"
+                >
+                  <option value="mc">4 Options</option>
+                  <option value="tf">True / False</option>
+                </select>
+              </div>
+
+              <div class="setting-item">
                 <label>Time Limit:</label>
                 <select v-model.number="q.time_limit_seconds" class="select-kahoot">
                   <option :value="10">10s</option>
@@ -95,7 +107,37 @@
               </div>
 
               <button
+                type="button"
+                @click="moveQuestion(qIndex, -1)"
+                :disabled="qIndex === 0"
+                class="btn-q-tool"
+                title="Move Question Up"
+              >
+                ↑
+              </button>
+
+              <button
+                type="button"
+                @click="moveQuestion(qIndex, 1)"
+                :disabled="qIndex === quizForm.questions.length - 1"
+                class="btn-q-tool"
+                title="Move Question Down"
+              >
+                ↓
+              </button>
+
+              <button
+                type="button"
+                @click="duplicateQuestion(qIndex)"
+                class="btn-q-tool"
+                title="Duplicate Question"
+              >
+                Duplicate
+              </button>
+
+              <button
                 v-if="quizForm.questions.length > 1"
+                type="button"
                 @click="removeQuestion(qIndex)"
                 class="btn-delete-q"
                 title="Delete Question"
@@ -114,6 +156,28 @@
               class="input-kahoot prompt-input"
               required
             />
+          </div>
+
+          <!-- Optional Code Snippet & Image URL -->
+          <div class="q-media-row">
+            <div class="form-group flex-1">
+              <label>Code Snippet (Optional)</label>
+              <textarea
+                v-model="q.code_snippet"
+                rows="2"
+                placeholder="e.g. const x: number = 42;"
+                class="input-kahoot input-code-snippet"
+              ></textarea>
+            </div>
+            <div class="form-group flex-1">
+              <label>Image URL (Optional)</label>
+              <input
+                v-model="q.image_url"
+                type="url"
+                placeholder="https://example.com/diagram.png"
+                class="input-kahoot"
+              />
+            </div>
           </div>
 
           <div class="options-guideline">
@@ -167,7 +231,7 @@
             </div>
 
             <!-- Option 3: Yellow Circle -->
-            <div class="option-field opt-yellow" :class="{ 'is-correct': q.correct_option_index === 2 }">
+            <div v-if="!isTrueFalseQuestion(q)" class="option-field opt-yellow" :class="{ 'is-correct': q.correct_option_index === 2 }">
               <div class="opt-head">
                 <span class="shape-icon">●</span>
                 <label class="correct-radio-label">
@@ -189,7 +253,7 @@
             </div>
 
             <!-- Option 4: Green Square -->
-            <div class="option-field opt-green" :class="{ 'is-correct': q.correct_option_index === 3 }">
+            <div v-if="!isTrueFalseQuestion(q)" class="option-field opt-green" :class="{ 'is-correct': q.correct_option_index === 3 }">
               <div class="opt-head">
                 <span class="shape-icon">■</span>
                 <label class="correct-radio-label">
@@ -238,6 +302,7 @@ const quizStore = useQuizStore();
 const isEditing = ref(false);
 const saving = ref(false);
 const validationError = ref<string | null>(null);
+const trueFalseIds = ref<Set<string>>(new Set());
 
 const quizForm = ref({
   id: '',
@@ -260,8 +325,11 @@ onMounted(async () => {
         is_published: quiz.is_published,
         questions: JSON.parse(JSON.stringify(quiz.questions))
       };
-      // Ensure all questions have 4 slots
+      // Detect True/False questions and pad options to 4 slots for form bindings
       quizForm.value.questions.forEach((q: Question) => {
+        if (q.options.length === 2) {
+          trueFalseIds.value.add(q.id);
+        }
         while (q.options.length < 4) {
           q.options.push('');
         }
@@ -280,8 +348,49 @@ function createEmptyQuestion(): Question {
     options: ['', '', '', ''],
     correct_option_index: 0,
     base_points: 1000,
-    time_limit_seconds: 20
+    time_limit_seconds: 20,
+    code_snippet: '',
+    image_url: ''
   };
+}
+
+function isTrueFalseQuestion(q: Question): boolean {
+  return trueFalseIds.value.has(q.id);
+}
+
+function onQuestionTypeChange(q: Question, mode: string) {
+  if (mode === 'tf') {
+    trueFalseIds.value.add(q.id);
+    q.options = ['True', 'False', '', ''];
+    if (q.correct_option_index > 1) {
+      q.correct_option_index = 0;
+    }
+  } else {
+    trueFalseIds.value.delete(q.id);
+    while (q.options.length < 4) {
+      q.options.push('');
+    }
+  }
+}
+
+function moveQuestion(index: number, direction: -1 | 1) {
+  const target = index + direction;
+  if (target < 0 || target >= quizForm.value.questions.length) return;
+  const list = quizForm.value.questions;
+  const temp = list[index];
+  list[index] = list[target];
+  list[target] = temp;
+}
+
+function duplicateQuestion(index: number) {
+  const source = quizForm.value.questions[index];
+  if (!source) return;
+  const cloned: Question = JSON.parse(JSON.stringify(source));
+  cloned.id = `q-${Date.now()}-${Math.random().toString(36).substring(2, 5)}`;
+  if (trueFalseIds.value.has(source.id)) {
+    trueFalseIds.value.add(cloned.id);
+  }
+  quizForm.value.questions.splice(index + 1, 0, cloned);
 }
 
 function addQuestion() {
@@ -290,6 +399,8 @@ function addQuestion() {
 
 function removeQuestion(index: number) {
   if (quizForm.value.questions.length > 1) {
+    const removed = quizForm.value.questions[index];
+    if (removed) trueFalseIds.value.delete(removed.id);
     quizForm.value.questions.splice(index, 1);
   }
 }
@@ -336,10 +447,15 @@ async function saveQuiz() {
       is_published: quizForm.value.is_published,
       instructor_id: authStore.user?.id || 'u-inst-1',
       instructor_name: authStore.user?.name || 'Instructor',
-      questions: quizForm.value.questions.map((q: Question) => ({
-        ...q,
-        options: q.options.filter((opt: string) => opt && opt.trim() !== '')
-      }))
+      questions: quizForm.value.questions.map((q: Question) => {
+        const optionPool = isTrueFalseQuestion(q) ? q.options.slice(0, 2) : q.options;
+        return {
+          ...q,
+          options: optionPool.filter((opt: string) => opt && opt.trim() !== ''),
+          code_snippet: q.code_snippet?.trim() || undefined,
+          image_url: q.image_url?.trim() || undefined
+        };
+      })
     };
 
     if (isEditing.value && quizForm.value.id) {
@@ -500,7 +616,43 @@ async function saveQuiz() {
 .q-settings {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-q-tool {
+  background: #ffffff;
+  border: 1px solid #ccc;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #333;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+
+.btn-q-tool:hover:not(:disabled) {
+  background: #f0f0f0;
+  border-color: #999;
+}
+
+.btn-q-tool:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.q-media-row {
+  display: flex;
   gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.input-code-snippet {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.88rem;
 }
 
 .setting-item {

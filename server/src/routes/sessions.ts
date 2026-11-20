@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Param, Body, Res, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { store, TEAM_PRESETS } from '../data/store.js';
+import { dbSaveSession } from '../db/index.js';
 import { GameSession, Team, TeamMember, TopContributor } from '@quizchaos/shared';
 
 function generateRoomCode(): string {
@@ -54,6 +55,7 @@ export class SessionsController {
     };
 
     store.sessions.set(room_code, session);
+    void dbSaveSession(session);
     return res.status(HttpStatus.CREATED).json({ session });
   }
 
@@ -92,6 +94,7 @@ export class SessionsController {
       if (existingMember) {
         existingMember.is_online = true;
         if (avatar) existingMember.avatar = avatar;
+        void dbSaveSession(session);
         return res.status(HttpStatus.OK).json({
           session,
           team,
@@ -119,6 +122,7 @@ export class SessionsController {
     };
 
     targetTeam.members.push(newMember);
+    void dbSaveSession(session);
 
     return res.status(HttpStatus.OK).json({
       session,
@@ -145,6 +149,7 @@ export class SessionsController {
     const q = quiz.questions[0];
     session.current_question = q;
     session.time_remaining = q.time_limit_seconds || 20;
+    void dbSaveSession(session);
 
     return res.status(HttpStatus.OK).json({ session });
   }
@@ -163,6 +168,7 @@ export class SessionsController {
 
     if (session.status === 'question_active') {
       session.status = 'question_result';
+      void dbSaveSession(session);
       return res.status(HttpStatus.OK).json({ session });
     }
 
@@ -175,6 +181,7 @@ export class SessionsController {
     } else {
       session.status = 'ended';
     }
+    void dbSaveSession(session);
 
     return res.status(HttpStatus.OK).json({ session });
   }
@@ -187,6 +194,7 @@ export class SessionsController {
     }
 
     session.status = 'ended';
+    void dbSaveSession(session);
     return res.status(HttpStatus.OK).json({ session });
   }
 

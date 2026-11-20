@@ -7,6 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { store, TEAM_PRESETS } from '../data/store.js';
+import { dbSaveSession } from '../db/index.js';
 import { GameSession, Team, TeamMember } from '@quizchaos/shared';
 
 function getTotalPlayers(session: GameSession): number {
@@ -15,6 +16,7 @@ function getTotalPlayers(session: GameSession): number {
 
 // Track student answers per question in memory: `${roomCode}:${questionId}` -> Map<userId, answer>
 const answerRecords = new Map<string, Map<string, { selectedIndex: number; points: number; isCorrect: boolean }>>();
+const awardedTeamSyncBonuses = new Set<string>();
 
 @WebSocketGateway({
   cors: {
@@ -67,6 +69,7 @@ export class GameGateway {
     this.server.to(room_code).emit('teams:randomized', {
       teams: session.teams
     });
+    void dbSaveSession(session);
   }
 
   @SubscribeMessage('session:start')
@@ -93,6 +96,7 @@ export class GameGateway {
       answers_received: 0,
       total_players: getTotalPlayers(session)
     });
+    void dbSaveSession(session);
   }
 
   @SubscribeMessage('player:submit_answer')
@@ -156,6 +160,35 @@ export class GameGateway {
     if (studentMember && studentTeam) {
       studentMember.individual_score += pointsAwarded;
       studentTeam.total_score += pointsAwarded;
+
+      this.server.to(room_code).emit('team:member_picked', {
+        team_id: studentTeam.id,
+        user_id: studentMember.user_id,
+        user_name: studentMember.user_name,
+        avatar: studentMember.avatar || studentMember.user_name.substring(0, 2).toUpperCase(),
+        selected_option_index
+      });
+
+      const bonusKey = `${room_code}:${question_id}:${studentTeam.id}`;
+      if (
+        !awardedTeamSyncBonuses.has(bonusKey) &&
+        studentTeam.members.length >= 2 &&
+        studentTeam.members.every(
+          m =>
+            qAnswers.has(m.user_id) &&
+            qAnswers.get(m.user_id)?.selectedIndex === currentQuestion.correct_option_index
+        )
+      ) {
+        awardedTeamSyncBonuses.add(bonusKey);
+        const bonusPoints = 100;
+        studentTeam.total_score += bonusPoints;
+        this.server.to(room_code).emit('team:sync_bonus', {
+          team_id: studentTeam.id,
+          team_name: studentTeam.name,
+          bonus_points: bonusPoints,
+          updated_team_score: studentTeam.total_score
+        });
+      }
     }
 
     socket.emit('player:answer_result', {
@@ -179,6 +212,7 @@ export class GameGateway {
 
     this.server.to(room_code).emit('leaderboard:refreshed', session.teams);
     this.server.to(room_code).emit('session:updated', session);
+    void dbSaveSession(session);
   }
 
   @SubscribeMessage('session:show_result')
@@ -210,6 +244,7 @@ export class GameGateway {
       answer_stats: stats,
       leaderboard: session.teams
     });
+    void dbSaveSession(session);
   }
 
   @SubscribeMessage('session:next_question')
@@ -245,6 +280,7 @@ export class GameGateway {
         final_leaderboard: session.teams
       });
     }
+    void dbSaveSession(session);
   }
 
   @SubscribeMessage('session:end')
@@ -258,6 +294,7 @@ export class GameGateway {
     this.server.to(room_code).emit('session:ended', {
       final_leaderboard: session.teams
     });
+    void dbSaveSession(session);
   }
 
   @SubscribeMessage('session:add_player')
@@ -287,6 +324,7 @@ export class GameGateway {
 
     targetTeam.members.push(newMember);
     this.server.to(room_code).emit('session:updated', session);
+    void dbSaveSession(session);
   }
 
   @SubscribeMessage('session:remove_player')
@@ -300,6 +338,7 @@ export class GameGateway {
     }
 
     this.server.to(room_code).emit('session:updated', session);
+    void dbSaveSession(session);
   }
 
   @SubscribeMessage('session:set_team_count')
@@ -337,5 +376,6 @@ export class GameGateway {
     session.teams = nextTeams;
     session.team_count = count;
     this.server.to(room_code).emit('session:updated', session);
+    void dbSaveSession(session);
   }
 }

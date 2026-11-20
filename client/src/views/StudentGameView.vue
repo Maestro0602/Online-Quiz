@@ -95,6 +95,8 @@
       <!-- Question Prompt -->
       <div class="question-box card-kahoot animate-pop">
         <h3>{{ currentQuestion?.prompt }}</h3>
+        <pre v-if="currentQuestion?.code_snippet" class="q-code-block"><code>{{ currentQuestion.code_snippet }}</code></pre>
+        <img v-if="currentQuestion?.image_url" :src="currentQuestion.image_url" alt="Question illustration" class="q-media-img" />
       </div>
 
       <!-- If student has answered, show waiting screen -->
@@ -106,6 +108,20 @@
           <span class="shape-symbol">{{ getShapeSymbol(gameStore.selectedAnswerIndex!) }}</span>
           <span>{{ currentQuestion?.options[gameStore.selectedAnswerIndex!] }}</span>
         </div>
+
+        <div v-if="gameStore.teammatePicks.length > 0" class="locked-team-picks">
+          <div class="locked-picks-title">Teammate Picks:</div>
+          <div class="locked-picks-list">
+            <span
+              v-for="tp in gameStore.teammatePicks"
+              :key="tp.user_id"
+              class="locked-pick-pill"
+              :class="getShapeClass(tp.selected_option_index)"
+            >
+              {{ getShapeSymbol(tp.selected_option_index) }} [{{ tp.avatar }}] {{ tp.user_name }}
+            </span>
+          </div>
+        </div>
       </div>
 
       <!-- 4 Kahoot Shape Touch Answer Buttons -->
@@ -115,7 +131,18 @@
           class="kahoot-btn answer-red animate-pop"
         >
           <span class="shape-icon">▲</span>
-          <span class="btn-text">{{ currentQuestion?.options[0] }}</span>
+          <div class="btn-content-col">
+            <span class="btn-text">{{ currentQuestion?.options[0] }}</span>
+            <div v-if="getTeammatePicksForOption(0).length > 0" class="teammate-picks-row">
+              <span
+                v-for="tp in getTeammatePicksForOption(0)"
+                :key="tp.user_id"
+                class="teammate-pick-chip"
+              >
+                [{{ tp.avatar }}] {{ tp.user_name }}
+              </span>
+            </div>
+          </div>
         </button>
 
         <button
@@ -123,23 +150,58 @@
           class="kahoot-btn answer-blue animate-pop"
         >
           <span class="shape-icon">◆</span>
-          <span class="btn-text">{{ currentQuestion?.options[1] }}</span>
+          <div class="btn-content-col">
+            <span class="btn-text">{{ currentQuestion?.options[1] }}</span>
+            <div v-if="getTeammatePicksForOption(1).length > 0" class="teammate-picks-row">
+              <span
+                v-for="tp in getTeammatePicksForOption(1)"
+                :key="tp.user_id"
+                class="teammate-pick-chip"
+              >
+                [{{ tp.avatar }}] {{ tp.user_name }}
+              </span>
+            </div>
+          </div>
         </button>
 
         <button
+          v-if="currentQuestion?.options[2]"
           @click="selectOption(2)"
           class="kahoot-btn answer-yellow animate-pop"
         >
           <span class="shape-icon">●</span>
-          <span class="btn-text">{{ currentQuestion?.options[2] }}</span>
+          <div class="btn-content-col">
+            <span class="btn-text">{{ currentQuestion?.options[2] }}</span>
+            <div v-if="getTeammatePicksForOption(2).length > 0" class="teammate-picks-row">
+              <span
+                v-for="tp in getTeammatePicksForOption(2)"
+                :key="tp.user_id"
+                class="teammate-pick-chip"
+              >
+                [{{ tp.avatar }}] {{ tp.user_name }}
+              </span>
+            </div>
+          </div>
         </button>
 
         <button
+          v-if="currentQuestion?.options[3]"
           @click="selectOption(3)"
           class="kahoot-btn answer-green animate-pop"
         >
           <span class="shape-icon">■</span>
-          <span class="btn-text">{{ currentQuestion?.options[3] }}</span>
+          <div class="btn-content-col">
+            <span class="btn-text">{{ currentQuestion?.options[3] }}</span>
+            <div v-if="getTeammatePicksForOption(3).length > 0" class="teammate-picks-row">
+              <span
+                v-for="tp in getTeammatePicksForOption(3)"
+                :key="tp.user_id"
+                class="teammate-pick-chip"
+              >
+                [{{ tp.avatar }}] {{ tp.user_name }}
+              </span>
+            </div>
+          </div>
         </button>
       </div>
     </section>
@@ -159,6 +221,9 @@
           </div>
           <div v-else class="sub-msg">
             Keep pushing with your team for the next question
+          </div>
+          <div v-if="gameStore.teamSyncBonusAwarded > 0" class="team-sync-bonus-badge animate-pop">
+            +{{ gameStore.teamSyncBonusAwarded }} pts Team Sync Bonus! (All teammates on the same page)
           </div>
         </div>
 
@@ -289,6 +354,10 @@ function getShapeClass(idx: number) {
 
 function getTeamLightBg(color: string) {
   return `${color}15`;
+}
+
+function getTeammatePicksForOption(optionIdx: number) {
+  return gameStore.teammatePicks.filter(p => p.selected_option_index === optionIdx);
 }
 </script>
 
@@ -497,6 +566,28 @@ function getTeamLightBg(color: string) {
   line-height: 1.35;
 }
 
+.q-code-block {
+  margin-top: 12px;
+  text-align: left;
+  background: #1e1e2f;
+  color: #f8f8f2;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.9rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.q-media-img {
+  display: block;
+  margin: 12px auto 0;
+  max-width: 100%;
+  max-height: 180px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
 .kahoot-buttons-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -540,8 +631,37 @@ function getTeamLightBg(color: string) {
   line-height: 1.2;
 }
 
+.btn-content-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.teammate-picks-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.teammate-pick-chip {
+  background: rgba(0, 0, 0, 0.28);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
 .answer-yellow {
   color: #222;
+}
+
+.answer-yellow .teammate-pick-chip {
+  background: rgba(0, 0, 0, 0.16);
+  color: #111;
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 .locked-in-box {
@@ -585,6 +705,39 @@ function getTeamLightBg(color: string) {
   font-size: 1.1rem;
 }
 
+.locked-team-picks {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1.5px dashed rgba(0, 0, 0, 0.15);
+}
+
+.locked-picks-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #555;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.locked-picks-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.locked-pick-pill {
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 16px;
+}
+
+.locked-pick-pill.answer-yellow {
+  color: #222;
+}
+
 /* RESULT */
 .result-card {
   text-align: center;
@@ -624,6 +777,18 @@ function getTeamLightBg(color: string) {
   color: #666;
   font-weight: 600;
   margin-top: 6px;
+}
+
+.team-sync-bonus-badge {
+  display: inline-block;
+  margin-top: 12px;
+  background: #e8f5e9;
+  border: 2px solid #26890c;
+  color: #1b5e20;
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 8px 16px;
+  border-radius: 20px;
 }
 
 .team-contribution-box {

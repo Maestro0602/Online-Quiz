@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Res, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { store } from '../data/store.js';
+import { dbSaveUser } from '../db/index.js';
 import { User, UserRole } from '@quizchaos/shared';
 import { hashPassword, verifyPassword, encryptEmail, decryptEmail } from '../utils/crypto.js';
 
@@ -82,6 +83,7 @@ export class AuthController {
     };
 
     store.users.set(newUser.id, newUser);
+    void dbSaveUser(newUser);
 
     const { password: _, ...userSafe } = newUser;
     return res.status(HttpStatus.CREATED).json({

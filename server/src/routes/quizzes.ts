@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Param, Query, Body, Res, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import { store } from '../data/store.js';
+import { dbSaveQuiz, dbDeleteQuiz } from '../db/index.js';
 import { Quiz, Question } from '@quizchaos/shared';
 
 @Controller('api/quizzes')
@@ -61,7 +62,9 @@ export class QuizzesController {
       options: q.options.map((opt: string) => opt.trim()),
       correct_option_index: Number(q.correct_option_index),
       base_points: Number(q.base_points) || 1000,
-      time_limit_seconds: Number(q.time_limit_seconds) || 20
+      time_limit_seconds: Number(q.time_limit_seconds) || 20,
+      code_snippet: q.code_snippet && String(q.code_snippet).trim() ? String(q.code_snippet).trim() : undefined,
+      image_url: q.image_url && String(q.image_url).trim() ? String(q.image_url).trim() : undefined
     }));
 
     const newQuiz: Quiz = {
@@ -77,6 +80,7 @@ export class QuizzesController {
     };
 
     store.quizzes.set(quizId, newQuiz);
+    void dbSaveQuiz(newQuiz);
     return res.status(HttpStatus.CREATED).json({ quiz: newQuiz });
   }
 
@@ -121,7 +125,9 @@ export class QuizzesController {
           options: q.options.map((opt: string) => opt.trim()),
           correct_option_index: Number(q.correct_option_index),
           base_points: Number(q.base_points) || 1000,
-          time_limit_seconds: Number(q.time_limit_seconds) || 20
+          time_limit_seconds: Number(q.time_limit_seconds) || 20,
+          code_snippet: q.code_snippet && String(q.code_snippet).trim() ? String(q.code_snippet).trim() : undefined,
+          image_url: q.image_url && String(q.image_url).trim() ? String(q.image_url).trim() : undefined
         }))
       : existing.questions;
 
@@ -135,6 +141,7 @@ export class QuizzesController {
     };
 
     store.quizzes.set(quizId, updatedQuiz);
+    void dbSaveQuiz(updatedQuiz);
     return res.status(HttpStatus.OK).json({ quiz: updatedQuiz });
   }
 
@@ -144,6 +151,7 @@ export class QuizzesController {
       return res.status(HttpStatus.NOT_FOUND).json({ error: 'Quiz not found' });
     }
     store.quizzes.delete(quizId);
+    void dbDeleteQuiz(quizId);
     return res.status(HttpStatus.OK).json({ success: true, message: 'Quiz deleted' });
   }
 
@@ -155,6 +163,7 @@ export class QuizzesController {
     }
     quiz.is_published = !quiz.is_published;
     quiz.updated_at = new Date().toISOString();
+    void dbSaveQuiz(quiz);
     return res.status(HttpStatus.OK).json({ quiz });
   }
 }

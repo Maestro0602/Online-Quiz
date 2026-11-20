@@ -17,6 +17,8 @@ export interface Question {
   correct_option_index: number;
   base_points: number; // e.g. 1000
   time_limit_seconds: number; // e.g. 20
+  code_snippet?: string;
+  image_url?: string;
 }
 
 export interface Quiz {

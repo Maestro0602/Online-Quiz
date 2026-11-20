@@ -291,6 +291,8 @@
       <!-- Question Prompt -->
       <div class="prompt-container card-kahoot animate-pop">
         <h2>{{ currentQuestion?.prompt }}</h2>
+        <pre v-if="currentQuestion?.code_snippet" class="q-code-block"><code>{{ currentQuestion.code_snippet }}</code></pre>
+        <img v-if="currentQuestion?.image_url" :src="currentQuestion.image_url" alt="Question illustration" class="q-media-img" />
       </div>
 
       <!-- 4 Kahoot Shape Options -->
@@ -303,11 +305,11 @@
           <span class="opt-shape">◆</span>
           <span class="opt-text">{{ currentQuestion?.options[1] || '' }}</span>
         </div>
-        <div class="opt-card opt-yellow animate-pop">
+        <div v-if="currentQuestion?.options[2]" class="opt-card opt-yellow animate-pop">
           <span class="opt-shape">●</span>
           <span class="opt-text">{{ currentQuestion?.options[2] || '' }}</span>
         </div>
-        <div class="opt-card opt-green animate-pop">
+        <div v-if="currentQuestion?.options[3]" class="opt-card opt-green animate-pop">
           <span class="opt-shape">■</span>
           <span class="opt-text">{{ currentQuestion?.options[3] || '' }}</span>
         </div>
@@ -1112,6 +1114,29 @@ onUnmounted(() => {
   font-weight: 800;
   color: #222;
   line-height: 1.3;
+}
+
+.q-code-block {
+  margin: 16px auto 0;
+  max-width: 780px;
+  text-align: left;
+  background: #1e1e2f;
+  color: #f8f8f2;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 1rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.q-media-img {
+  display: block;
+  margin: 16px auto 0;
+  max-width: 100%;
+  max-height: 240px;
+  border-radius: 10px;
+  object-fit: contain;
 }
 
 .options-display-grid {

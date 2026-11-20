@@ -98,6 +98,13 @@ class SoundFX {
 
 export const soundFX = new SoundFX();
 
+export interface TeammatePick {
+  user_id: string;
+  user_name: string;
+  avatar: string;
+  selected_option_index: number;
+}
+
 const TEAM_PRESETS = [
   { name: 'Red Rockets', color: '#e21b3c', badge: 'R' },
   { name: 'Blue Blasters', color: '#1368ce', badge: 'B' },
@@ -116,6 +123,8 @@ export const useGameStore = defineStore('game', () => {
   const answerStats = ref<number[]>([0, 0, 0, 0]);
   const answersReceived = ref(0);
   const totalActivePlayers = ref(0);
+  const teammatePicks = ref<TeammatePick[]>([]);
+  const teamSyncBonusAwarded = ref(0);
   const sessionLoading = ref(false);
   const sessionError = ref<string | null>(null);
   const autoReveal = ref(false);
@@ -193,12 +202,50 @@ export const useGameStore = defineStore('game', () => {
         answerResult.value = null;
         answerStats.value = [0, 0, 0, 0];
         answersReceived.value = 0;
+        teammatePicks.value = [];
+        teamSyncBonusAwarded.value = 0;
         hasAutoRevealedQuestion.value = false;
         totalActivePlayers.value = session.value
           ? session.value.teams.reduce((s, t) => s + t.members.length, 0)
           : 0;
         startTimer(payload.time_limit || 20);
       });
+
+      socket.value.on(
+        'team:member_picked',
+        (payload: {
+          team_id: string;
+          user_id: string;
+          user_name: string;
+          avatar: string;
+          selected_option_index: number;
+        }) => {
+          if (!myTeam.value || payload.team_id !== myTeam.value.id) return;
+          const filtered = teammatePicks.value.filter(p => p.user_id !== payload.user_id);
+          filtered.push({
+            user_id: payload.user_id,
+            user_name: payload.user_name,
+            avatar: payload.avatar,
+            selected_option_index: payload.selected_option_index
+          });
+          teammatePicks.value = filtered;
+        }
+      );
+
+      socket.value.on(
+        'team:sync_bonus',
+        (payload: {
+          team_id: string;
+          team_name: string;
+          bonus_points: number;
+          updated_team_score: number;
+        }) => {
+          if (myTeam.value && payload.team_id === myTeam.value.id) {
+            teamSyncBonusAwarded.value = payload.bonus_points;
+            myTeam.value.total_score = payload.updated_team_score;
+          }
+        }
+      );
 
       socket.value.on('question:progress', (payload: { answers_received: number; total_players: number }) => {
         answersReceived.value = payload.answers_received;
@@ -406,6 +453,8 @@ export const useGameStore = defineStore('game', () => {
     answerResult.value = null;
     answersReceived.value = 0;
     totalActivePlayers.value = 0;
+    teammatePicks.value = [];
+    teamSyncBonusAwarded.value = 0;
     sessionLoading.value = false;
     sessionError.value = null;
     hasAutoRevealedQuestion.value = false;
@@ -421,6 +470,8 @@ export const useGameStore = defineStore('game', () => {
     answerStats,
     answersReceived,
     totalActivePlayers,
+    teammatePicks,
+    teamSyncBonusAwarded,
     sessionLoading,
     sessionError,
     autoReveal,
