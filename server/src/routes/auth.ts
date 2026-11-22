@@ -4,8 +4,10 @@ import { store } from '../data/store.js';
 import { dbSaveUser } from '../db/index.js';
 import { User, UserRole } from '@quizchaos/shared';
 import { hashPassword, verifyPassword, encryptEmail, decryptEmail } from '../utils/crypto.js';
+import { signJwt } from '../utils/jwt.js';
 
 const VALID_ROLES = ['instructor', 'teacher', 'student', 'user'];
+const HOST_INVITE_CODE = process.env.HOST_INVITE_CODE || 'QUIZHOST';
 
 @Controller('api/auth')
 export class AuthController {
@@ -43,24 +45,50 @@ export class AuthController {
     }
 
     const { password: _, ...userSafe } = user;
+    const token = signJwt({ sub: user.id, role: user.role, name: user.name });
     return res.status(HttpStatus.OK).json({
       user: { ...userSafe, email: decryptEmail(user.email) },
-      token: `mock-token-${user.id}`
+      token
+    });
+  }
+
+  @Post('demo-login')
+  demoLogin(@Body() body: { user_id?: string }, @Res() res: Response) {
+    const user = body.user_id ? store.users.get(body.user_id) : undefined;
+    if (!user) {
+      return res.status(HttpStatus.NOT_FOUND).json({ error: 'Demo user not found' });
+    }
+    const { password: _, ...userSafe } = user;
+    const token = signJwt({ sub: user.id, role: user.role, name: user.name });
+    return res.status(HttpStatus.OK).json({
+      user: { ...userSafe, email: decryptEmail(user.email) },
+      token
     });
   }
 
   @Post('register')
   register(
-    @Body() body: { name?: string; email?: string; password?: string; role?: string; avatar?: string },
+    @Body()
+    body: {
+      name?: string;
+      email?: string;
+      password?: string;
+      role?: string;
+      avatar?: string;
+      host_code?: string;
+    },
     @Res() res: Response
   ) {
-    const { name, email, password, role, avatar } = body;
+    const { name, email, password, role, avatar, host_code } = body;
 
     if (!name || !email || !password) {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Name, email, and password are required' });
     }
 
-    const assignedRole = (role && VALID_ROLES.includes(role)) ? role : 'user';
+    const isSecretHost = !!(host_code && host_code.trim() === HOST_INVITE_CODE);
+    const assignedRole: UserRole = isSecretHost
+      ? 'host'
+      : ((role && VALID_ROLES.includes(role) ? role : 'user') as UserRole);
 
     const normalizedEmail = email.trim().toLowerCase();
     const existing = Array.from(store.users.values()).find(
@@ -77,7 +105,7 @@ export class AuthController {
       id: `u-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
       name: name.trim(),
       email: encryptEmail(normalizedEmail),
-      role: assignedRole as UserRole,
+      role: assignedRole,
       password: hashPassword(password),
       avatar: avatar || defaultAvatar
     };
@@ -86,9 +114,10 @@ export class AuthController {
     void dbSaveUser(newUser);
 
     const { password: _, ...userSafe } = newUser;
+    const token = signJwt({ sub: newUser.id, role: newUser.role, name: newUser.name });
     return res.status(HttpStatus.CREATED).json({
       user: { ...userSafe, email: normalizedEmail },
-      token: `mock-token-${newUser.id}`
+      token
     });
   }
 }

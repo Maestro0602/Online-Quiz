@@ -152,6 +152,16 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label>Secret Host Code (Optional)</label>
+          <input
+            v-model="hostCode"
+            type="password"
+            placeholder="Enter secret code to unlock Host role"
+            class="input-kahoot"
+          />
+        </div>
+
         <button
           type="submit"
           :disabled="authStore.loading"
@@ -179,6 +189,7 @@ const name = ref('');
 const email = ref('ada@university.edu');
 const password = ref('password123');
 const role = ref<UserRole>('instructor');
+const hostCode = ref('');
 
 const instructors = computed(() =>
   authStore.demoUsers.filter(u => u.role === 'instructor')
@@ -188,8 +199,8 @@ const students = computed(() =>
 );
 
 async function quickLogin(targetUser: User) {
-  authStore.quickSwitchUser(targetUser);
-  if (targetUser.role === 'instructor') {
+  await authStore.quickSwitchUser(targetUser);
+  if (authStore.isHost) {
     router.push('/instructor');
   } else {
     router.push('/');
@@ -199,7 +210,7 @@ async function quickLogin(targetUser: User) {
 async function handleLogin() {
   const success = await authStore.login(email.value, password.value);
   if (success) {
-    if (authStore.isInstructor) {
+    if (authStore.isHost) {
       router.push('/instructor');
     } else {
       router.push('/');
@@ -208,9 +219,16 @@ async function handleLogin() {
 }
 
 async function handleRegister() {
-  const success = await authStore.register(name.value, email.value, role.value, password.value);
+  const success = await authStore.register(
+    name.value,
+    email.value,
+    role.value,
+    password.value,
+    undefined,
+    hostCode.value
+  );
   if (success) {
-    if (authStore.isInstructor) {
+    if (authStore.isHost) {
       router.push('/instructor');
     } else {
       router.push('/');

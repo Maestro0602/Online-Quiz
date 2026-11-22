@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Param, Body, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Res, HttpStatus, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { store, TEAM_PRESETS } from '../data/store.js';
 import { dbSaveSession } from '../db/index.js';
+import { HostAuthGuard } from '../guards/auth.guard.js';
 import { GameSession, Team, TeamMember, TopContributor } from '@quizchaos/shared';
 
 function generateRoomCode(): string {
@@ -15,6 +16,7 @@ function generateRoomCode(): string {
 @Controller('api/sessions')
 export class SessionsController {
   @Post()
+  @UseGuards(HostAuthGuard)
   createSession(@Body() body: { quiz_id?: string; team_count?: number; host_user_id?: string }, @Res() res: Response) {
     const { quiz_id, team_count = 2, host_user_id } = body;
 
@@ -133,6 +135,7 @@ export class SessionsController {
   }
 
   @Post(':roomCode/start')
+  @UseGuards(HostAuthGuard)
   startSession(@Param('roomCode') roomCode: string, @Res() res: Response) {
     const session = store.sessions.get(roomCode);
     if (!session) {
@@ -155,6 +158,7 @@ export class SessionsController {
   }
 
   @Post(':roomCode/next')
+  @UseGuards(HostAuthGuard)
   nextQuestion(@Param('roomCode') roomCode: string, @Res() res: Response) {
     const session = store.sessions.get(roomCode);
     if (!session) {
@@ -187,6 +191,7 @@ export class SessionsController {
   }
 
   @Post(':roomCode/end')
+  @UseGuards(HostAuthGuard)
   endSession(@Param('roomCode') roomCode: string, @Res() res: Response) {
     const session = store.sessions.get(roomCode);
     if (!session) {

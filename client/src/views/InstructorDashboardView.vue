@@ -8,20 +8,20 @@
           <h1>My Quizzes</h1>
           <p>Create quizzes, launch collaborative live team battles, and track champions</p>
         </div>
-        <div class="header-actions">
+        <div class="header-actions" v-if="authStore.isInstructor">
           <router-link to="/instructor/quiz/new" class="btn-kahoot btn-primary">
             + Create New Quiz
           </router-link>
         </div>
       </div>
 
-      <!-- Unauthorized Alert if not logged in as instructor -->
-      <div v-if="!authStore.isInstructor" class="alert-box">
+      <!-- Unauthorized Alert if not logged in as instructor or host -->
+      <div v-if="!authStore.isHost" class="alert-box">
         <div>
-          <h3>Instructor Access Required</h3>
-          <p>You are currently logged in as <strong>{{ authStore.user?.role || 'Guest' }}</strong>. Please switch to an instructor account to manage quizzes.</p>
+          <h3>Host or Instructor Access Required</h3>
+          <p>You are currently logged in as <strong>{{ authStore.user?.role || 'Guest' }}</strong>. Please sign in as a host, teacher, or instructor to launch live games.</p>
           <router-link to="/login" class="btn-kahoot btn-yellow btn-sm" style="margin-top: 8px;">
-            Switch to Instructor Account
+            Switch Account
           </router-link>
         </div>
       </div>
@@ -76,7 +76,7 @@
               <span>Launch Game</span>
             </button>
 
-            <div class="icon-actions">
+            <div v-if="authStore.isInstructor" class="icon-actions">
               <router-link
                 :to="`/instructor/quiz/${quiz.id}/edit`"
                 class="btn-text-action"
@@ -199,7 +199,7 @@ const TEAM_NAMES = [
 const previewTeams = computed(() => TEAM_NAMES.slice(0, teamCount.value));
 
 onMounted(() => {
-  quizStore.fetchQuizzes(authStore.user?.id);
+  quizStore.fetchQuizzes(authStore.isInstructor ? authStore.user?.id : undefined);
 });
 
 function openLaunchModal(quiz: Quiz) {
@@ -225,9 +225,13 @@ async function confirmLaunchSession() {
   launchError.value = null;
 
   try {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (authStore.token) {
+      headers['Authorization'] = `Bearer ${authStore.token}`;
+    }
     const res = await fetch('/api/sessions', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({
         quiz_id: selectedQuiz.value.id,
         team_count: teamCount.value,

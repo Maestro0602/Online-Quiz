@@ -12,11 +12,11 @@
             Join Game
           </router-link>
 
-          <template v-if="authStore.isInstructor">
+          <template v-if="authStore.isHost">
             <router-link to="/instructor" class="nav-item" active-class="nav-active">
-              Instructor Dashboard
+              {{ authStore.isInstructor ? 'Instructor Dashboard' : 'Host Dashboard' }}
             </router-link>
-            <router-link to="/instructor/quiz/new" class="nav-item btn-nav-action">
+            <router-link v-if="authStore.isInstructor" to="/instructor/quiz/new" class="nav-item btn-nav-action">
               + New Quiz
             </router-link>
           </template>

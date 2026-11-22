@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Put, Delete, Param, Query, Body, Res, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Query, Body, Res, HttpStatus, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { store } from '../data/store.js';
 import { dbSaveQuiz, dbDeleteQuiz } from '../db/index.js';
+import { CreatorAuthGuard } from '../guards/auth.guard.js';
 import { Quiz, Question } from '@quizchaos/shared';
 
 @Controller('api/quizzes')
@@ -25,6 +26,7 @@ export class QuizzesController {
   }
 
   @Post()
+  @UseGuards(CreatorAuthGuard)
   createQuiz(@Body() body: any, @Res() res: Response) {
     const { title, description, instructor_id, instructor_name, is_published, questions } = body;
 
@@ -85,6 +87,7 @@ export class QuizzesController {
   }
 
   @Put(':id')
+  @UseGuards(CreatorAuthGuard)
   updateQuiz(@Param('id') quizId: string, @Body() body: any, @Res() res: Response) {
     const existing = store.quizzes.get(quizId);
 
@@ -146,6 +149,7 @@ export class QuizzesController {
   }
 
   @Delete(':id')
+  @UseGuards(CreatorAuthGuard)
   deleteQuiz(@Param('id') quizId: string, @Res() res: Response) {
     if (!store.quizzes.has(quizId)) {
       return res.status(HttpStatus.NOT_FOUND).json({ error: 'Quiz not found' });
@@ -156,6 +160,7 @@ export class QuizzesController {
   }
 
   @Post(':id/publish')
+  @UseGuards(CreatorAuthGuard)
   togglePublish(@Param('id') quizId: string, @Res() res: Response) {
     const quiz = store.quizzes.get(quizId);
     if (!quiz) {

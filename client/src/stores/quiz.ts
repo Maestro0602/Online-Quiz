@@ -1,12 +1,21 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { Quiz } from '@quizchaos/shared';
+import { useAuthStore } from './auth';
 
 export const useQuizStore = defineStore('quiz', () => {
   const quizzes = ref<Quiz[]>([]);
   const currentQuiz = ref<Quiz | null>(null);
   const loading = ref(false);
   const error = ref<string | null>(null);
+
+  function authHeaders(withJson = false): Record<string, string> {
+    const authStore = useAuthStore();
+    const headers: Record<string, string> = {};
+    if (withJson) headers['Content-Type'] = 'application/json';
+    if (authStore.token) headers['Authorization'] = `Bearer ${authStore.token}`;
+    return headers;
+  }
 
   async function fetchQuizzes(instructorId?: string) {
     loading.value = true;
@@ -47,7 +56,7 @@ export const useQuizStore = defineStore('quiz', () => {
     try {
       const res = await fetch('/api/quizzes', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: authHeaders(true),
         body: JSON.stringify(quizData)
       });
       const data = await res.json();
@@ -68,7 +77,7 @@ export const useQuizStore = defineStore('quiz', () => {
     try {
       const res = await fetch(`/api/quizzes/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: authHeaders(true),
         body: JSON.stringify(quizData)
       });
       const data = await res.json();
@@ -87,7 +96,10 @@ export const useQuizStore = defineStore('quiz', () => {
 
   async function deleteQuiz(id: string) {
     try {
-      const res = await fetch(`/api/quizzes/${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/quizzes/${id}`, {
+        method: 'DELETE',
+        headers: authHeaders()
+      });
       if (!res.ok) throw new Error('Failed to delete quiz');
       quizzes.value = quizzes.value.filter(q => q.id !== id);
       return true;
@@ -99,7 +111,10 @@ export const useQuizStore = defineStore('quiz', () => {
 
   async function togglePublish(id: string) {
     try {
-      const res = await fetch(`/api/quizzes/${id}/publish`, { method: 'POST' });
+      const res = await fetch(`/api/quizzes/${id}/publish`, {
+        method: 'POST',
+        headers: authHeaders()
+      });
       if (!res.ok) throw new Error('Failed to toggle publish status');
       const data = await res.json();
       const idx = quizzes.value.findIndex(q => q.id === id);

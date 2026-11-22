@@ -25,6 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => !!user.value);
   const isInstructor = computed(() => user.value?.role === 'instructor' || user.value?.role === 'teacher');
+  const isHost = computed(() => isInstructor.value || user.value?.role === 'host');
   const isStudent = computed(() => user.value?.role === 'student' || user.value?.role === 'user');
 
   async function fetchDemoUsers() {
@@ -64,14 +65,21 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function register(name: string, email: string, role: UserRole, password = 'password123', avatar?: string) {
+  async function register(
+    name: string,
+    email: string,
+    role: UserRole,
+    password = 'password123',
+    avatar?: string,
+    hostCode?: string
+  ) {
     loading.value = true;
     error.value = null;
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, role, password, avatar })
+        body: JSON.stringify({ name, email, role, password, avatar, host_code: hostCode || undefined })
       });
       const data = await res.json();
       if (!res.ok) {
@@ -89,10 +97,24 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  function quickSwitchUser(targetUser: User) {
+  async function quickSwitchUser(targetUser: User) {
+    try {
+      const res = await fetch('/api/auth/demo-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: targetUser.id })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        user.value = data.user;
+        token.value = data.token;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: data.user, token: data.token }));
+        return;
+      }
+    } catch {}
     user.value = targetUser;
-    token.value = `mock-token-${targetUser.id}`;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: targetUser, token: token.value }));
+    token.value = null;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ user: targetUser, token: null }));
   }
 
   function logout() {
@@ -109,6 +131,7 @@ export const useAuthStore = defineStore('auth', () => {
     error,
     isAuthenticated,
     isInstructor,
+    isHost,
     isStudent,
     login,
     register,
